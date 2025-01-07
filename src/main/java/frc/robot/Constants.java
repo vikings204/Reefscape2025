@@ -105,6 +105,8 @@ public final class Constants {
         /* Motor Inverts */
         public static final boolean DRIVE_INVERT = true;
         public static final boolean ANGLE_INVERT = true;
+        public static final boolean canCoderInvert = false;
+
 
         public static final boolean GYRO_INVERT = true; // Always ensure Gyro is CCW+ CW-
         public static final int PIGEON2_ID = 9;
@@ -114,6 +116,7 @@ public final class Constants {
         public static final class Mod0 {
             public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 21;
+            public static final int CAN_CODER_ID = 31;
             public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(142.75);
         }
 
@@ -121,6 +124,8 @@ public final class Constants {
         public static final class Mod1 {
             public static final int DRIVE_MOTOR_ID = 12;
             public static final int ANGLE_MOTOR_ID = 22;
+            public static final int CAN_CODER_ID = 32;
+
             public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(115.05);
         }
 
@@ -128,6 +133,8 @@ public final class Constants {
         public static final class Mod2 {
             public static final int DRIVE_MOTOR_ID = 10;
             public static final int ANGLE_MOTOR_ID = 20;
+            public static final int CAN_CODER_ID = 30;
+
             public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(258.66);
         }
 
@@ -135,6 +142,8 @@ public final class Constants {
         public static final class Mod3 {
             public static final int DRIVE_MOTOR_ID = 13;
             public static final int ANGLE_MOTOR_ID = 23;
+            public static final int CAN_CODER_ID = 33;
+
             public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(77.9);
         }
     }
