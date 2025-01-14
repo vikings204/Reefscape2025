@@ -248,7 +248,7 @@ public class SwerveModule {
         angleController.setReference(angle, ControlType.kPosition);
     }
 
-    private Rotation2d getAngle() {
+    public Rotation2d getAngle() {
         //SmartDashboard.putNumber("getAngleCall position Mod" + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360-angleOffset.getDegrees());
         //System.out.println("Encoder Position Mod "+moduleNumber+": "+(angleMotor.getSelectedSensorPosition()/1023)*360);
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());

@@ -20,7 +20,7 @@ import static frc.robot.Constants.Swerve.*;
 public class SwerveSubsystem extends SubsystemBase {
     public Pigeon2 gyro = new Pigeon2(PIGEON2_ID, "rio");
     //private final SwerveDriveOdometry swerveOdometry; // Odometry class helps track where the robot is relative to where it started
-    private final SwerveModule[] modules; // Array of the 4 swerve modules
+    public final SwerveModule[] modules; // Array of the 4 swerve modules
 
     public SwerveSubsystem() {
         var toApply = new Pigeon2Configuration();

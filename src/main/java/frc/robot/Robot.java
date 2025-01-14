@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import java.util.Optional;
+
+import com.ctre.phoenix6.swerve.SwerveModule;
+
 import frc.robot.util.CTREConfigs;
 
 
@@ -167,6 +170,9 @@ public class Robot extends TimedRobot {
     }
     @Override
     public void testPeriodic() {
+        for(frc.robot.subsystems.SwerveModule offset :robotContainer.Swerve.modules){
+            System.out.println("Module: " + offset.moduleNumber + " Angle: " + offset.getAngle().getDegrees() + " Encoder: " + offset.getCanCoder());
+        }
     }
 
     public static DriverStation.Alliance alliance;
