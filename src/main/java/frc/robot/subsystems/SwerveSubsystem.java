@@ -152,6 +152,12 @@ public class SwerveSubsystem extends SubsystemBase {
     public void zeroGyro() {
         gyro.setYaw(0.0);
     }
+    public void setX(){
+        for (SwerveModule mod : modules) {
+            mod.setAngleForX(15);
+           // System.out.println("Current Mod: "+mod.moduleNumber);
+        }
+    }
 
     public void setGyro(double yaw) {
         gyro.setYaw(yaw);

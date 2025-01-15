@@ -136,7 +136,7 @@ public class RobotContainer {
        //                 new RunCommand(() -> Shooter.intake(true, true), Shooter));
         new JoystickButton(DRIVER, 4)
                 .whileTrue(
-                        new RunCommand(Swerve::zeroGyro, Swerve));
+                        new RunCommand(Swerve::setX, Swerve));
         //new JoystickButton(DRIVER, 5)
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));

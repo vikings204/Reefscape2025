@@ -170,6 +170,7 @@ public class Robot extends TimedRobot {
     }
     @Override
     public void testPeriodic() {
+        
         for(frc.robot.subsystems.SwerveModule offset :robotContainer.Swerve.modules){
             System.out.println("Module: " + offset.moduleNumber + " Angle: " + offset.getAngle().getDegrees() + " Encoder: " + offset.getCanCoder());
         }

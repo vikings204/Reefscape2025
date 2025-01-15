@@ -14,15 +14,17 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkMax;
+//import com.revrobotics.spark.SparkPIDController;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkClosedLoopController;
+//import com.revrobotics.spark.SparkClosedLoopController;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAnalogSensor;
-import com.revrobotics.spark.SparkClosedLoopController;
+//import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -36,7 +38,7 @@ import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil.CCUsage;
 import frc.robot.Robot;
-
+import frc.robot.Robot.ControlMode;
 
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d lastAngle;
     private Rotation2d angleOffset;
-
+    private int flipper=1;
     private double turningPDeg = 0;
     private int turningPQuad = 0; // top left is 1 counterclockwise
     private double turningTotalDeg = 0.0;
@@ -62,6 +64,7 @@ public class SwerveModule {
 
     private final SparkClosedLoopController driveController;
     private final SparkClosedLoopController angleController;
+   // private final SparkPIDController
     //private final TalonSRXFeedbackDevice angleController;
 
     private final SimpleMotorFeedforward feedforward =
@@ -77,18 +80,21 @@ public class SwerveModule {
         configAngleEncoder();
 
         angleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
+        //angleMotor.
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
-        angleController = angleMotor.getClosedLoopController();
+        //angleMotor.get
+        //angleController.
         configAngleMotor();
+        angleController = angleMotor.getClosedLoopController();
 
 
         /* Drive Motor Config */
         driveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
         driveConfig = new SparkMaxConfig();
-        driveController = driveMotor.getClosedLoopController();
         configDriveMotor();
+        driveController = driveMotor.getClosedLoopController();
 
         lastAngle = getState().angle;
 
@@ -113,12 +119,16 @@ public class SwerveModule {
         // 2025 UPDATED TO USE CANCODER AND SET POSITION ABS POSITION - NEED TO WORK ON TO FINALIZE
         //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
         
-        double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
-        System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
-        System.out.println("Encoder "+moduleNumber+ " is Zerod");
+       // double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
+       // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
+        System.out.println("The offset is "+ angleOffset.getDegrees());
+        System.out.println("Encoder "+moduleNumber+ " is set to Absolut Position");
         
         
-        integratedAngleEncoder.setPosition(absolutePosition);
+        integratedAngleEncoder.setPosition(0);
+        
+        System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
+
     }
 
         public void resetToAbsoluteTest() {
@@ -150,8 +160,9 @@ public class SwerveModule {
        
        //2025 This is Deprecated angleMotor.restoreFactoryDefaults();
         
-       ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(angleMotor, Usage.kPositionOnly,angleConfig);
-       angleConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT) ;
+       ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(angleMotor, Usage.kAll,angleConfig);
+      
+      /*  angleConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT) ;
        // replaced above angleMotor.setSmartCurrentLimit(ANGLE_CURRENT_LIMIT);
        angleConfig.inverted(ANGLE_INVERT); 
        // replaced above angleMotor.setInverted(ANGLE_INVERT);
@@ -161,14 +172,42 @@ public class SwerveModule {
         // replaced above integratedAngleEncoder.setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pidf(ANGLE_PID_P, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
+            //.pidf(.01, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
+            .pid(.01, ANGLE_PID_I, ANGLE_PID_D)
+            .outputRange(-1,1)
             .positionWrappingEnabled(true)
             .positionWrappingInputRange(0, ANGLE_POSITION_CONVERSION_FACTOR);
-        /* Replaced above 
-        angleController.setP(ANGLE_PID_P);
-        angleController.setI(ANGLE_PID_I);
-        angleController.setD(ANGLE_PID_D);
-        angleController.setFF(ANGLE_PID_FF);*/
+            */
+            //angleMotor.configureI
+            double turningFactor = 2 * Math.PI;
+            angleConfig
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(20);
+            angleConfig.encoder
+                    // Invert the turning encoder, since the output shaft rotates in the opposite
+                    // direction of the steering moton the MAXSwerve Module.
+                    //.inverted(true)
+                    .positionConversionFactor(1/ANGLE_GEAR_RATIO) // radians
+                    .velocityConversionFactor(1); // radians per second
+            angleConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    .pid(1, 0, 0)
+                    .outputRange(-1,1)
+                    .positionWrappingEnabled(true)
+                    .positionWrappingInputRange(0,1)
+                    .minOutput(-1)
+                    .maxOutput(1);
+            angleConfig.closedLoop.apply(angleConfig.closedLoop);
+            angleConfig.apply(angleConfig);
+
+        
+            // angleController
+        // Replaced above 
+        //angleController.SetP(ANGLE_PID_P);
+        //angleController.
+        //angleController.setI(ANGLE_PID_I);
+        //angleController.setD(ANGLE_PID_D);
+        //angleController.setFF(ANGLE_PID_FF);
        // angleController.setFeedbackDevice(angleMotor.getAnalog(SparkAnalogSensor.Mode.kAbsolute));
         angleConfig.voltageCompensation(VOLTAGE_COMPENSATION);
        //REPLACED ABOVE angleMotor.enableVoltageCompensation(VOLTAGE_COMPENSATION);
@@ -200,6 +239,7 @@ public class SwerveModule {
         driveConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pidf(DRIVE_PID_P, DRIVE_PID_I, DRIVE_PID_D, DRIVE_PID_FF);
+
        /* REPLACE ABOVE
          driveController.setP(DRIVE_PID_P);
         driveController.setI(DRIVE_PID_I);
@@ -209,7 +249,7 @@ public class SwerveModule {
         driveConfig.voltageCompensation(VOLTAGE_COMPENSATION);
 
         // replaced above driveMotor.enableVoltageCompensation(VOLTAGE_COMPENSATION);
-        driveMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         //replaced above driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
@@ -238,14 +278,24 @@ public class SwerveModule {
             SmartDashboard.putNumber("Encoder Position Setting without Offset" + moduleNumber, (((angle.getDegrees())/360)*1023));   
             SmartDashboard.putNumber("Encoder Position Setting with Offset" + moduleNumber, (((angle.getDegrees()+angleOffset.getDegrees())/360)*1023)); */
        // double targetVoltage = angle.getDegrees()- angleOffset.getDegrees();
-        angleController.setReference(angle.getDegrees(), ControlType.kPosition);
+       //angleMotor.set(.5);
+
+        angleController.setReference(angle.getRotations(), ControlType.kPosition);
+       // angleController.setReference(0, ControlType.kPosition); 
+       System.out.println("flipper "+flipper);
+       System.out.println("I Am Setting Angle Module "+moduleNumber+": " +(angle.getRotations()));
+        System.out.println("It's current angle is: "+integratedAngleEncoder.getPosition());
         lastAngle = angle;
     }
 
     public void setAngleForX(double angle) {
         driveMotor.set(0);
         //angleMotor.set(TalonSRXControlMode.Position, (angle/360)*1023);
-        angleController.setReference(angle, ControlType.kPosition);
+        angleMotor.set(.5);
+        flipper= -1*flipper;
+        //angleController.setPosition
+        //angleController.setReference(angle, ControlType.kPosition);
+       // angleController.
     }
 
     public Rotation2d getAngle() {
@@ -260,8 +310,8 @@ public class SwerveModule {
     public Rotation2d getCanCoder() {
         // return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());
-       //return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
-       return Rotation2d.fromDegrees(360.0*angleEncoder.getAbsolutePosition().getValueAsDouble());
+       return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
+       //return Rotation2d.fromDegrees(360.0*angleEncoder.getAbsolutePosition().getValueAsDouble());
 
        //return Rotation2d.fromDegrees((angleMotor.getAnalog(SparkAnalogSensor.Mode.kAbsolute).getVoltage()/3.3)*360);
     }
