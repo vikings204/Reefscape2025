@@ -119,13 +119,14 @@ public class SwerveModule {
         // 2025 UPDATED TO USE CANCODER AND SET POSITION ABS POSITION - NEED TO WORK ON TO FINALIZE
         //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
         
-       // double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
+        double absolutePosition = getCanCoder().getRotations() - angleOffset.getRotations();
+        
        // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
         System.out.println("The offset is "+ angleOffset.getDegrees());
         System.out.println("Encoder "+moduleNumber+ " is set to Absolut Position");
         
         
-        integratedAngleEncoder.setPosition(0);
+        integratedAngleEncoder.setPosition(absolutePosition);
         
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
 
@@ -281,7 +282,7 @@ public class SwerveModule {
        //angleMotor.set(.5);
 
         angleController.setReference(angle.getRotations(), ControlType.kPosition);
-       // angleController.setReference(0, ControlType.kPosition); 
+    
        System.out.println("flipper "+flipper);
        System.out.println("I Am Setting Angle Module "+moduleNumber+": " +(angle.getRotations()));
         System.out.println("It's current angle is: "+integratedAngleEncoder.getPosition());
@@ -308,9 +309,11 @@ public class SwerveModule {
     
 
     public Rotation2d getCanCoder() {
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble());
+
         // return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());
-       return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
+       //return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
        //return Rotation2d.fromDegrees(360.0*angleEncoder.getAbsolutePosition().getValueAsDouble());
 
        //return Rotation2d.fromDegrees((angleMotor.getAnalog(SparkAnalogSensor.Mode.kAbsolute).getVoltage()/3.3)*360);
