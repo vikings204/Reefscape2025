@@ -17,7 +17,7 @@ public final class CTREConfigs {
     swerveCanCoderConfig = new CANcoderConfiguration();
 
     /* Swerve CANCoder Configuration */
-    swerveCanCoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
+    swerveCanCoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = .5;
    // swerveCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
     swerveCanCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     //swerveCanCoderConfig.sensorDirection = Constants.Swerve.canCoderInvert;

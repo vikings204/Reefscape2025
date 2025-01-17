@@ -120,15 +120,24 @@ public class SwerveModule {
         //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
         
         //double absolutePosition = (getCanCoder().getRotations() - angleOffset.getRotations())/ANGLE_GEAR_RATIO;
-        double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
+       // double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
        // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
 
         
         
-        integratedAngleEncoder.setPosition(absolutePosition);
+        System.out.println("Encoder "+moduleNumber+ " is set to Absolute Position");
         System.out.println("The offset is "+ angleOffset.getRotations());
-        System.out.println("Encoder "+moduleNumber+ " is set to Absolut Position");
+        System.out.println("The Absolute Position is "+ angleEncoder.getAbsolutePosition().getValueAsDouble());
+        double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
+        
+        Timer.delay(2);
+
+        integratedAngleEncoder.setPosition(absolutePosition);
+        Timer.delay(2);
+
+        System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
+
 
     }
 
@@ -168,7 +177,6 @@ public class SwerveModule {
             .positionWrappingInputRange(0, ANGLE_POSITION_CONVERSION_FACTOR);
             */
             //angleMotor.configureI
-            double turningFactor = 2 * Math.PI;
             angleConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(20);
@@ -181,10 +189,10 @@ public class SwerveModule {
             angleConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     .pid(1, 0, 0)
-                    .outputRange(-1,1)
+                    .outputRange(0,1)
                     .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(-1,1)
-                    .minOutput(-1)
+                    .positionWrappingInputRange(0,1)
+                    .minOutput(0)
                     .maxOutput(1);
             angleConfig.closedLoop.apply(angleConfig.closedLoop);
             angleConfig.apply(angleConfig);
@@ -204,8 +212,7 @@ public class SwerveModule {
  
        //angleMotor.burnFlash();
         Timer.delay(2);
-        while(!angleEncoder.isConnected()){}
-        resetToAbsolute();
+      resetToAbsolute();
     }
 
     private void configDriveMotor() {
