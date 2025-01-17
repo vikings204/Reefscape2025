@@ -60,10 +60,10 @@ public class SwerveModule {
     private final SparkMaxConfig angleConfig;
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder integratedAngleEncoder;
-    private CANcoder angleEncoder;
+    public CANcoder angleEncoder;
 
     private final SparkClosedLoopController driveController;
-    private final SparkClosedLoopController angleController;
+    public final SparkClosedLoopController angleController;
    // private final SparkPIDController
     //private final TalonSRXFeedbackDevice angleController;
 
@@ -133,7 +133,7 @@ public class SwerveModule {
         
         Timer.delay(2);
 
-        integratedAngleEncoder.setPosition(absolutePosition);
+        integratedAngleEncoder.setPosition(ANGLE_GEAR_RATIO*absolutePosition);
         Timer.delay(2);
 
         System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
@@ -169,7 +169,7 @@ public class SwerveModule {
        // replaced above angleMotor.setIdleMode(ANGLE_IDLE_MODE);
         angleConfig.encoder.positionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .feedbackƒabsoensor(FeedbackSensor.kPrimaryEncoder)
             //.pidf(.01, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
             .pid(.01, ANGLE_PID_I, ANGLE_PID_D)
             .outputRange(-1,1)
