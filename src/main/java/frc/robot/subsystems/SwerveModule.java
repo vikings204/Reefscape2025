@@ -119,31 +119,20 @@ public class SwerveModule {
         // 2025 UPDATED TO USE CANCODER AND SET POSITION ABS POSITION - NEED TO WORK ON TO FINALIZE
         //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
         
-        double absolutePosition = getCanCoder().getRotations() - angleOffset.getRotations();
-        
+        //double absolutePosition = (getCanCoder().getRotations() - angleOffset.getRotations())/ANGLE_GEAR_RATIO;
+        double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
        // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
-        System.out.println("The offset is "+ angleOffset.getDegrees());
-        System.out.println("Encoder "+moduleNumber+ " is set to Absolut Position");
+
         
         
         integratedAngleEncoder.setPosition(absolutePosition);
-        
+        System.out.println("The offset is "+ angleOffset.getRotations());
+        System.out.println("Encoder "+moduleNumber+ " is set to Absolut Position");
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
 
     }
 
-        public void resetToAbsoluteTest() {
-        //angleMotor.getAnalog().setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
-       
-        double absolutePosition = convertToDegrees(angleMotor.getAnalog().getVoltage());
-        System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
-       
-        integratedAngleEncoder.setPosition(absolutePosition);
-         System.out.println("Encoder "+moduleNumber+ " is set to postion: "+integratedAngleEncoder.getPosition());
-    }
-    public double convertToDegrees(double voltage){
-        return (voltage/3.3)*360 - angleOffset.getDegrees();
-    }
+        
 
     //JOE EDIT THIS
 
@@ -170,7 +159,6 @@ public class SwerveModule {
        angleConfig.idleMode(ANGLE_IDLE_MODE); 
        // replaced above angleMotor.setIdleMode(ANGLE_IDLE_MODE);
         angleConfig.encoder.positionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
-        // replaced above integratedAngleEncoder.setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             //.pidf(.01, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
@@ -195,7 +183,7 @@ public class SwerveModule {
                     .pid(1, 0, 0)
                     .outputRange(-1,1)
                     .positionWrappingEnabled(true)
-                    .positionWrappingInputRange(0,1)
+                    .positionWrappingInputRange(-1,1)
                     .minOutput(-1)
                     .maxOutput(1);
             angleConfig.closedLoop.apply(angleConfig.closedLoop);
@@ -216,6 +204,7 @@ public class SwerveModule {
  
        //angleMotor.burnFlash();
         Timer.delay(2);
+        while(!angleEncoder.isConnected()){}
         resetToAbsolute();
     }
 
@@ -283,9 +272,7 @@ public class SwerveModule {
 
         angleController.setReference(angle.getRotations(), ControlType.kPosition);
     
-       System.out.println("flipper "+flipper);
-       System.out.println("I Am Setting Angle Module "+moduleNumber+": " +(angle.getRotations()));
-        System.out.println("It's current angle is: "+integratedAngleEncoder.getPosition());
+      
         lastAngle = angle;
     }
 
@@ -323,9 +310,9 @@ public class SwerveModule {
         return new SwerveModuleState(driveEncoder.getVelocity(), getAngle());
     }
 
-    public void resetEncoder() {
-        integratedAngleEncoder.setPosition(0);
-    }
+    //public void resetEncoder() {
+     //   integratedAngleEncoder.setPosition(0);
+   // }
 
     public SwerveModulePosition getPosition() {
         //SmartDashboard.putNumber("Raw Angle Reading " + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360);

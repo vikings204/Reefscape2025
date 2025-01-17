@@ -154,7 +154,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     public void setX(){
         for (SwerveModule mod : modules) {
-            mod.setAngleForX(15);
+            mod.resetToAbsolute();
            // System.out.println("Current Mod: "+mod.moduleNumber);
         }
     }

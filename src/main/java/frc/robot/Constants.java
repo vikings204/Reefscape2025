@@ -117,7 +117,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 21;
             public static final int CAN_CODER_ID = 31;
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(227.11);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromRotations(.5472);
         }
 
         /* Front Right Module - Module 1 */
@@ -126,7 +126,7 @@ public final class Constants {
             public static final int ANGLE_MOTOR_ID = 22;
             public static final int CAN_CODER_ID = 32;
 
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(316.85);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromRotations(316.85);
         }
 
         /* Back Left Module - Module 2 */
