@@ -97,6 +97,8 @@ public class SwerveModule {
         Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber, angleMotor.getAnalog()::getVoltage);
     }
 
+    public enum Position()
+
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // Custom optimize command, since default WPILib optimize assumes continuous controller which
         // REV and CTRE are not
@@ -234,10 +236,7 @@ public class SwerveModule {
                 (Math.abs(desiredState.speedMetersPerSecond) <= (MAX_SPEED * 0.01))
                         ? lastAngle
                         : desiredState.angle;
-            /*SmartDashboard.putNumber("Angle Position Setting Mod" + moduleNumber, angle.getDegrees());
-            SmartDashboard.putNumber("Encoder Position Setting without Offset" + moduleNumber, (((angle.getDegrees())/360)*1023));   
-            SmartDashboard.putNumber("Encoder Position Setting with Offset" + moduleNumber, (((angle.getDegrees()+angleOffset.getDegrees())/360)*1023)); */
-       // double targetVoltage = angle.getDegrees()- angleOffset.getDegrees();
+            
         angleController.setReference(angle.getDegrees(), ControlType.kPosition);
         lastAngle = angle;
     }

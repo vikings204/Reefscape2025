@@ -216,6 +216,13 @@ public final class Constants {
         public static final double SOURCE_POSITION = .5;
          public static final double CLOSED_POSITION = 0.02;
     }
+    public static final class Elevator{
+        private static final double LEVEL_ONE=0.0;
+        private static final double LEVEL_TWO=0.0;
+        private static final double LEVEL_THREE=0.0;
+        private static final double LEVEL_FOUR=0.0;
+
+    }
 }
   
 
