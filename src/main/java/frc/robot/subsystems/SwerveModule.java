@@ -129,11 +129,14 @@ public class SwerveModule {
         System.out.println("The offset is "+ angleOffset.getRotations());
         System.out.println("The Absolute Position is "+ angleEncoder.getAbsolutePosition().getValueAsDouble());
         double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
+        if(absolutePosition<0){
+            absolutePosition = 1+absolutePosition;
+        }
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
         
         Timer.delay(2);
 
-        integratedAngleEncoder.setPosition(ANGLE_GEAR_RATIO*absolutePosition);
+        integratedAngleEncoder.setPosition(Math.abs(absolutePosition));
         Timer.delay(2);
 
         System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
@@ -189,10 +192,10 @@ public class SwerveModule {
             angleConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     .pid(1, 0, 0)
-                    .outputRange(0,1)
+                    .outputRange(-1,1)
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0,1)
-                    .minOutput(0)
+                    .minOutput(-1)
                     .maxOutput(1);
             angleConfig.closedLoop.apply(angleConfig.closedLoop);
             angleConfig.apply(angleConfig);
@@ -272,11 +275,13 @@ public class SwerveModule {
                         ? lastAngle
                         : desiredState.angle;
             /*SmartDashboard.putNumber("Angle Position Setting Mod" + moduleNumber, angle.getDegrees());
-            SmartDashboard.putNumber("Encoder Position Setting without Offset" + moduleNumber, (((angle.getDegrees())/360)*1023));   
+            SmartDashboard.putNumber("Encoder Position Setting without Offset" + moduleNumber, (((angle.getDegrees( ))/360)*1023));   
             SmartDashboard.putNumber("Encoder Position Setting with Offset" + moduleNumber, (((angle.getDegrees()+angleOffset.getDegrees())/360)*1023)); */
        // double targetVoltage = angle.getDegrees()- angleOffset.getDegrees();
        //angleMotor.set(.5);
-
+        if (moduleNumber == 0){
+            System.out.println("Angle Position Setting Mod" + moduleNumber + ": " + angle.getRotations());
+        }
         angleController.setReference(angle.getRotations(), ControlType.kPosition);
     
       
@@ -297,7 +302,7 @@ public class SwerveModule {
         //SmartDashboard.putNumber("getAngleCall position Mod" + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360-angleOffset.getDegrees());
         //System.out.println("Encoder Position Mod "+moduleNumber+": "+(angleMotor.getSelectedSensorPosition()/1023)*360);
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());
-        return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
+        return Rotation2d.fromRotations(integratedAngleEncoder.getPosition());
         //return Rotation2d.fromDegrees(getCanCoder().getDegrees() - angleOffset.getDegrees());
     }
     
@@ -327,7 +332,7 @@ public class SwerveModule {
         return new SwerveModulePosition(
                 driveEncoder.getPosition(),
                 //Rotation2d.fromDegrees(getCanCoder().getDegrees()- angleOffset.getDegrees())
-                Rotation2d.fromDegrees(integratedAngleEncoder.getPosition())
+                Rotation2d.fromRotations(integratedAngleEncoder.getPosition())
                 
                 /////////////
                 //NEW CODE//

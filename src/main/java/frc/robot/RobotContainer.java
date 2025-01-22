@@ -109,7 +109,7 @@ public class RobotContainer {
         Swerve.setDefaultCommand(
                 new TeleopSwerveCommand(
                         Swerve,
-                        () -> -1 * DRIVER.getLeftY(),
+                        () ->  -1*DRIVER.getLeftY(),
                         () -> 1 * DRIVER.getLeftX(),
                         () -> -1 * DRIVER.getRightX(),
                         () -> false,
