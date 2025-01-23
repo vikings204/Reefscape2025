@@ -182,7 +182,9 @@ public class SwerveModule {
             //angleMotor.configureI
             angleConfig
                     .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(20);
+                    .smartCurrentLimit(20)
+                    .inverted(true);
+                    //.setInverted(true);
             angleConfig.encoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering moton the MAXSwerve Module.
