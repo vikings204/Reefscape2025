@@ -1,6 +1,17 @@
 package frc.robot.subsystems;
 
 
+import static frc.robot.Constants.Swerve.ANGLE_CURRENT_LIMIT;
+import static frc.robot.Constants.Swerve.ANGLE_GEAR_RATIO;
+import static frc.robot.Constants.Swerve.ANGLE_IDLE_MODE;
+import static frc.robot.Constants.Swerve.ANGLE_INVERT;
+import static frc.robot.Constants.Swerve.ANGLE_PID_D;
+import static frc.robot.Constants.Swerve.ANGLE_PID_FF;
+import static frc.robot.Constants.Swerve.ANGLE_PID_I;
+import static frc.robot.Constants.Swerve.ANGLE_PID_P;
+import static frc.robot.Constants.Swerve.ANGLE_POSITION_CONVERSION_FACTOR;
+import static frc.robot.Constants.Swerve.VOLTAGE_COMPENSATION;
+
 import java.util.Map;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -19,6 +30,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.Constants;
+import frc.robot.Constants.Elevator.*;
 import frc.robot.util.ReduceCANUsage;
 import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 
@@ -45,7 +58,7 @@ public class ElevatorSubsytem {
     //private final TalonSRXFeedbackDevice angleController;
 
     private final SimpleMotorFeedforward feedforward =
-            new SimpleMotorFeedforward(
+            new SimpleMotorFeedforward(Constants.Elevator.d
                     DRIVE_FF_S, DRIVE_FF_V, DRIVE_FF_A);
 
     public ElevatorSubsytem(int moduleNumber, int driveMotorID, int angleMotorID, Rotation2d angleOffset, int canCoderID) {
@@ -70,27 +83,31 @@ public class ElevatorSubsytem {
     }
 
     public enum Positions{
-        LEVELFOUR,
-        LEVELTHREE,
-        LEVELTWO,
-        LEVELONE
+        LEVELFOUR(78),
+        LEVELTHREE(76),
+        LEVELTWO(96),
+        LEVELONE(0)
 
+        public final double position;
+        Positions(double p) {
+            this.position = p;
+        }
         
-
+    }
+    public void setHeight(Positions p){
+        setHeight(p.position);
     }
 
 
-
-
-    //angleController.setReference(angle.getRotations(), ControlType.kPosition);
+    angleController.setReference(angle.getRotations(), ControlType.kPosition);
    
-    /*private void setAngle(SwerveModuleState desiredState) {
+    private void setAngle(SwerveModuleState desiredState) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
         Rotation2d angle =
                 (Math.abs(desiredState.speedMetersPerSecond) <= (MAX_SPEED * 0.01))
                         ? lastAngle
                         : desiredState.angle;
-    /* angleConfig
+    angleConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(20);
             angleConfig.encoder
@@ -144,7 +161,7 @@ public class ElevatorSubsytem {
         configAngleMotor();
         angleController = angleMotor.getClosedLoopController();
 */
-/*public void setAngleForX(double angle) {
+public void setAngleForX(double angle) {
         driveMotor.set(0);
         //angleMotor.set(TalonSRXControlMode.Position, (angle/360)*1023);
         angleMotor.set(.5);
@@ -153,18 +170,17 @@ public class ElevatorSubsytem {
         //angleController.setReference(angle, ControlType.kPosition);
        // angleController.
     }
- */
-/*public Rotation2d getAngle() {
+ 
+public Rotation2d getAngle() {
         //SmartDashboard.putNumber("getAngleCall position Mod" + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360-angleOffset.getDegrees());
         //System.out.println("Encoder Position Mod "+moduleNumber+": "+(angleMotor.getSelectedSensorPosition()/1023)*360);
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());
         return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
         //return Rotation2d.fromDegrees(getCanCoder().getDegrees() - angleOffset.getDegrees());
-    } */
-   /* public SwerveModuleState getState() {
+    } 
+    public SwerveModuleState getState() {
         return new SwerveModuleState(driveEncoder.getVelocity(), getAngle());
     }
- /* */
  
  //implement later
 private void configAngleMotor() {

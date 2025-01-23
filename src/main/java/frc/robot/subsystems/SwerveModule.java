@@ -14,15 +14,17 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkMax;
+//import com.revrobotics.spark.SparkPIDController;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkClosedLoopController;
+//import com.revrobotics.spark.SparkClosedLoopController;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAnalogSensor;
-import com.revrobotics.spark.SparkClosedLoopController;
+//import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -36,7 +38,7 @@ import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil.CCUsage;
 import frc.robot.Robot;
-
+import frc.robot.Robot.ControlMode;
 
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d lastAngle;
     private Rotation2d angleOffset;
-
+    private int flipper=1;
     private double turningPDeg = 0;
     private int turningPQuad = 0; // top left is 1 counterclockwise
     private double turningTotalDeg = 0.0;
@@ -58,10 +60,11 @@ public class SwerveModule {
     private final SparkMaxConfig angleConfig;
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder integratedAngleEncoder;
-    private CANcoder angleEncoder;
+    public CANcoder angleEncoder;
 
     private final SparkClosedLoopController driveController;
-    private final SparkClosedLoopController angleController;
+    public final SparkClosedLoopController angleController;
+   // private final SparkPIDController
     //private final TalonSRXFeedbackDevice angleController;
 
     private final SimpleMotorFeedforward feedforward =
@@ -77,18 +80,21 @@ public class SwerveModule {
         configAngleEncoder();
 
         angleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
+        //angleMotor.
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
-        angleController = angleMotor.getClosedLoopController();
+        //angleMotor.get
+        //angleController.
         configAngleMotor();
+        angleController = angleMotor.getClosedLoopController();
 
 
         /* Drive Motor Config */
         driveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
         driveConfig = new SparkMaxConfig();
-        driveController = driveMotor.getClosedLoopController();
         configDriveMotor();
+        driveController = driveMotor.getClosedLoopController();
 
         lastAngle = getState().angle;
 
@@ -96,8 +102,6 @@ public class SwerveModule {
         //REMOVED MOD.KABS AS I THINK IT WAS DEPRECATED
         Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber, angleMotor.getAnalog()::getVoltage);
     }
-
-    public enum Position()
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // Custom optimize command, since default WPILib optimize assumes continuous controller which
@@ -115,26 +119,32 @@ public class SwerveModule {
         // 2025 UPDATED TO USE CANCODER AND SET POSITION ABS POSITION - NEED TO WORK ON TO FINALIZE
         //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
         
-        double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
-        System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
-        System.out.println("Encoder "+moduleNumber+ " is Zerod");
+        //double absolutePosition = (getCanCoder().getRotations() - angleOffset.getRotations())/ANGLE_GEAR_RATIO;
+       // double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
+       // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
+
         
         
-        integratedAngleEncoder.setPosition(absolutePosition);
+        System.out.println("Encoder "+moduleNumber+ " is set to Absolute Position");
+        System.out.println("The offset is "+ angleOffset.getRotations());
+        System.out.println("The Absolute Position is "+ angleEncoder.getAbsolutePosition().getValueAsDouble());
+        double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
+        if(absolutePosition<0){
+            absolutePosition = 1+absolutePosition;
+        }
+        System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
+        
+        Timer.delay(2);
+
+        integratedAngleEncoder.setPosition(Math.abs(absolutePosition));
+        Timer.delay(2);
+
+        System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
+
+
     }
 
-        public void resetToAbsoluteTest() {
-        //angleMotor.getAnalog().setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
-       
-        double absolutePosition = convertToDegrees(angleMotor.getAnalog().getVoltage());
-        System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
-       
-        integratedAngleEncoder.setPosition(absolutePosition);
-         System.out.println("Encoder "+moduleNumber+ " is set to postion: "+integratedAngleEncoder.getPosition());
-    }
-    public double convertToDegrees(double voltage){
-        return (voltage/3.3)*360 - angleOffset.getDegrees();
-    }
+        
 
     //JOE EDIT THIS
 
@@ -152,25 +162,54 @@ public class SwerveModule {
        
        //2025 This is Deprecated angleMotor.restoreFactoryDefaults();
         
-       ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(angleMotor, Usage.kPositionOnly,angleConfig);
-       angleConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT) ;
+       ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(angleMotor, Usage.kAll,angleConfig);
+      
+      /*  angleConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT) ;
        // replaced above angleMotor.setSmartCurrentLimit(ANGLE_CURRENT_LIMIT);
        angleConfig.inverted(ANGLE_INVERT); 
        // replaced above angleMotor.setInverted(ANGLE_INVERT);
        angleConfig.idleMode(ANGLE_IDLE_MODE); 
        // replaced above angleMotor.setIdleMode(ANGLE_IDLE_MODE);
         angleConfig.encoder.positionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
-        // replaced above integratedAngleEncoder.setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pidf(ANGLE_PID_P, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
+            .feedbackƒabsoensor(FeedbackSensor.kPrimaryEncoder)
+            //.pidf(.01, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
+            .pid(.01, ANGLE_PID_I, ANGLE_PID_D)
+            .outputRange(-1,1)
             .positionWrappingEnabled(true)
             .positionWrappingInputRange(0, ANGLE_POSITION_CONVERSION_FACTOR);
-        /* Replaced above 
-        angleController.setP(ANGLE_PID_P);
-        angleController.setI(ANGLE_PID_I);
-        angleController.setD(ANGLE_PID_D);
-        angleController.setFF(ANGLE_PID_FF);*/
+            */
+            //angleMotor.configureI
+            angleConfig
+                    .idleMode(IdleMode.kBrake)
+                    .smartCurrentLimit(20)
+                    .inverted(true);
+                    //.setInverted(true);
+            angleConfig.encoder
+                    // Invert the turning encoder, since the output shaft rotates in the opposite
+                    // direction of the steering moton the MAXSwerve Module.
+                    //.inverted(true)
+                    .positionConversionFactor(1/ANGLE_GEAR_RATIO) // radians
+                    .velocityConversionFactor(1); // radians per second
+            angleConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                    .pid(1, 0, 0)
+                    .outputRange(-1,1)
+                    .positionWrappingEnabled(true)
+                    .positionWrappingInputRange(0,1)
+                    .minOutput(-1)
+                    .maxOutput(1);
+            angleConfig.closedLoop.apply(angleConfig.closedLoop);
+            angleConfig.apply(angleConfig);
+
+        
+            // angleController
+        // Replaced above 
+        //angleController.SetP(ANGLE_PID_P);
+        //angleController.
+        //angleController.setI(ANGLE_PID_I);
+        //angleController.setD(ANGLE_PID_D);
+        //angleController.setFF(ANGLE_PID_FF);
        // angleController.setFeedbackDevice(angleMotor.getAnalog(SparkAnalogSensor.Mode.kAbsolute));
         angleConfig.voltageCompensation(VOLTAGE_COMPENSATION);
        //REPLACED ABOVE angleMotor.enableVoltageCompensation(VOLTAGE_COMPENSATION);
@@ -178,7 +217,7 @@ public class SwerveModule {
  
        //angleMotor.burnFlash();
         Timer.delay(2);
-        resetToAbsolute();
+      resetToAbsolute();
     }
 
     private void configDriveMotor() {
@@ -202,6 +241,7 @@ public class SwerveModule {
         driveConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pidf(DRIVE_PID_P, DRIVE_PID_I, DRIVE_PID_D, DRIVE_PID_FF);
+
        /* REPLACE ABOVE
          driveController.setP(DRIVE_PID_P);
         driveController.setI(DRIVE_PID_I);
@@ -211,7 +251,7 @@ public class SwerveModule {
         driveConfig.voltageCompensation(VOLTAGE_COMPENSATION);
 
         // replaced above driveMotor.enableVoltageCompensation(VOLTAGE_COMPENSATION);
-        driveMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         //replaced above driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
@@ -236,31 +276,46 @@ public class SwerveModule {
                 (Math.abs(desiredState.speedMetersPerSecond) <= (MAX_SPEED * 0.01))
                         ? lastAngle
                         : desiredState.angle;
-            
-        angleController.setReference(angle.getDegrees(), ControlType.kPosition);
+            /*SmartDashboard.putNumber("Angle Position Setting Mod" + moduleNumber, angle.getDegrees());
+            SmartDashboard.putNumber("Encoder Position Setting without Offset" + moduleNumber, (((angle.getDegrees( ))/360)*1023));   
+            SmartDashboard.putNumber("Encoder Position Setting with Offset" + moduleNumber, (((angle.getDegrees()+angleOffset.getDegrees())/360)*1023)); */
+       // double targetVoltage = angle.getDegrees()- angleOffset.getDegrees();
+       //angleMotor.set(.5);
+        if (moduleNumber == 0){
+            System.out.println("Angle Position Setting Mod" + moduleNumber + ": " + angle.getRotations());
+        }
+        angleController.setReference(angle.getRotations(), ControlType.kPosition);
+    
+      
         lastAngle = angle;
     }
 
     public void setAngleForX(double angle) {
         driveMotor.set(0);
         //angleMotor.set(TalonSRXControlMode.Position, (angle/360)*1023);
-        angleController.setReference(angle, ControlType.kPosition);
+        angleMotor.set(.5);
+        flipper= -1*flipper;
+        //angleController.setPosition
+        //angleController.setReference(angle, ControlType.kPosition);
+       // angleController.
     }
 
     public Rotation2d getAngle() {
         //SmartDashboard.putNumber("getAngleCall position Mod" + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360-angleOffset.getDegrees());
         //System.out.println("Encoder Position Mod "+moduleNumber+": "+(angleMotor.getSelectedSensorPosition()/1023)*360);
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());
-        return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
+        return Rotation2d.fromRotations(integratedAngleEncoder.getPosition());
         //return Rotation2d.fromDegrees(getCanCoder().getDegrees() - angleOffset.getDegrees());
     }
     
 
     public Rotation2d getCanCoder() {
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble());
+
         // return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
         //return Rotation2d.fromDegrees(((angleMotor.getSelectedSensorPosition()/1023)*360)-angleOffset.getDegrees());
        //return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
-       return Rotation2d.fromDegrees(360.0*angleEncoder.getAbsolutePosition().getValueAsDouble());
+       //return Rotation2d.fromDegrees(360.0*angleEncoder.getAbsolutePosition().getValueAsDouble());
 
        //return Rotation2d.fromDegrees((angleMotor.getAnalog(SparkAnalogSensor.Mode.kAbsolute).getVoltage()/3.3)*360);
     }
@@ -269,9 +324,9 @@ public class SwerveModule {
         return new SwerveModuleState(driveEncoder.getVelocity(), getAngle());
     }
 
-    public void resetEncoder() {
-        integratedAngleEncoder.setPosition(0);
-    }
+    //public void resetEncoder() {
+     //   integratedAngleEncoder.setPosition(0);
+   // }
 
     public SwerveModulePosition getPosition() {
         //SmartDashboard.putNumber("Raw Angle Reading " + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360);
@@ -279,7 +334,7 @@ public class SwerveModule {
         return new SwerveModulePosition(
                 driveEncoder.getPosition(),
                 //Rotation2d.fromDegrees(getCanCoder().getDegrees()- angleOffset.getDegrees())
-                Rotation2d.fromDegrees(integratedAngleEncoder.getPosition())
+                Rotation2d.fromRotations(integratedAngleEncoder.getPosition())
                 
                 /////////////
                 //NEW CODE//

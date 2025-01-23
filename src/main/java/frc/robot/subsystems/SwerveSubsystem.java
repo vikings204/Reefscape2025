@@ -1,3 +1,4 @@
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
@@ -151,6 +152,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void zeroGyro() {
         gyro.setYaw(0.0);
+    }
+    public void setX(){
+        for (SwerveModule mod : modules) {
+            mod.resetToAbsolute();
+           // System.out.println("Current Mod: "+mod.moduleNumber);
+        }
     }
 
     public void setGyro(double yaw) {
