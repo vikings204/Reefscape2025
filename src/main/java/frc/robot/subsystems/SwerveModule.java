@@ -114,17 +114,6 @@ public class SwerveModule {
     }
 
     public void resetToAbsolute() {
-        //angleMotor.getAnalog().setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
-        
-        // 2025 UPDATED TO USE CANCODER AND SET POSITION ABS POSITION - NEED TO WORK ON TO FINALIZE
-        //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
-        
-        //double absolutePosition = (getCanCoder().getRotations() - angleOffset.getRotations())/ANGLE_GEAR_RATIO;
-       // double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
-       // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
-
-        
-        
         System.out.println("Encoder "+moduleNumber+ " is set to Absolute Position");
         System.out.println("The offset is "+ angleOffset.getRotations());
         System.out.println("The Absolute Position is "+ angleEncoder.getAbsolutePosition().getValueAsDouble());

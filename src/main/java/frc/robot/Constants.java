@@ -117,7 +117,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 21;
             public static final int CAN_CODER_ID = 31;
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(.75);
         }
 
         /* Front Right Module - Module 1 */
@@ -126,7 +126,7 @@ public final class Constants {
             public static final int ANGLE_MOTOR_ID = 22;
             public static final int CAN_CODER_ID = 32;
 
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(.888);
         }
 
         /* Back Left Module - Module 2 */
@@ -144,7 +144,7 @@ public final class Constants {
             public static final int ANGLE_MOTOR_ID = 23;
             public static final int CAN_CODER_ID = 33;
 
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(.08);
         }
     }
 
@@ -217,11 +217,10 @@ public final class Constants {
          public static final double CLOSED_POSITION = 0.02;
     }
     public static final class Elevator{
-        private static final double LEVEL_ONE=0.0;
-        private static final double LEVEL_TWO=0.0;
-        private static final double LEVEL_THREE=0.0;
-        private static final double LEVEL_FOUR=0.0;
-
+        public static final double LEVEL_ONE=0.0;
+        public static final double LEVEL_TWO=0.0;
+        public static final double LEVEL_THREE=0.0;
+        public static final double LEVEL_FOUR=0.0;
 
         //mostly ripped from Swerve constants class
         public static final double FAST_SPEED_MULTIPLIER = 1;
@@ -236,7 +235,6 @@ public final class Constants {
         public static final double VOLTAGE_COMPENSATION = 12.0;
 
         /* Swerve Current Limiting */
-        public static final int DRIVE_CURRENT_LIMIT = 40;//30;
         public static final int ANGLE_CURRENT_LIMIT = 10;//5;
 
         /* Swerve Profiling Values */
@@ -244,11 +242,9 @@ public final class Constants {
         public static final double MAX_ANGULAR_VELOCITY = 8; // radians per second
 
         /* Neutral Modes */
-        public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
         public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
 
         /* Motor Inverts */
-        public static final boolean DRIVE_INVERT = true;
         public static final boolean ANGLE_INVERT = true;
         public static final boolean canCoderInvert = false;
 
@@ -259,13 +255,25 @@ public final class Constants {
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         public static final class Mod0 {
-            public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 21;
             public static final int CAN_CODER_ID = 31;
             public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
         }
+        public enum Positions{
+        LEVELFOUR(Elevator.LEVEL_FOUR),
+        LEVELTHREE(Elevator.LEVEL_THREE),
+        LEVELTWO(Elevator.LEVEL_TWO),
+        LEVELONE(Elevator.LEVEL_ONE);
+
+        public final double position;
+        Positions(double p) {
+            this.position = p;
+        }
 
     }
+
+    }
+    
 }
   
 
