@@ -77,7 +77,7 @@ public class SwerveModule {
         angleController = angleMotor.getClosedLoopController();
 
 
-        /* Drive Motor Config */
+        /* Drive Motoar Config */
         driveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
         driveConfig = new SparkMaxConfig();
