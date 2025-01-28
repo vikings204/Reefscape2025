@@ -10,27 +10,19 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkMax;
-//import com.revrobotics.spark.SparkPIDController;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-//import com.revrobotics.spark.SparkClosedLoopController;
+
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkAnalogSensor;
-//import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.util.ReduceCANUsage;
@@ -38,7 +30,7 @@ import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil.CCUsage;
 import frc.robot.Robot;
-import frc.robot.Robot.ControlMode;
+
 
 import java.util.Map;
 
@@ -53,7 +45,6 @@ public class SwerveModule {
     private int turningPQuad = 0; // top left is 1 counterclockwise
     private double turningTotalDeg = 0.0;
 
-    //public final TalonSRX angleMotor;
     private final SparkMax driveMotor;
     private final SparkMax angleMotor;
     private final SparkMaxConfig driveConfig;
@@ -64,8 +55,7 @@ public class SwerveModule {
 
     private final SparkClosedLoopController driveController;
     public final SparkClosedLoopController angleController;
-   // private final SparkPIDController
-    //private final TalonSRXFeedbackDevice angleController;
+
 
     private final SimpleMotorFeedforward feedforward =
             new SimpleMotorFeedforward(
@@ -80,11 +70,9 @@ public class SwerveModule {
         configAngleEncoder();
 
         angleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
-        //angleMotor.
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
-        //angleMotor.get
-        //angleController.
+
         configAngleMotor();
         angleController = angleMotor.getClosedLoopController();
 
