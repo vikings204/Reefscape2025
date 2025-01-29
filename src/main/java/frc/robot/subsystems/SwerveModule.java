@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 ///import frc.robot.util.CANCoderUtil.CCUsage;
@@ -90,7 +89,7 @@ public class SwerveModule {
         //REMOVED MOD.KABS AS I THINK IT WAS DEPRECATED
         Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber, angleMotor.getAnalog()::getVoltage);
     }
-
+    
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // Custom optimize command, since default WPILib optimize assumes continuous controller which
         // REV and CTRE are not
