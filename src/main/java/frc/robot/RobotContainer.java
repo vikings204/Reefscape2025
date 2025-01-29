@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controller;
+import frc.robot.Constants.Elevator;
+import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Robot.ControlMode;
 import frc.robot.commands.TeleopSwerveCommand;
 //import frc.robot.commands.TimedSpeakerShotCommand;
@@ -30,7 +32,8 @@ import static frc.robot.Robot.ControlModeChooser;
 public class RobotContainer {
     public final SwerveSubsystem Swerve = new SwerveSubsystem();
     public final LEDSubsystem LED = new LEDSubsystem();
-   // public final ShooterSubsystem Shooter = new ShooterSubsystem(LED);
+    public final ElevatorSubsytem Elevator =new ElevatorSubsytem();
+    //public final ShooterSubsystem Shooter = new ShooterSubsystem(LED);
     //public final LinearActuatorSubsystem LinearActuator = new LinearActuatorSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
 
@@ -116,18 +119,21 @@ public class RobotContainer {
                         () -> false,// DRIVER.getLeftStickButton(), // slow mode
                         () -> false,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
+        Elevator.setDefaultCommand(
+                new RunCommand(
+                        () -> Elevator.getAngle()));                
 
-       /*  Shooter.setDefaultCommand(
+         /*Shooter.setDefaultCommand(
                 new RunCommand(
                         () -> Shooter.flywheelSpeaker(false),
                         Shooter));
-
-        LinearActuator.setDefaultCommand(
-                new RunCommand(
-                        () -> LinearActuator.shift(OPERATOR.getPOV() == 0, OPERATOR.getPOV() == 180),
-                        LinearActuator
-                )
-        );*/
+*/
+//        LinearActuator.setDefaultCommand(
+ //               new RunCommand(
+  //                      () -> LinearActuator.shift(OPERATOR.getPOV() == 0, OPERATOR.getPOV() == 180),
+  //                      LinearActuator
+   //             )
+    //    );
     }
 
     private void configureButtonBindings() {
@@ -148,13 +154,12 @@ public class RobotContainer {
         //new JoystickButton(DRIVER, 5)
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));
-       /* 
+       
         new JoystickButton(OPERATOR, 6)
                 .whileTrue(
-                        new RunCommand(() -> Shooter.intake(true, false), Shooter))
-                .whileTrue(
-                        new InstantCommand(() -> Shooter.detecting = true));
-        new JoystickButton(OPERATOR, 5)
+                        new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE),Elevator));
+    
+        /*new JoystickButton(OPERATOR, 5)
                 .whileTrue(
                         new RunCommand(() -> Shooter.receive(true), Shooter));
         new JoystickButton(OPERATOR, 10)
