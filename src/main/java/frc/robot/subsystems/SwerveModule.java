@@ -123,10 +123,10 @@ public class SwerveModule {
         }
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
         
-        Timer.delay(2);
+        //Timer.delay(2);
 
         integratedAngleEncoder.setPosition(Math.abs(absolutePosition));
-        Timer.delay(2);
+       // Timer.delay(2);
 
         System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
 

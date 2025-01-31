@@ -119,10 +119,11 @@ public class RobotContainer {
                         () -> false,// DRIVER.getLeftStickButton(), // slow mode
                         () -> false,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
-        Elevator.setDefaultCommand(
+               
+         Elevator.setDefaultCommand(
                 new RunCommand(
-                        () -> Elevator.getAngle()));                
-
+                        () -> Elevator.setAngle(false),
+                        Elevator));            
          /*Shooter.setDefaultCommand(
                 new RunCommand(
                         () -> Shooter.flywheelSpeaker(false),
@@ -155,10 +156,13 @@ public class RobotContainer {
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));
        
-        new JoystickButton(OPERATOR, 6)
+        new JoystickButton(DRIVER, 1)
                 .whileTrue(
-                        new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE),Elevator));
+                        new RunCommand(() -> Elevator.setAngle(true),Elevator));
     
+                        new JoystickButton(DRIVER, 2)
+                        .whileTrue(
+                                new RunCommand(() -> Elevator.setNAngle(true),Elevator));
         /*new JoystickButton(OPERATOR, 5)
                 .whileTrue(
                         new RunCommand(() -> Shooter.receive(true), Shooter));

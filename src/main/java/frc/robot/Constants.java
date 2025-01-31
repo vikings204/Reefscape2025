@@ -235,7 +235,7 @@ public final class Constants {
         public static final double VOLTAGE_COMPENSATION = 12.0;
 
         /* Swerve Current Limiting */
-        public static final int ANGLE_CURRENT_LIMIT = 10;//5;
+        public static final int ANGLE_CURRENT_LIMIT = 40;//5;
 
         /* Swerve Profiling Values */
         public static final double MAX_SPEED = 4.5; // meters per second
@@ -254,8 +254,8 @@ public final class Constants {
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         
-            public static final int ANGLE_MOTOR_ID_ONE = 50;
-            public static final int ANGLE_MOTOR_ID_TWO = 51;
+            public static final int ANGLE_MOTOR_ID_ONE = 7;
+            public static final int ANGLE_MOTOR_ID_TWO = 8;
 
             //public static final int CAN_CODER_ID = 31;
             //public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
