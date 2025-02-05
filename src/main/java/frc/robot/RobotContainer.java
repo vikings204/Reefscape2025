@@ -33,6 +33,8 @@ public class RobotContainer {
    // public final ShooterSubsystem Shooter = new ShooterSubsystem(LED);
     //public final LinearActuatorSubsystem LinearActuator = new LinearActuatorSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
+    public final ElevatorSubsytem Elevator =new ElevatorSubsytem();
+
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
 
@@ -137,6 +139,13 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 4)
                 .whileTrue(
                         new RunCommand(Swerve::setX, Swerve));
+                        new JoystickButton(DRIVER, 1)
+                        .whileTrue(
+                                new RunCommand(() -> Elevator.setAngle(true),Elevator));
+            new JoystickButton(DRIVER, 2)
+                        .whileTrue(
+                                new RunCommand(() -> Elevator.setNAngle(true),Elevator));
+            
         //new JoystickButton(DRIVER, 5)
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));

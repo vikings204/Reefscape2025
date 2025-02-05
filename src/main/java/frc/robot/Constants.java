@@ -216,6 +216,64 @@ public final class Constants {
         public static final double SOURCE_POSITION = .5;
          public static final double CLOSED_POSITION = 0.02;
     }
+    public static final class Elevator{
+        public static final double LEVEL_ONE=1.0;
+        public static final double LEVEL_TWO=2.0;
+        public static final double LEVEL_THREE=3.0;
+        public static final double LEVEL_FOUR=4.0;
+
+        //mostly ripped from Swerve constants class
+        public static final double FAST_SPEED_MULTIPLIER = 1;
+        public static final double NORMAL_SPEED_MULTIPLIER = 1;//.8;
+        public static final double SLOW_SPEED_MULTIPLIER = .6;
+
+        public static final double ANGLE_PID_FF = 0.0;
+        public static final double ANGLE_PID_P = 0.01;
+        public static final double ANGLE_PID_I = 0.0;
+        public static final double ANGLE_PID_D = 0.0;
+
+        public static final double VOLTAGE_COMPENSATION = 12.0;
+
+        /* Swerve Current Limiting */
+        public static final int ANGLE_CURRENT_LIMIT = 40;//5;
+
+        /* Swerve Profiling Values */
+        public static final double MAX_SPEED = 4.5; // meters per second
+        public static final double MAX_ANGULAR_VELOCITY = 8; // radians per second
+
+        /* Neutral Modes */
+        public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
+
+        /* Motor Inverts */
+        public static final boolean ANGLE_INVERT = true;
+        public static final boolean ANGLE_INVERT_2= !ANGLE_INVERT;
+        public static final boolean canCoderInvert = false;
+
+        public static final double ANGLE_POSITION_CONVERSION_FACTOR = 4;
+
+        /* Module Specific Constants */
+        /* Front Left Module - Module 0 */
+        
+            public static final int ANGLE_MOTOR_ID_ONE = 20;
+            public static final int ANGLE_MOTOR_ID_TWO = 8;
+
+            //public static final int CAN_CODER_ID = 31;
+            //public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
+        
+        public enum Positions{
+        LEVELFOUR(Elevator.LEVEL_FOUR),
+        LEVELTHREE(Elevator.LEVEL_THREE),
+        LEVELTWO(Elevator.LEVEL_TWO),
+        LEVELONE(Elevator.LEVEL_ONE);
+
+        public final double position;
+        Positions(double p) {
+            this.position = p;
+        }
+
+    }
+
+    }
 }
   
 
