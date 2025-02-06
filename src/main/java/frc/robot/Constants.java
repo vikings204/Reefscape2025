@@ -249,7 +249,7 @@ public final class Constants {
         public static final boolean ANGLE_INVERT_2= !ANGLE_INVERT;
         public static final boolean canCoderInvert = false;
 
-        public static final double ANGLE_POSITION_CONVERSION_FACTOR = 4;
+        public static final double ANGLE_POSITION_CONVERSION_FACTOR = 12;
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */

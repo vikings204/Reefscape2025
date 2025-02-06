@@ -26,6 +26,7 @@ import frc.robot.util.Gamepad;
 
 import java.util.Map;
 
+import static frc.robot.Constants.Elevator.LEVEL_TWO;
 import static frc.robot.Robot.AutoModeChooser;
 import static frc.robot.Robot.ControlModeChooser;
 
@@ -33,6 +34,7 @@ public class RobotContainer {
     public final SwerveSubsystem Swerve = new SwerveSubsystem();
     public final LEDSubsystem LED = new LEDSubsystem();
     public final ElevatorSubsytem Elevator =new ElevatorSubsytem();
+    public final ArmSubsytem Arm= new ArmSubsytem();
     //public final ShooterSubsystem Shooter = new ShooterSubsystem(LED);
     //public final LinearActuatorSubsystem LinearActuator = new LinearActuatorSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
@@ -123,7 +125,14 @@ public class RobotContainer {
          Elevator.setDefaultCommand(
                 new RunCommand(
                         () -> Elevator.setAngle(false),
-                        Elevator));            
+                        Elevator));    
+        Arm.setDefaultCommand(
+                new RunCommand(
+                        ()->Arm.ShootArm(false),
+                        Elevator));
+
+
+        ;                              
          /*Shooter.setDefaultCommand(
                 new RunCommand(
                         () -> Shooter.flywheelSpeaker(false),
@@ -156,13 +165,32 @@ public class RobotContainer {
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));
        
-        new JoystickButton(DRIVER, 1)
+        new JoystickButton(OPERATOR, 1)
                 .whileTrue(
-                        new RunCommand(() -> Elevator.setAngle(true),Elevator));
+                        new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE),Elevator));
     
-                        new JoystickButton(DRIVER, 2)
+        new JoystickButton(OPERATOR, 2)
                         .whileTrue(
-                                new RunCommand(() -> Elevator.setNAngle(true),Elevator));
+                                new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO),Elevator));
+         new JoystickButton(OPERATOR, 3)
+                         .whileTrue(
+                                new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE),Elevator));         
+        new JoystickButton(OPERATOR, 4)
+                        .whileTrue(
+                                new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR),Elevator));     
+                                
+        new JoystickButton(OPERATOR, 5)
+                        .whileTrue(
+                                new RunCommand(()->Arm.setAngle(Constants.Arm.Positions.MOTOROUT), Arm));
+        new JoystickButton(OPERATOR, 6)             
+                        .whileTrue(
+                                new RunCommand(()-> Arm.ShootArm(true),Arm));
+        new JoystickButton(OPERATOR, 6)             
+                         .whileTrue(
+                                 new RunCommand(()-> Arm.ShootArm(true),Arm));  
+        new JoystickButton(OPERATOR, 7)  
+                        .whileTrue(
+                                new RunCommand(()-> Arm.NegativeShootArm(true), Arm));                                           
         /*new JoystickButton(OPERATOR, 5)
                 .whileTrue(
                         new RunCommand(() -> Shooter.receive(true), Shooter));

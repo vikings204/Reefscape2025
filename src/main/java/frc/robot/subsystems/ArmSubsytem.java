@@ -67,21 +67,28 @@ public class ArmSubsytem extends SubsystemBase {
 
    
    
-    public void set (Positions targetposition) {
-        // Prevent rotating module if speed is less then 1%. Prevents jittering.
+    public void setAngle (Positions targetposition) {
+
        angleController.setReference(targetposition.position, ControlType.kPosition);
 
+    }   
+    public void ShootArm(boolean b){
+      if(b==true){
+        angleMotor.set(.5);
+      }
+      else
+        angleMotor.set(0);
     }
-        
-    public void setAngle(boolean b) {
-        // Prevent rotating module if speed is less then 1%. Prevents jittering.
-        System.out.println("Current Arm Postioin = "+integratedAngleEncoder.getPosition());
-        System.out.println("I AM MOVING THE ARM to : "+1);
-       //angleController.setReference(5, ControlType.kPosition);
-       //angleMotor.set(.1);
-       angleController.setReference(2,ControlType.kPosition);
-   
-    }public void setNAngle(boolean b) {
+    
+    public void NegativeShootArm(boolean b){
+      if(b==true){
+        angleMotor.set(-.5);
+      }
+      else
+        angleMotor.set(0);
+    }
+
+    public void setNAngle(boolean b) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
         System.out.println("Current Arm Postioin = "+integratedAngleEncoder.getPosition());
         System.out.println("I AM MOVING THE ARM to : "+1);
@@ -158,6 +165,4 @@ private void configAngleMotor() {
         integratedAngleEncoder.setPosition(0);
 
     }    
-
-    
-    }
+  }

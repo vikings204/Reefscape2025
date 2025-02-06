@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+
 import static frc.robot.Constants.Elevator.*;
+
+
 /*import static frc.robot.Constants.Elevator.ANGLE_CURRENT_LIMIT;
 import static frc.robot.Constants.Elevator.ANGLE_IDLE_MODE;
 import static frc.robot.Constants.Elevator.ANGLE_INVERT;
@@ -31,6 +34,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Elevator.Positions;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.ReduceCANUsage;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil;
@@ -147,11 +151,11 @@ private void configAngleMotor() {
        angleConfig.inverted(ANGLE_INVERT); 
        angleConfig.idleMode(ANGLE_IDLE_MODE); 
         //angleConfig.encoder.positionConversionFactor(1/ANGLE_POSITION_CONVERSION_FACTOR);
-        angleConfig.encoder.positionConversionFactor(4);
+        angleConfig.encoder.positionConversionFactor(1.0/Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pidf(1, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
-            .positionWrappingEnabled(true)
+            .positionWrappingEnabled(false)
             .positionWrappingInputRange(0, 1)
                         .minOutput(-1)
                     .maxOutput(1);
@@ -179,7 +183,7 @@ private void configAngleMotor() {
              .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
              .pidf(1, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
              .outputRange(-1, 1)
-             .positionWrappingEnabled(true)
+             .positionWrappingEnabled(false)
              .positionWrappingInputRange(0, 1)
              .minOutput(-1)
              .maxOutput(1);
@@ -195,6 +199,15 @@ private void configAngleMotor() {
          integratedAngleEncoder2.setPosition(0);
          
      }
+
+     //implement later
+     /*public void CurrentLimit(){
+        while(int i<hugenumber){
+            if (angleMotor.getOutputCurrent())
+        }
+    
+     }
+        */
     
     }
 
