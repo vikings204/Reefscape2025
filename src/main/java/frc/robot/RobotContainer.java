@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.Controller;
 import frc.robot.Constants.Elevator;
 import frc.robot.Constants.Elevator.Positions;
@@ -179,16 +180,13 @@ public class RobotContainer {
                         .whileTrue(
                                 new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR),Elevator));     
                                 
-        new JoystickButton(OPERATOR, 5)
+        new POVButton(OPERATOR, 0)
                         .whileTrue(
                                 new RunCommand(()->Arm.setAngle(Constants.Arm.Positions.MOTOROUT), Arm));
-        new JoystickButton(OPERATOR, 6)             
+        new JoystickButton(OPERATOR, 90)             
                         .whileTrue(
                                 new RunCommand(()-> Arm.ShootArm(true),Arm));
-        new JoystickButton(OPERATOR, 6)             
-                         .whileTrue(
-                                 new RunCommand(()-> Arm.ShootArm(true),Arm));  
-        new JoystickButton(OPERATOR, 7)  
+        new JoystickButton(OPERATOR, 270)  
                         .whileTrue(
                                 new RunCommand(()-> Arm.NegativeShootArm(true), Arm));                                           
         /*new JoystickButton(OPERATOR, 5)

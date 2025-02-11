@@ -177,7 +177,7 @@ private void configAngleMotor() {
         angleConfig2.idleMode(ANGLE_IDLE_MODE); 
      
         // angleConfig2.encoder.positionConversionFactor(1/ANGLE_POSITION_CONVERSION_FACTOR);
-         angleConfig2.encoder.positionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
+         angleConfig2.encoder.positionConversionFactor(1.0/ANGLE_POSITION_CONVERSION_FACTOR);
     
          angleConfig2.closedLoop
              .feedbackSensor(FeedbackSensor.kPrimaryEncoder)

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.Arm.*;
 
-import java.util.Map;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -15,15 +14,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
-import frc.robot.util.ReduceCANUsage;
-import frc.robot.util.ReduceCANUsage.CANCoderUtil;
-import frc.robot.util.ReduceCANUsage.CANCoderUtil.CCUsage;
-import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
-
 
 
 public class ArmSubsytem extends SubsystemBase {
@@ -69,23 +60,24 @@ public class ArmSubsytem extends SubsystemBase {
    
     public void setAngle (Positions targetposition) {
 
-       angleController.setReference(targetposition.position, ControlType.kPosition);
+       //angleController.setReference(targetposition.position, ControlType.kPosition);
+       System.out.println("Set Angle is Working");
 
     }   
     public void ShootArm(boolean b){
       if(b==true){
-        angleMotor.set(.5);
+        angleController.setReference(integratedAngleEncoder.getPosition()+.2,ControlType.kPosition);
       }
       else
-        angleMotor.set(0);
+        angleController.setReference(integratedAngleEncoder.getPosition(), ControlType.kPosition);
     }
     
     public void NegativeShootArm(boolean b){
       if(b==true){
-        angleMotor.set(-.5);
+        angleController.setReference(integratedAngleEncoder.getPosition()-.2,ControlType.kPosition);
       }
       else
-        angleMotor.set(0);
+      angleController.setReference(integratedAngleEncoder.getPosition(), ControlType.kPosition);
     }
 
     public void setNAngle(boolean b) {
