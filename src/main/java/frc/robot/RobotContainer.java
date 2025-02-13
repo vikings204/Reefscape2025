@@ -126,10 +126,10 @@ public class RobotContainer {
                 new RunCommand(
                         () -> Elevator.setAngle(false),
                         Elevator));    
-        Arm.setDefaultCommand(
-                new RunCommand(
-                        ()->Arm.ShootArm(false),
-                        Elevator));
+       // Arm.setDefaultCommand(
+       //         new RunCommand(
+      //                  ()->Arm.ShootArm(false),
+       //                 Elevator));
 
 
         ;                              
@@ -164,8 +164,14 @@ public class RobotContainer {
         //new JoystickButton(DRIVER, 5)
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));
-       
-        new JoystickButton(OPERATOR, 1)
+        new JoystickButton(DRIVER, 1)
+        .whileTrue(
+                new RunCommand(() -> Elevator.setAngle(true),Elevator));
+    new JoystickButton(DRIVER, 2)
+        .whileTrue(
+                new RunCommand(() -> Elevator.setNAngle(true),Elevator)); 
+        //TODO Turn these back on - Mr Coyne turned off for testing
+     /*    new JoystickButton(OPERATOR, 1)
                 .whileTrue(
                         new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE),Elevator));
     

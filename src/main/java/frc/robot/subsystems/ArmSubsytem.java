@@ -34,7 +34,7 @@ public class ArmSubsytem extends SubsystemBase {
         /* Angle Encoder Config */
          //angleEncoder = new CANcoder(canCoderID);
         //configAngleEncoder();
-        angleMotor = new SparkMax(7, MotorType.kBrushless);
+        angleMotor = new SparkMax(43, MotorType.kBrushless);
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
         configAngleMotor();

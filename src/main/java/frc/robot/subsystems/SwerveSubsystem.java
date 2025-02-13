@@ -1,4 +1,3 @@
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
@@ -36,7 +35,30 @@ public class SwerveSubsystem extends SubsystemBase {
                         new SwerveModule(3, Mod3.DRIVE_MOTOR_ID, Mod3.ANGLE_MOTOR_ID, Mod3.ANGLE_OFFSET, Mod3.CAN_CODER_ID)
                 };
 
-       
+        //Odomentry with our kinematics object from constants, gyro position and x/y position of each module
+        //swerveOdometry = new SwerveDriveOdometry(SWERVE_KINEMATICS, getYaw(), getPositions());
+
+//        AutoBuilder.configureHolonomic(
+//                poseEstimator::getCurrentPose,//this::getPose,
+//                this::resetOdometry,
+//                this::getSpeeds,
+//                this::driveRobotRelative,
+//                Constants.Auto.PATH_FOLLOWER_CONFIG,
+//                () -> {
+//                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+//                    // This will flip the path being followed to the red side of the field.
+//                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+//
+//                    var alliance = DriverStation.getAlliance();
+//                    //noinspection OptionalIsPresent
+//                    if (alliance.isPresent()) {
+//                        return alliance.get() == DriverStation.Alliance.Red;
+//                    }
+//                    return false;
+//                },
+//                this
+//        );
+        
         for (SwerveModule mod : modules) {
             Shuffleboard.getTab("swerve").addNumber("position: module " + mod.moduleNumber, () -> mod.getPosition().distanceMeters);
             Shuffleboard.getTab("swerve").addNumber("angle: module " + mod.moduleNumber, mod.getPosition().angle::getDegrees).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", -180, "max", 180));
@@ -72,11 +94,37 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
+//    public Pose2d getPose() {
+//        SmartDashboard.putNumber("pose X", swerveOdometry.getPoseMeters().getX());
+//        SmartDashboard.putNumber("pose Y", swerveOdometry.getPoseMeters().getY());
+//
+//        SmartDashboard.putNumber("gyro angle", gyro.getAngle());
+//
+//        // SmartDashboard.putNumber("gyro filtered X", gyro.getXFilteredAccelAngle()); // loops between
+//        // about 14...0...360...346
+//        // SmartDashboard.putNumber("gyro filtered Y", gyro.getYFilteredAccelAngle()); // forward and
+//        // back leveling
+//        // 0-14, drive forward, 346-360 drive backward
+//
+//        // SmartDashboard.putNumber("gyro pitch", gyro.getPitch());
+//        //SmartDashboard.putNumber("gyro roll", gyro.getRoll());
+//        //SmartDashboard.putNumber("pitch rate", getPitchRate());
+//
+       // return swerveOdometry.getPoseMeters();
+   // }
+
+//    public void resetOdometry(Pose2d pose) {
+//        swerveOdometry.resetPosition(getYaw(), getPositions(), pose);
+//    }
 
     public ChassisSpeeds getSpeeds() {
         return SWERVE_KINEMATICS.toChassisSpeeds(getStates());
     }
 
+//    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+//        //driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
+//        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, poseEstimator.getCurrentPose().getRotation()));
+//    }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
@@ -121,11 +169,51 @@ public class SwerveSubsystem extends SubsystemBase {
                 : Rotation2d.fromDegrees(gyro.getAngle());
     }
 
+//    public double getYawRate() {
+//        //return gyro.getRawGyroZ();
+//        //return m_gyro.getRate();
+//        return gyro.getRate();
+//    }
+
+    // public double getXFilteredAccelAngle() {
+    //   return gyro.getXFilteredAccelAngle();
+    // }
+
+    // public double getYFilteredAccelAngle() {
+    //   return gyro.getYFilteredAccelAngle();
+    // }
+
+//    public double getPitch() {
+//        return 0.0;//gyro.getPitch();
+//    }
+
+//    public double getPitchRate() {
+//        return 0.0;//gyro.getRawGyroY();
+//    }
+
+//    public double getRoll() {
+//        return 0.0;//gyro.getRoll();
+//    }
 public void resetEncoders(){
     for (int i = 0; i<4; i++){
         modules[i].resetToAbsolute();
       }
 }
+
+//    public void resetEverything() {
+////        modules[0].setAngleForX(0);
+////        modules[1].setAngleForX(0);
+////        modules[2].setAngleForX(0);
+////        modules[3].setAngleForX(0);
+//
+//        modules[0].resetEncoder();
+//        modules[1].resetEncoder();
+//        modules[2].resetEncoder();
+//        modules[3].resetEncoder();
+//
+//        resetOdometry(new Pose2d());
+//        gyro.reset();
+//    }
 
     @Override
     public void periodic() {

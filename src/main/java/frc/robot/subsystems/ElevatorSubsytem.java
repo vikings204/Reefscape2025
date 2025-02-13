@@ -4,19 +4,7 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.Elevator.*;
 
 
-/*import static frc.robot.Constants.Elevator.ANGLE_CURRENT_LIMIT;
-import static frc.robot.Constants.Elevator.ANGLE_IDLE_MODE;
-import static frc.robot.Constants.Elevator.ANGLE_INVERT;
-import static frc.robot.Constants.Elevator.ANGLE_INVERT_2;
-import static frc.robot.Constants.Elevator.ANGLE_MOTOR_ID_ONE;
-import static frc.robot.Constants.Elevator.ANGLE_MOTOR_ID_TWO;
-import static frc.robot.Constants.Elevator.ANGLE_PID_D;
-import static frc.robot.Constants.Elevator.ANGLE_PID_FF;
-import static frc.robot.Constants.Elevator.ANGLE_PID_I;
-import static frc.robot.Constants.Elevator.ANGLE_PID_P;
-import static frc.robot.Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR;
-import static frc.robot.Constants.Elevator.MAX_SPEED;
-import static frc.robot.Constants.Elevator.VOLTAGE_COMPENSATION;*/
+
 import java.util.Map;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
@@ -61,11 +49,7 @@ public class ElevatorSubsytem extends SubsystemBase {
 
 
     public ElevatorSubsytem() {
-      //  this.angleOffset = angleOffset;
-
-        /* Angle Encoder Config */
-         //angleEncoder = new CANcoder(canCoderID);
-        //configAngleEncoder();
+      
         angleMotor = new SparkMax(ANGLE_MOTOR_ID_ONE, MotorType.kBrushless);
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
@@ -73,21 +57,13 @@ public class ElevatorSubsytem extends SubsystemBase {
         configAngleMotor();
         
 
-       // Shuffleboard.getTab("swervetest").addNumber("angleEncoderCurrent Reading " + moduleNumber, integratedAngleEncoder::getPosition).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 360));
-        //Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber, angleMotor.getAnalog()::getVoltage);
-
-        //angleOffset2 = angleOffset;
-
-        //angleEncoder2 = new CANcoder(canCoderID);
-      //  configAngleEncoder();
+       
         angleMotor2 = new SparkMax(ANGLE_MOTOR_ID_TWO, MotorType.kBrushless);
         angleConfig2 = new SparkMaxConfig();
         integratedAngleEncoder2 = angleMotor2.getEncoder();
         angleController2 = angleMotor2.getClosedLoopController();
         configAngleMotor2();
        
-    //    Shuffleboard.getTab("swervetest").addNumber("angleEncoderCurrent Reading " + moduleNumber2, integratedAngleEncoder2::getPosition).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 360));
-       // Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber2, angleMotor2.getAnalog()::getVoltage);
     }
 
    
@@ -103,8 +79,8 @@ public class ElevatorSubsytem extends SubsystemBase {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
        if(b){
         System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()+1);
-        angleMotor.set(.5);
-        angleMotor2.set(-.5);
+        angleMotor.set(.25);
+        angleMotor2.set(.25);
 
         //angleController.setReference(integratedAngleEncoder.getPosition()+1, ControlType.kPosition);
        }
@@ -113,26 +89,21 @@ public class ElevatorSubsytem extends SubsystemBase {
         angleMotor.set(0);
         angleMotor2.set(0);
 
-        //angleController.setReference(integratedAngleEncoder.getPosition()-1, ControlType.kPosition);
        }
-      // angleController2.setReference(targetposition.position, ControlType.kPosition);
     }
     public void setNAngle(boolean b) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
        if(b){
         System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()+1);
-        angleMotor.set(-.5);
-        angleMotor2.set(.5);
+        angleMotor.set(-.25);
+        angleMotor2.set(-.25);
 
-        //angleController.setReference(integratedAngleEncoder.getPosition(), ControlType.kPosition);
        }
        if(!b){
         System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()+1);
         angleMotor.set(0);
         angleMotor2.set(0);
-        //angleController.setReference(integratedAngleEncoder.getPosition(), ControlType.kPosition);
        }
-      // angleController2.setReference(targetposition.position, ControlType.kPosition);
     }
  
 public Rotation2d getAngle() {
@@ -154,15 +125,16 @@ private void configAngleMotor() {
         angleConfig.encoder.positionConversionFactor(1.0/Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pidf(1, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
+            .pid(1,0,0)
+            .outputRange(-1,1)
             .positionWrappingEnabled(false)
             .positionWrappingInputRange(0, 1)
-                        .minOutput(-1)
-                    .maxOutput(1);
+            .minOutput(-1)
+            .maxOutput(1);
             angleConfig.closedLoop.apply(angleConfig.closedLoop);
             angleConfig.apply(angleConfig);
         angleConfig.voltageCompensation(VOLTAGE_COMPENSATION);
-       angleMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        angleMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
  
         //Timer.delay(2);
         integratedAngleEncoder.setPosition(0);
@@ -181,14 +153,14 @@ private void configAngleMotor() {
     
          angleConfig2.closedLoop
              .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-             .pidf(1, ANGLE_PID_I, ANGLE_PID_D, ANGLE_PID_FF)
+             .pid(1,0,0)
              .outputRange(-1, 1)
              .positionWrappingEnabled(false)
              .positionWrappingInputRange(0, 1)
              .minOutput(-1)
              .maxOutput(1);
-     angleConfig2.closedLoop.apply(angleConfig.closedLoop);
-     angleConfig2.apply(angleConfig);
+     angleConfig2.closedLoop.apply(angleConfig2.closedLoop);
+     angleConfig2.apply(angleConfig2);
          angleConfig2.voltageCompensation(VOLTAGE_COMPENSATION);
        
         angleMotor2.configure(angleConfig2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

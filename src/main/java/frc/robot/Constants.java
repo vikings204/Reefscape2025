@@ -117,7 +117,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 21;
             public static final int CAN_CODER_ID = 31;
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(.75);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromRotations(.75);
         }
 
         /* Front Right Module - Module 1 */
@@ -126,7 +126,7 @@ public final class Constants {
             public static final int ANGLE_MOTOR_ID = 22;
             public static final int CAN_CODER_ID = 32;
 
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(.888);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromRotations(.888);
         }
 
         /* Back Left Module - Module 2 */
@@ -135,7 +135,7 @@ public final class Constants {
             public static final int ANGLE_MOTOR_ID = 20;
             public static final int CAN_CODER_ID = 30;
 
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromRotations(.914);
         }
 
         /* Back Right Module - Module 3 */
@@ -144,7 +144,7 @@ public final class Constants {
             public static final int ANGLE_MOTOR_ID = 23;
             public static final int CAN_CODER_ID = 33;
 
-            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(.08);
+            public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromRotations(.08);
         }
     }
 
@@ -245,7 +245,7 @@ public final class Constants {
         public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
 
         /* Motor Inverts */
-        public static final boolean ANGLE_INVERT = true;
+        public static final boolean ANGLE_INVERT = false;
         public static final boolean ANGLE_INVERT_2= !ANGLE_INVERT;
         public static final boolean canCoderInvert = false;
 
