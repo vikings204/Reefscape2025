@@ -36,8 +36,7 @@ public class RobotContainer {
     public final LEDSubsystem LED = new LEDSubsystem();
     public final ElevatorSubsytem Elevator =new ElevatorSubsytem();
     public final ArmSubsytem Arm= new ArmSubsytem();
-    //public final ShooterSubsystem Shooter = new ShooterSubsystem(LED);
-    //public final LinearActuatorSubsystem LinearActuator = new LinearActuatorSubsystem();
+    public final RampSubSystem Ramp = new RampSubSystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
