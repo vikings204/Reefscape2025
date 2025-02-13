@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 ///import frc.robot.util.CANCoderUtil.CCUsage;
@@ -10,27 +9,19 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkMax;
-//import com.revrobotics.spark.SparkPIDController;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-//import com.revrobotics.spark.SparkClosedLoopController;
+
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkAnalogSensor;
-//import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.util.ReduceCANUsage;
@@ -38,7 +29,7 @@ import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil;
 import frc.robot.util.ReduceCANUsage.CANCoderUtil.CCUsage;
 import frc.robot.Robot;
-import frc.robot.Robot.ControlMode;
+
 
 import java.util.Map;
 
@@ -53,7 +44,6 @@ public class SwerveModule {
     private int turningPQuad = 0; // top left is 1 counterclockwise
     private double turningTotalDeg = 0.0;
 
-    //public final TalonSRX angleMotor;
     private final SparkMax driveMotor;
     private final SparkMax angleMotor;
     private final SparkMaxConfig driveConfig;
@@ -64,8 +54,7 @@ public class SwerveModule {
 
     private final SparkClosedLoopController driveController;
     public final SparkClosedLoopController angleController;
-   // private final SparkPIDController
-    //private final TalonSRXFeedbackDevice angleController;
+
 
     private final SimpleMotorFeedforward feedforward =
             new SimpleMotorFeedforward(
@@ -80,16 +69,14 @@ public class SwerveModule {
         configAngleEncoder();
 
         angleMotor = new SparkMax(angleMotorID, MotorType.kBrushless);
-        //angleMotor.
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
-        //angleMotor.get
-        //angleController.
+
         configAngleMotor();
         angleController = angleMotor.getClosedLoopController();
 
 
-        /* Drive Motor Config */
+        /* Drive Motoar Config */
         driveMotor = new SparkMax(driveMotorID, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
         driveConfig = new SparkMaxConfig();
@@ -102,7 +89,7 @@ public class SwerveModule {
         //REMOVED MOD.KABS AS I THINK IT WAS DEPRECATED
         Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber, angleMotor.getAnalog()::getVoltage);
     }
-
+    
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // Custom optimize command, since default WPILib optimize assumes continuous controller which
         // REV and CTRE are not
@@ -114,6 +101,17 @@ public class SwerveModule {
     }
 
     public void resetToAbsolute() {
+        //angleMotor.getAnalog().setPositionConversionFactor(ANGLE_POSITION_CONVERSION_FACTOR);
+        
+        // 2025 UPDATED TO USE CANCODER AND SET POSITION ABS POSITION - NEED TO WORK ON TO FINALIZE
+        //MIGHT HAVE TO CHANGE THIS BACK TO JUST GET THE ROBOT UP AND RUNNING!
+        
+        //double absolutePosition = (getCanCoder().getRotations() - angleOffset.getRotations())/ANGLE_GEAR_RATIO;
+       // double absolutePosition = angleEncoder.getAbsolutePosition().getValueAsDouble()-angleOffset.getRotations();
+       // System.out.println("Encoder" +moduleNumber+ "Absolute Position: "+absolutePosition);    
+
+        
+        
         System.out.println("Encoder "+moduleNumber+ " is set to Absolute Position");
         System.out.println("The offset is "+ angleOffset.getRotations());
         System.out.println("The Absolute Position is "+ angleEncoder.getAbsolutePosition().getValueAsDouble());
@@ -123,10 +121,10 @@ public class SwerveModule {
         }
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
         
-        //Timer.delay(2);
+        Timer.delay(2);
 
         integratedAngleEncoder.setPosition(Math.abs(absolutePosition));
-       // Timer.delay(2);
+        Timer.delay(2);
 
         System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
 
