@@ -166,10 +166,10 @@ public class RobotContainer {
         //              new RunCommand(Swerve::resetEncoders, Swerve));
         new JoystickButton(DRIVER, 1)
         .whileTrue(
-                new RunCommand(() -> Elevator.setAngle(true),Elevator));
+                new RunCommand(() -> Arm.ShootArm(true),Arm));
     new JoystickButton(DRIVER, 2)
         .whileTrue(
-                new RunCommand(() -> Elevator.setNAngle(true),Elevator)); 
+                new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
         //TODO Turn these back on - Mr Coyne turned off for testing
      /*    new JoystickButton(OPERATOR, 1)
                 .whileTrue(
