@@ -150,9 +150,6 @@ public class RobotContainer {
      //   new JoystickButton(OPERATOR, 2)
       //          .whileTrue(
        //                 new RunCommand(() -> Shooter.intake(true, true), Shooter));
-        new JoystickButton(DRIVER, 4)
-                .whileTrue(
-                        new RunCommand(Swerve::zeroGyro, Swerve));
 
        // new JoystickButton(OPERATOR, 4)
                 //.whileTrue(
@@ -164,12 +161,26 @@ public class RobotContainer {
         //new JoystickButton(DRIVER, 5)
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));
+        new JoystickButton(DRIVER, 3)
+        .whileTrue(
+                new RunCommand(() -> Ramp.setPosIn(true),Ramp));
+    new JoystickButton(DRIVER, 4)
+        .whileTrue(
+                new RunCommand(() -> Ramp.setPosOut(true),Ramp));
+ 
         new JoystickButton(DRIVER, 1)
         .whileTrue(
                 new RunCommand(() -> Arm.ShootArm(true),Arm));
     new JoystickButton(DRIVER, 2)
         .whileTrue(
                 new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
+ 
+/*        new JoystickButton(DRIVER, 1)
+        .whileTrue(
+                new RunCommand(() -> Elevator.setAngle(true),Elevator));
+    new JoystickButton(DRIVER, 2)
+        .whileTrue(
+                new RunCommand(() -> Elevator.setNAngle(true),Elevator));*/
         //TODO Turn these back on - Mr Coyne turned off for testing
      /*    new JoystickButton(OPERATOR, 1)
                 .whileTrue(

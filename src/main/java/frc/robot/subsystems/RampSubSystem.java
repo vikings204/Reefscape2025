@@ -11,12 +11,13 @@ import com.revrobotics.servohub.ServoChannel;
 
 public class RampSubSystem extends SubsystemBase{
     ServoHubConfig config = new ServoHubConfig(); 
-    ServoHub hub = new ServoHub(6);
+    ServoHub hub = new ServoHub(3);
     ServoChannel m_channel0;
 
     public RampSubSystem(){
     config.channel0
-        .pulseRange(1000,1500,2000)
+        .pulseRange(500,1500,2500)
+        //.pulseRange(1000,1500,2000)
         .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
 
         // their defaults.
@@ -32,7 +33,7 @@ public class RampSubSystem extends SubsystemBase{
         m_channel0.setPulseWidth(1000);
     }
     public void setPosOut(boolean b) {
-        m_channel0.setPulseWidth(2000);
+        m_channel0.setPulseWidth(1800);
     }
 
 }
