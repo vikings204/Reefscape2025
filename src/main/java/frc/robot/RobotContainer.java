@@ -170,10 +170,10 @@ public class RobotContainer {
  
         new JoystickButton(DRIVER, 1)
         .whileTrue(
-                new RunCommand(() -> Arm.ShootArm(true),Arm));
+                new RunCommand(() -> Elevator.setAngle(true),Elevator));
     new JoystickButton(DRIVER, 2)
         .whileTrue(
-                new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
+                new RunCommand(() -> Elevator.setNAngle(true),Elevator));
  
 /*        new JoystickButton(DRIVER, 1)
         .whileTrue(
