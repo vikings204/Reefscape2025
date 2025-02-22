@@ -217,9 +217,8 @@ public final class Constants {
          public static final double CLOSED_POSITION = 0.02;
     }
     public static final class Elevator{
+        public static final double P = .25;
         public static final double ZERO = -.25;
-
-
         public static final double INTAKE= -.885;
         public static final double LEVEL_ONE=-1.26;
         public static final double LEVEL_TWO=-2.85;

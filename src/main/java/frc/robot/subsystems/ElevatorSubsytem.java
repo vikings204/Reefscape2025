@@ -125,7 +125,7 @@ private void configAngleMotor() {
         angleConfig.encoder.positionConversionFactor(1.0/Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(.25,0,0)
+            .pid(Constants.Elevator.P,0,0)
             .outputRange(-1,1)
             .positionWrappingEnabled(false)
             .positionWrappingInputRange(0, 1)
@@ -153,7 +153,7 @@ private void configAngleMotor() {
     
          angleConfig2.closedLoop
              .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-             .pid(.25,0,0)
+             .pid(Constants.Elevator.P,0,0)
              .outputRange(-1, 1)
              .positionWrappingEnabled(false)
              .positionWrappingInputRange(0, 1)
