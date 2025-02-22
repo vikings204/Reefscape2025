@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 
-///import frc.robot.util.CANCoderUtil.CCUsage;
+///import frc.robot.util.CANCoderUtil.CCU;y
 //import frc.robot.util.CANCoderUtil.CCCUsage
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -121,10 +121,10 @@ public class SwerveModule {
         }
         System.out.println("The Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
         
-        Timer.delay(2);
+        Timer.delay(.3);
 
         integratedAngleEncoder.setPosition(Math.abs(absolutePosition));
-        Timer.delay(2);
+        Timer.delay(.3);
 
         System.out.println("Now the Integrated encoder is reading: "+integratedAngleEncoder.getPosition());
 
@@ -203,7 +203,7 @@ public class SwerveModule {
        angleMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
  
        //angleMotor.burnFlash();
-        Timer.delay(2);
+        Timer.delay(.2);
       resetToAbsolute();
     }
 

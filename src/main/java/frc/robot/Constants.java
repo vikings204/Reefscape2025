@@ -217,8 +217,12 @@ public final class Constants {
          public static final double CLOSED_POSITION = 0.02;
     }
     public static final class Elevator{
-        public static final double LEVEL_ONE=1.0;
-        public static final double LEVEL_TWO=2.0;
+        public static final double ZERO = -.25;
+
+
+        public static final double INTAKE= -.885;
+        public static final double LEVEL_ONE=-1.26;
+        public static final double LEVEL_TWO=-2.85;
         public static final double LEVEL_THREE=3.0;
         public static final double LEVEL_FOUR=4.0;
 
@@ -264,7 +268,9 @@ public final class Constants {
         LEVELFOUR(Elevator.LEVEL_FOUR),
         LEVELTHREE(Elevator.LEVEL_THREE),
         LEVELTWO(Elevator.LEVEL_TWO),
-        LEVELONE(Elevator.LEVEL_ONE);
+        LEVELONE(Elevator.LEVEL_ONE),
+        INTAKE(Elevator.INTAKE),
+        ZERO(Elevator.ZERO);
 
         public final double position;
         Positions(double p) {

@@ -85,7 +85,7 @@ public class ElevatorSubsytem extends SubsystemBase {
         //angleController.setReference(integratedAngleEncoder.getPosition()+1, ControlType.kPosition);
        }
        if(!b){
-       // System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()1);
+       System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition());
         angleMotor.set(0);
         angleMotor2.set(0);
 
@@ -125,7 +125,7 @@ private void configAngleMotor() {
         angleConfig.encoder.positionConversionFactor(1.0/Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
         angleConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(1,0,0)
+            .pid(.25,0,0)
             .outputRange(-1,1)
             .positionWrappingEnabled(false)
             .positionWrappingInputRange(0, 1)
@@ -153,7 +153,7 @@ private void configAngleMotor() {
     
          angleConfig2.closedLoop
              .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-             .pid(1,0,0)
+             .pid(.25,0,0)
              .outputRange(-1, 1)
              .positionWrappingEnabled(false)
              .positionWrappingInputRange(0, 1)

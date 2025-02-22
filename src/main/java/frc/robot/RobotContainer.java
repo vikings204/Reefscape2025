@@ -167,20 +167,27 @@ public class RobotContainer {
     new JoystickButton(DRIVER, 4)
         .whileTrue(
                 new RunCommand(() -> Ramp.setPosOut(true),Ramp));
+   new JoystickButton(DRIVER, 6)
+        .whileTrue(
+                new RunCommand(() -> Ramp.setPosiReceive(true),Ramp));
  
         new JoystickButton(DRIVER, 1)
         .whileTrue(
-                new RunCommand(() -> Elevator.setAngle(true),Elevator));
+                new RunCommand(() -> Arm.ShootArm(true),Arm));
     new JoystickButton(DRIVER, 2)
+        .whileTrue(
+                new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
+ 
+        new JoystickButton(DRIVER, 5)
+        .whileTrue(
+                new RunCommand(() -> Elevator.setAngle(true),Elevator));
+    new JoystickButton(DRIVER, 10)
         .whileTrue(
                 new RunCommand(() -> Elevator.setNAngle(true),Elevator));
- 
-/*        new JoystickButton(DRIVER, 1)
+        new JoystickButton(DRIVER, 9)
         .whileTrue(
-                new RunCommand(() -> Elevator.setAngle(true),Elevator));
-    new JoystickButton(DRIVER, 2)
-        .whileTrue(
-                new RunCommand(() -> Elevator.setNAngle(true),Elevator));*/
+                new RunCommand(() -> Elevator.setAngle(Positions.ZERO),Elevator));
+     
         //TODO Turn these back on - Mr Coyne turned off for testing
      /*    new JoystickButton(OPERATOR, 1)
                 .whileTrue(

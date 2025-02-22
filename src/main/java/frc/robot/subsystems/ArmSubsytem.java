@@ -66,7 +66,7 @@ public class ArmSubsytem extends SubsystemBase {
     }   
     public void ShootArm(boolean b){
       if(b==true){
-        angleController.setReference(integratedAngleEncoder.getPosition()+.02,ControlType.kPosition);
+        angleController.setReference(integratedAngleEncoder.getPosition()+.05,ControlType.kPosition);
       }
       else
         angleController.setReference(integratedAngleEncoder.getPosition(), ControlType.kPosition);
@@ -74,7 +74,7 @@ public class ArmSubsytem extends SubsystemBase {
     
     public void NegativeShootArm(boolean b){
       if(b==true){
-        angleController.setReference(integratedAngleEncoder.getPosition()-.02,ControlType.kPosition);
+        angleController.setReference(integratedAngleEncoder.getPosition()-.05,ControlType.kPosition);
       }
       else
       angleController.setReference(integratedAngleEncoder.getPosition(), ControlType.kPosition);
