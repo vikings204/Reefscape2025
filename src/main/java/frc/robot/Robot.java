@@ -16,6 +16,7 @@ import com.ctre.phoenix6.swerve.SwerveModule;
 import frc.robot.util.CTREConfigs;
 
 
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -27,6 +28,8 @@ public class Robot extends TimedRobot {
 
     private Command autonomousCommand;
     private RobotContainer robotContainer;
+
+
 
     public enum ControlMode {
         SINGLE, COMPETITION
@@ -49,6 +52,7 @@ public class Robot extends TimedRobot {
         }
 
         private String decode(char[] chars) {
+//            double x = observations;
             String str = "" + chars[0] + chars[1] + chars[2];
             if (str.equals("Mid")) {
                 return "Middle";

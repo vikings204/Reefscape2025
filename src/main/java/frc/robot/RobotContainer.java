@@ -21,7 +21,6 @@ import frc.robot.Constants.Elevator;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Robot.ControlMode;
 import frc.robot.commands.TeleopSwerveCommand;
-//import frc.robot.commands.TimedSpeakerShotCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gamepad;
 
@@ -126,6 +125,11 @@ public class RobotContainer {
                 new RunCommand(
                         () -> Elevator.setAngle(false),
                         Elevator));    
+        LED.setDefaultCommand(
+                new RunCommand(
+                        () -> LED.printDetails(),
+                        LED));    
+       
        // Arm.setDefaultCommand(
        //         new RunCommand(
       //                  ()->Arm.ShootArm(false),
@@ -220,7 +224,8 @@ public class RobotContainer {
                         new RunCommand(() -> Shooter.flywheelAmp(true), Shooter));
 
         //new JoystickButton(OPERATOR, 1).whileTrue(ShootSpeakerCMD);
-        new JoystickButton(OPERATOR, 1).whileTrue(TimedSpeakerShot);
+        new JoystickButton(OPERATOR, 1).whileTrue(TioedSpeakerShot);
+        t
     */
         }
 

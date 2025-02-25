@@ -7,16 +7,32 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
-public class LEDSubsystem {
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.DoubleArrayTopic;
+
+import edu.wpi.first.networktables.DoubleArraySubscriber;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class LEDSubsystem extends SubsystemBase {
     private final Spark blinkin;
     private BlinkinPattern currentPattern;
     public presetSettings Presets;
     private final SendableChooser<Boolean> ledChooser = new SendableChooser<>();
     private final PowerDistribution pd;
 
+    public static NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    public static NetworkTable table;
+
+    public static DoubleArraySubscriber observer; 
+    public static double[] receivedArray;
+
     public LEDSubsystem() {
         blinkin = new Spark(0);
         pd = new PowerDistribution(1, ModuleType.kRev);
+        table =  inst.getTable("/northstar/output");
+        observer = table.getDoubleArrayTopic("observations").subscribe(new double[]{});
+        receivedArray = observer.get();
 
         Presets = new presetSettings();
         Presets.Default();
@@ -152,6 +168,13 @@ public class LEDSubsystem {
         }
     }
 
+    public void printDetails(){
+        receivedArray = observer.get();
+        for (var x:receivedArray){
+            System.out.println(x);
+        }
+
+    }
     public void setPattern(BlinkinPattern pat) {
         if (currentPattern != pat) {
             currentPattern = pat;

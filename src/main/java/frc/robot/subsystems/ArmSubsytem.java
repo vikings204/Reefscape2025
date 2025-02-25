@@ -29,32 +29,13 @@ public class ArmSubsytem extends SubsystemBase {
 
 
     public ArmSubsytem() {
-      //  this.angleOffset = angleOffset;
-
-        /* Angle Encoder Config */
-         //angleEncoder = new CANcoder(canCoderID);
-        //configAngleEncoder();
         angleMotor = new SparkMax(43, MotorType.kBrushless);
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
         configAngleMotor();
         angleController = angleMotor.getClosedLoopController();
 
-
-        
-
-       // Shuffleboard.getTab("swervetest").addNumber("angleEncoderCurrent Reading " + moduleNumber, integratedAngleEncoder::getPosition).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 360));
-        //Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber, angleMotor.getAnalog()::getVoltage);
-
-        //angleOffset2 = angleOffset;
-
-        //angleEncoder2 = new CANcoder(canCoderID);
-      //  configAngleEncoder();
-
-       
-    //    Shuffleboard.getTab("swervetest").addNumber("angleEncoderCurrent Reading " + moduleNumber2, integratedAngleEncoder2::getPosition).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 360));
-       // Shuffleboard.getTab("swervetest").addNumber("angleMotorAbsEncoder Reading " + moduleNumber2, angleMotor2.getAnalog()::getVoltage);
-    }
+           }
 
    
    
