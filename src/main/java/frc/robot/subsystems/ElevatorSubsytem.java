@@ -68,11 +68,26 @@ public class ElevatorSubsytem extends SubsystemBase {
 
    
    
-    public void setAngle(Positions targetposition) {
+    public void setAngle(Positions targetposition ,RampSubSystem tongue) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
        angleController.setReference(targetposition.position, ControlType.kPosition);
 
        angleController2.setReference(targetposition.position, ControlType.kPosition);
+        if(targetposition == Positions.LEVELTWO || targetposition == Positions.LEVELTHREE){
+            tongue.retract();
+        }
+        else if (targetposition == Positions.LEVELONE || targetposition == Positions.LEVELFOUR){
+            tongue.extend();
+        }
+        else{
+            tongue.retract();
+        }
+//       switch (targetposition){
+//        case Positions.LEVEL_ONE:
+
+
+
+//       }
     }
         
     public void setAngle(boolean b) {

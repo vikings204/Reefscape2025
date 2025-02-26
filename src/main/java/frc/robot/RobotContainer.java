@@ -1,17 +1,22 @@
 package frc.robot;
 
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.commands.PathfindingCommand;
+
+import java.util.Set;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -23,6 +28,7 @@ import frc.robot.Robot.ControlMode;
 import frc.robot.commands.TeleopSwerveCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gamepad;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 
 import java.util.Map;
 
@@ -92,6 +98,7 @@ public class RobotContainer {
             },
             Swerve // Reference to this subsystem to set requirements
     );
+        PathfindingCommand.warmupCommand().schedule();
   
 
 
@@ -165,32 +172,34 @@ public class RobotContainer {
         //new JoystickButton(DRIVER, 5)
         //       .whileTrue(
         //              new RunCommand(Swerve::resetEncoders, Swerve));
-        new JoystickButton(DRIVER, 3)
-        .whileTrue(
-                new RunCommand(() -> Ramp.setPosIn(true),Ramp));
-    new JoystickButton(DRIVER, 4)
-        .whileTrue(
-                new RunCommand(() -> Ramp.setPosOut(true),Ramp));
-   new JoystickButton(DRIVER, 6)
-        .whileTrue(
-                new RunCommand(() -> Ramp.setPosiReceive(true),Ramp));
+        
+                new JoystickButton(DRIVER, 3)
+        .whileTrue(new RunCommand(() -> Ramp.extend(),Ramp));
+    
+        new JoystickButton(DRIVER, 4)
+        .whileTrue(new RunCommand(() -> Ramp.retract(),Ramp));
+   
+        new JoystickButton(DRIVER, 6)
+        .whileTrue(new RunCommand(() -> Ramp.setPosiReceive(true),Ramp));
  
+        
         new JoystickButton(DRIVER, 1)
-        .whileTrue(
-                new RunCommand(() -> Arm.ShootArm(true),Arm));
-    new JoystickButton(DRIVER, 2)
-        .whileTrue(
-                new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
+        .whileTrue(new RunCommand(() -> Arm.ShootArm(true),Arm));
+    
+        new JoystickButton(DRIVER, 2)
+        .whileTrue(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
  
         new JoystickButton(DRIVER, 5)
-        .whileTrue(
-                new RunCommand(() -> Elevator.setAngle(true),Elevator));
-    new JoystickButton(DRIVER, 10)
-        .whileTrue(
-                new RunCommand(() -> Elevator.setNAngle(true),Elevator));
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(true),Elevator));
+        
+        new JoystickButton(DRIVER, 10)
+        .whileTrue(new RunCommand(() -> Elevator.setNAngle(true),Elevator));
+      
         new JoystickButton(DRIVER, 9)
-        .whileTrue(
-                new RunCommand(() -> Elevator.setAngle(Positions.ZERO),Elevator));
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.ZERO,Ramp),Elevator));
+
+        new JoystickButton(DRIVER, 11).
+        onTrue(new DeferredCommand(() -> Swerve.driveToPose(), Set.of(Swerve)));
      
         //TODO Turn these back on - Mr Coyne turned off for testing
      /*    new JoystickButton(OPERATOR, 1)

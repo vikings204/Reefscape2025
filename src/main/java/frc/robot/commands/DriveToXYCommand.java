@@ -1,4 +1,4 @@
-/* 
+ 
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -22,10 +22,9 @@ import java.util.Map;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.Vision.*;
 
-public class ShootSpeakerCommand extends Command {
+public class DriveToXYCommand extends Command {
     private final SwerveSubsystem Swerve;
     private final PoseEstimationSubsystem PoseEst;
-    private final ShooterSubsystem Shooter;
     private double initialTimestamp;
 
     private final ProfiledPIDController xPID = new ProfiledPIDController(1, 0, 0, new Constraints(Constants.Swerve.MAX_SPEED/8, 0.5));
@@ -34,22 +33,19 @@ public class ShootSpeakerCommand extends Command {
     private final GenericEntry secondsToShootEntry = Shuffleboard.getTab("config").add("seconds to shoot", (double) 1/3).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
 
-    public ShootSpeakerCommand(
+    public DriveToXYCommand(
             SwerveSubsystem Swerve,
-            PoseEstimationSubsystem PoseEst,
-            ShooterSubsystem Shooter
+            PoseEstimationSubsystem PoseEst
     ) {
         this.Swerve = Swerve;
         this.PoseEst = PoseEst;
-        this.Shooter = Shooter;
 
-        addRequirements(Swerve, Shooter);
+        addRequirements(Swerve);
     }
 
     @Override
     public void initialize() {
         initialTimestamp = getFPGATimestamp();
-        Shooter.flywheelSpeaker(true);
 
         Translation2d destTranslation = Robot.alliance == DriverStation.Alliance.Blue ? SPEAKER_BLUE : SPEAKER_RED;
         Rotation2d destRotation = new Rotation2d(1*Math.PI);
@@ -71,14 +67,8 @@ public class ShootSpeakerCommand extends Command {
 //        }
 
         Swerve.drive(new Translation2d(-1*xPID.calculate(robotPose.getX()), yPID.calculate(robotPose.getY())), -1*thetaPID.calculate(Swerve.getYaw().getRadians()), true, false); // isOpenLoop differs from teleop
-        if (getFPGATimestamp() > initialTimestamp+secondsToShootEntry.getDouble((double) 1/3) && xPID.atGoal() && yPID.atGoal() && thetaPID.atGoal()) {
-            Shooter.intake(true, false);
-        }
-    }
+   }
     @Override
     public void end(boolean interrupted) {
-        Shooter.flywheelSpeaker(false);
-        Shooter.intake(false, false);
     }
 }
-*/
