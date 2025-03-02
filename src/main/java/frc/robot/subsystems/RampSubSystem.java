@@ -41,13 +41,13 @@ public class RampSubSystem extends SubsystemBase{
  
 
     }
-    public void setPosIn(boolean b) {
+    public void setPosScore(boolean b) {
       /*   m_channel0.setPulseWidth(1700);
         Timer.delay(.2);
         m_channel.setPulseWidth(1200);
         Timer.delay(.2);*/
-       int pw = 2000 ;
-       while (pw>1100){
+       int pw = 1350 ;
+       while (pw>550){
         m_channel0.setPulseWidth(pw);
         pw-=.5;
         Timer.delay(.0005);
@@ -55,20 +55,20 @@ public class RampSubSystem extends SubsystemBase{
 
     }
 
-    public void setPosiReceive(boolean b) {
+    public void setPosCarrying(boolean b) {
         
-        m_channel0.setPulseWidth(1400);
+        m_channel0.setPulseWidth(1600);
     }
-    public void setPosOut(boolean b) {
-        m_channel0.setPulseWidth(2000);
+    public void setPosReceive(boolean b) {
+        m_channel0.setPulseWidth(1300);
     }
 
     public void extend(){
         m_channel1.setEnabled(true);
-        m_channel1.setPulseWidth(1050);
+        m_channel1.setPulseWidth(950);
     }
     public void retract(){
-        m_channel1.setPulseWidth(600);
+        m_channel1.setPulseWidth(   500);
     }
 
 }

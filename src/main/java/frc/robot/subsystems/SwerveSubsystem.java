@@ -246,7 +246,7 @@ public void resetEncoders(){
     Pose2d test = new Pose2d(t, new Rotation2d(0.0));
     // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        3.0, 1.0,
+        1.0, 1.0,
         Units.degreesToRadians(360), Units.degreesToRadians(360));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands

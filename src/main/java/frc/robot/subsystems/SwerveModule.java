@@ -269,7 +269,7 @@ public class SwerveModule {
        // double targetVoltage = angle.getDegrees()- angleOffset.getDegrees();
        //angleMotor.set(.5);
         if (moduleNumber == 0){
-            System.out.println("Angle Position Setting Mod" + moduleNumber + ": " + angle.getRotations());
+            //System.out.println("Angle Position Setting Mod" + moduleNumber + ": " + angle.getRotations());
         }
         angleController.setReference(angle.getRotations(), ControlType.kPosition);
     

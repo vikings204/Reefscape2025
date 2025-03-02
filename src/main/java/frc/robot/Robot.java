@@ -44,7 +44,8 @@ public class Robot extends TimedRobot {
         TopToEsc_Red("R top to escape"),
         BotToEsc_Red("R bottom to escape"),
         TopTwoNote_Red("R top two note"),
-        MidToMid("middle to middle");
+        MidToMid("middle to middle"),
+        TestAuto("Test_Auto");
 
         public final String pathplannerName;
         AutoMode(String str) {
@@ -162,6 +163,7 @@ public class Robot extends TimedRobot {
     }
     @Override
     public void teleopPeriodic() {
+        robotContainer.checkAnalogs();
     }
 
 

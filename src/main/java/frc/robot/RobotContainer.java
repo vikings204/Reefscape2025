@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -128,10 +129,10 @@ public class RobotContainer {
                         () -> false,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
                
-         Elevator.setDefaultCommand(
-                new RunCommand(
-                        () -> Elevator.setAngle(false),
-                        Elevator));    
+       //  Elevator.setDefaultCommand(
+       //         new RunCommand(
+       //                 () -> Elevator.setAngle(false),
+       //                 Elevator));    
         LED.setDefaultCommand(
                 new RunCommand(
                         () -> LED.printDetails(),
@@ -174,16 +175,17 @@ public class RobotContainer {
         //              new RunCommand(Swerve::resetEncoders, Swerve));
         
                 new JoystickButton(DRIVER, 3)
-        .whileTrue(new RunCommand(() -> Ramp.extend(),Ramp));
+        .onTrue(new RunCommand(() -> Ramp.extend(),Ramp));
+
     
         new JoystickButton(DRIVER, 4)
         .whileTrue(new RunCommand(() -> Ramp.retract(),Ramp));
    
-        new JoystickButton(DRIVER, 6)
-        .whileTrue(new RunCommand(() -> Ramp.setPosiReceive(true),Ramp));
+      //  new JoystickButton(DRIVER, 6)
+      //  .whileTrue(new RunCommand(() -> Ramp.setPosiReceive(true),Ramp));
  
         
-        new JoystickButton(DRIVER, 1)
+        new JoystickButton(DRIVER, 11)
         .whileTrue(new RunCommand(() -> Arm.ShootArm(true),Arm));
     
         new JoystickButton(DRIVER, 2)
@@ -195,11 +197,27 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 10)
         .whileTrue(new RunCommand(() -> Elevator.setNAngle(true),Elevator));
       
-        new JoystickButton(DRIVER, 9)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.ZERO,Ramp),Elevator));
+        new JoystickButton(OPERATOR, 3)
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE,Ramp),Elevator));
+        new JoystickButton(OPERATOR, 4)
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO,Ramp),Elevator));
+        new JoystickButton(OPERATOR, 6)
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE,Ramp),Elevator));
+        new JoystickButton(OPERATOR, 5)
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR,Ramp),Elevator));
+        new JoystickButton(OPERATOR, 1)
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.INTAKE,Ramp),Elevator));
+        new JoystickButton(OPERATOR, 2)
+        .whileTrue(new RunCommand(() -> Ramp.setPosScore(true),Ramp));
+        
+        
 
-        new JoystickButton(DRIVER, 11).
-        onTrue(new DeferredCommand(() -> Swerve.driveToPose(), Set.of(Swerve)));
+
+
+
+
+        new JoystickButton(DRIVER, 1).
+        whileTrue(Swerve.driveToPose());
      
         //TODO Turn these back on - Mr Coyne turned off for testing
      /*    new JoystickButton(OPERATOR, 1)
@@ -242,5 +260,20 @@ public class RobotContainer {
         //Swerve.gyro.setYaw(-90.0); // temp for auto testing
         //return new PathPlannerAuto("Start Lower Second");
         return new PathPlannerAuto(AutoModeChooser.getSelected().pathplannerName);
+    }
+    public void checkAnalogs(){
+        if (OPERATOR.getRightTriggerAxis()>.5){
+                        CommandScheduler.getInstance().schedule(new RunCommand(() -> Ramp.setPosReceive(true),Ramp));
+                        CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+
+
+        }
+        if (OPERATOR.getLeftTriggerAxis()>.5){
+                CommandScheduler.getInstance().schedule(new RunCommand(() -> Ramp.setPosCarrying(true),Ramp));
+                CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+
+
+}
+
     }
 }

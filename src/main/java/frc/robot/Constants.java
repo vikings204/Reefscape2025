@@ -70,7 +70,7 @@ public final class Constants {
         /* Drivetrain Constants */
         public static final double TRACK_WIDTH = inchesToMeters(23); // same as wheelbase because it is a square
         public static final double WHEEL_BASE = inchesToMeters(23);
-        public static final double WHEEL_DIAMETER = inchesToMeters(4.0);
+        public static final double WHEEL_DIAMETER = inchesToMeters(3.8);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
         public static final double DRIVE_GEAR_RATIO = 8.14;
@@ -222,8 +222,8 @@ public final class Constants {
         public static final double INTAKE= -.885;
         public static final double LEVEL_ONE=-1.26;
         public static final double LEVEL_TWO=-2.85;
-        public static final double LEVEL_THREE=3.0;
-        public static final double LEVEL_FOUR=4.0;
+        public static final double LEVEL_THREE=-2.9;
+        public static final double LEVEL_FOUR=-3.0;
 
         //mostly ripped from Swerve constants class
         public static final double FAST_SPEED_MULTIPLIER = 1;
