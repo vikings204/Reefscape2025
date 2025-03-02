@@ -104,6 +104,7 @@ public class RobotContainer {
 
 
         NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELFOUR, Ramp), Elevator));
+        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELONE, Ramp), Elevator));
         NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.INTAKE, Ramp), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
        // NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> Shooter.receive(false), Shooter));

@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "L4_Elevator"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Start to reef"
@@ -13,7 +19,57 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "L1_Elevator"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Reef to Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake_Elevator"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "intake to reef"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4_Elevator"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L1_Elevator"
           }
         }
       ]
