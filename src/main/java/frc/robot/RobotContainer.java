@@ -140,42 +140,10 @@ public class RobotContainer {
                         () -> LED.printDetails(),
                         LED));    
        
-       // Arm.setDefaultCommand(
-       //         new RunCommand(
-      //                  ()->Arm.ShootArm(false),
-       //                 Elevator));
-
-
-        ;                              
-         /*Shooter.setDefaultCommand(
-                new RunCommand(
-                        () -> Shooter.flywheelSpeaker(false),
-                        Shooter));
-*/
-//        LinearActuator.setDefaultCommand(
- //               new RunCommand(
-  //                      () -> LinearActuator.shift(OPERATOR.getPOV() == 0, OPERATOR.getPOV() == 180),
-  //                      LinearActuator
-   //             )
-    //    );
-    }
+   }
 
     private void configureButtonBindings() {
-     //   new JoystickButton(OPERATOR, 2)
-      //          .whileTrue(
-       //                 new RunCommand(() -> Shooter.intake(true, true), Shooter));
-
-       // new JoystickButton(OPERATOR, 4)
-                //.whileTrue(
-                //        new RunCommand()
-                //)
-        //in progress        
-
-
-        //new JoystickButton(DRIVER, 5)
-        //       .whileTrue(
-        //              new RunCommand(Swerve::resetEncoders, Swerve));
-        
+       
                 new JoystickButton(DRIVER, 3)
         .onTrue(new RunCommand(() -> Ramp.extend(),Ramp));
 
@@ -221,46 +189,9 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 1).
         whileTrue(Swerve.driveToPose());
      
-        //TODO Turn these back on - Mr Coyne turned off for testing
-     /*    new JoystickButton(OPERATOR, 1)
-                .whileTrue(
-                        new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE),Elevator));
-    
-        new JoystickButton(OPERATOR, 2)
-                        .whileTrue(
-                                new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO),Elevator));
-         new JoystickButton(OPERATOR, 3)
-                         .whileTrue(
-                                new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE),Elevator));         
-        new JoystickButton(OPERATOR, 4)
-                        .whileTrue(
-                                new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR),Elevator));     
-                                
-        new POVButton(OPERATOR, 0)
-                        .whileTrue(
-                                new RunCommand(()->Arm.setAngle(Constants.Arm.Positions.MOTOROUT), Arm));
-        new JoystickButton(OPERATOR, 90)             
-                        .whileTrue(
-                                new RunCommand(()-> Arm.ShootArm(true),Arm));
-        new JoystickButton(OPERATOR, 270)  
-                        .whileTrue(
-                                new RunCommand(()-> Arm.NegativeShootArm(true), Arm));                                           
-        /*new JoystickButton(OPERATOR, 5)
-                .whileTrue(
-                        new RunCommand(() -> Shooter.receive(true), Shooter));
-        new JoystickButton(OPERATOR, 10)
-                .whileTrue(
-                        new RunCommand(() -> Shooter.flywheelAmp(true), Shooter));
-
-        //new JoystickButton(OPERATOR, 1).whileTrue(ShootSpeakerCMD);
-        new JoystickButton(OPERATOR, 1).whileTrue(TioedSpeakerShot);
-        t
-    */
-        }
+       }
 
     public Command getAutonomousCommand() {
-        //Swerve.gyro.setYaw(-90.0); // temp for auto testing
-        //return new PathPlannerAuto("Start Lower Second");
         return new PathPlannerAuto(AutoModeChooser.getSelected().pathplannerName);
     }
     public void checkAnalogs(){
