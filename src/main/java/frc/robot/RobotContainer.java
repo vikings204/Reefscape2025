@@ -207,6 +207,16 @@ public class RobotContainer {
 
 
 }
+        if (OPERATOR.getLeftY()>.5){
+                CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.ShootArm(true),Arm));
+                //CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+
+        }
+        if (OPERATOR.getLeftY()<-.5){
+                CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
+                //CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+        }
+
 
     }
 }
