@@ -91,36 +91,16 @@ public class ElevatorSubsytem extends SubsystemBase {
     }
         
     public void setAngle(boolean b) {
-        // Prevent rotating module if speed is less then 1%. Prevents jittering.
-       if(b){
-       // System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()+1);
-        angleMotor.set(.25);
-        angleMotor2.set(.25);
+        angleController.setReference(integratedAngleEncoder.getPosition()+.05, ControlType.kPosition);
 
-        //angleController.setReference(integratedAngleEncoder.getPosition()+1, ControlType.kPosition);
-       }
-       if(!b){
-       //System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition());
-        angleMotor.set(0);
-        angleMotor2.set(0);
-        //System.out.println("Elevator Height: "+ integratedAngleEncoder.getPosition() );
-
-       }
+       angleController2.setReference(integratedAngleEncoder2.getPosition()+.05, ControlType.kPosition);
+     
     }
     public void setNAngle(boolean b) {
-        // Prevent rotating module if speed is less then 1%. Prevents jittering.
-       if(b){
-        System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()+1);
-        angleMotor.set(-.25);
-        angleMotor2.set(-.25);
+        angleController.setReference(integratedAngleEncoder.getPosition()-.05, ControlType.kPosition);
 
-       }
-       if(!b){
-        System.out.println("I AM MOVING THE ARM to : "+integratedAngleEncoder.getPosition()+1);
-        angleMotor.set(0);
-        angleMotor2.set(0);
-       }
-    }
+       angleController2.setReference(integratedAngleEncoder2.getPosition()-.05, ControlType.kPosition);
+   }
  
 public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());

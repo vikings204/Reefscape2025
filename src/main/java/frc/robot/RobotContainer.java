@@ -161,10 +161,10 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 2)
         .whileTrue(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
  
-        new JoystickButton(DRIVER, 5)
+        new JoystickButton(OPERATOR, 20)
         .whileTrue(new RunCommand(() -> Elevator.setAngle(true),Elevator));
         
-        new JoystickButton(DRIVER, 10)
+        new JoystickButton(OPERATOR, 21)
         .whileTrue(new RunCommand(() -> Elevator.setNAngle(true),Elevator));
       
         new JoystickButton(OPERATOR, 3)
@@ -209,12 +209,10 @@ public class RobotContainer {
 }
         if (OPERATOR.getLeftY()>.5){
                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.ShootArm(true),Arm));
-                //CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
         }
         if (OPERATOR.getLeftY()<-.5){
                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
-                //CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
         }
 
 
