@@ -179,12 +179,6 @@ public class RobotContainer {
         .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.INTAKE,Ramp),Elevator));
         new JoystickButton(OPERATOR, 2)
         .whileTrue(new RunCommand(() -> Ramp.setPosScore(true),Ramp));
-        
-        
-
-
-
-
 
         new JoystickButton(DRIVER, 1).
         whileTrue(Swerve.driveToPose());
