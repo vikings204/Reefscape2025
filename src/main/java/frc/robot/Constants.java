@@ -217,13 +217,14 @@ public final class Constants {
          public static final double CLOSED_POSITION = 0.02;
     }
     public static final class Elevator{
+
         public static final double P = .25;
         public static final double ZERO = -.25;
-        public static final double INTAKE= -.885;
-        public static final double LEVEL_ONE=-1.26;
-        public static final double LEVEL_TWO=-2.85;
-        public static final double LEVEL_THREE=-2.9;
-        public static final double LEVEL_FOUR=-3.0;
+        public static final double INTAKE= -.946;
+        public static final double LEVEL_ONE=-.1;
+        public static final double LEVEL_TWO=-1.017;
+        public static final double LEVEL_THREE=-3.0;
+        public static final double LEVEL_FOUR=-3.88;
 
         //mostly ripped from Swerve constants class
         public static final double FAST_SPEED_MULTIPLIER = 1;

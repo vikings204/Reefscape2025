@@ -45,7 +45,8 @@ public class Robot extends TimedRobot {
         BotToEsc_Red("R bottom to escape"),
         TopTwoNote_Red("R top two note"),
         MidToMid("middle to middle"),
-        TestAuto("Test_Auto");
+        TestAuto("Test_Auto"),
+        NewAuto("New Auto");
 
         public final String pathplannerName;
         AutoMode(String str) {

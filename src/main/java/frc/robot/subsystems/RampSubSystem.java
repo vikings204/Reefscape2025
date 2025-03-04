@@ -47,10 +47,10 @@ public class RampSubSystem extends SubsystemBase{
         m_channel.setPulseWidth(1200);
         Timer.delay(.2);*/
        int pw = 1350 ;
-       while (pw>550){
+       while (pw>700){
         m_channel0.setPulseWidth(pw);
-        pw-=.5;
-        Timer.delay(.0005);
+        pw-=.025;
+        Timer.delay(.0015);
        }
 
     }
@@ -60,7 +60,7 @@ public class RampSubSystem extends SubsystemBase{
         m_channel0.setPulseWidth(1600);
     }
     public void setPosReceive(boolean b) {
-        m_channel0.setPulseWidth(1300);
+        m_channel0.setPulseWidth(1000);
     }
 
     public void extend(){

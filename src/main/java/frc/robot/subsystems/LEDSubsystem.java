@@ -28,8 +28,8 @@ public class LEDSubsystem extends SubsystemBase {
 
     public static NetworkTableEntry observertx; 
     public static NetworkTableEntry observerty; 
-    public static double[] doubleArraytx;
-    public static double[] doubleArrayty;
+    public static double doubleArraytx;
+    public static double doubleArrayty;
 
     public LEDSubsystem() {
         blinkin = new Spark(0);
@@ -180,13 +180,13 @@ public class LEDSubsystem extends SubsystemBase {
         double xtarget = 1;
         double yband = .25;
         double ytarget = 1;
-        doubleArraytx = observertx.getDoubleArray(new double[0]);
-        doubleArrayty = observerty.getDoubleArray(new double[0]);
-        for (int i = 0; i < doubleArraytx.length; i++) {
-            if (Math.abs(doubleArraytx[i]-xtarget) < xband && Math.abs(doubleArrayty[i]-ytarget) < yband) {
+        doubleArraytx = observertx.getDouble(0.0);
+        doubleArrayty = observerty.getDouble(0.0);
+        //System.out.println("tx: " + doubleArraytx + " ty: " + doubleArrayty);
+        //System.out.println("i am here");
+            if (Math.abs(doubleArraytx-xtarget) < xband && Math.abs(doubleArrayty-ytarget) < yband) {
                 System.out.println("SHOOOOOOOOT THE THING");
             }
-        }
     }
     public void setPattern(BlinkinPattern pat) {
         if (currentPattern != pat) {

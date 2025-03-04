@@ -86,11 +86,9 @@ public class RobotContainer {
                 Swerve::driveRobotRelative,// Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
            Constants.Auto.PATH_FOLLOWER_CONFIG, // The path follower configuration
             Constants.Auto.config, // The robot configuration
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
+            () ->  { 
+            // () -> return Robot.alliance == DriverStation.Alliance.Red
+            
               var alliance = DriverStation.getAlliance();
               if (alliance.isPresent()) {
                 return alliance.get() == DriverStation.Alliance.Red;
@@ -123,8 +121,8 @@ public class RobotContainer {
         Swerve.setDefaultCommand(
                 new TeleopSwerveCommand(
                         Swerve,
+                        () -> 1 * DRIVER.getLeftX(),
                         () -> -1 * DRIVER.getLeftY(),
-                        () -> -1 * DRIVER.getLeftX(),
                         () -> -1 * DRIVER.getRightX(),
                         () -> false,
                         () -> false,// DRIVER.getLeftStickButton(), // slow mode
@@ -157,11 +155,11 @@ public class RobotContainer {
         new JoystickButton(OPERATOR, 3)
         .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE,Ramp),Elevator));
         new JoystickButton(OPERATOR, 4)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO,Ramp),Elevator));
         new JoystickButton(OPERATOR, 6)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE,Ramp),Elevator));
         new JoystickButton(OPERATOR, 5)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR,Ramp),Elevator));
         new JoystickButton(OPERATOR, 1)
         .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.INTAKE,Ramp),Elevator));
         new JoystickButton(OPERATOR, 2)

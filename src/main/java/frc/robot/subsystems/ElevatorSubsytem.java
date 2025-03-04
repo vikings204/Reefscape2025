@@ -45,11 +45,13 @@ public class ElevatorSubsytem extends SubsystemBase {
     private final RelativeEncoder integratedAngleEncoder2;
     private CANcoder angleEncoder2;
     private final SparkClosedLoopController angleController2;
+    private double offset;
    
 
 
     public ElevatorSubsytem() {
-      
+        offset = 0;
+
         angleMotor = new SparkMax(ANGLE_MOTOR_ID_ONE, MotorType.kBrushless);
         angleConfig = new SparkMaxConfig();
         integratedAngleEncoder = angleMotor.getEncoder();
@@ -70,9 +72,9 @@ public class ElevatorSubsytem extends SubsystemBase {
    
     public void setAngle(Positions targetposition ,RampSubSystem tongue) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
-       angleController.setReference(targetposition.position, ControlType.kPosition);
+       angleController.setReference(targetposition.position+offset, ControlType.kPosition);
 
-       angleController2.setReference(targetposition.position, ControlType.kPosition);
+       angleController2.setReference(targetposition.position+offset, ControlType.kPosition);
         if(targetposition == Positions.LEVELTWO || targetposition == Positions.LEVELTHREE){
             tongue.retract();
         }
@@ -97,11 +99,14 @@ public class ElevatorSubsytem extends SubsystemBase {
        if (b){
         angleMotor.set(.1);
         angleMotor2.set(.1);
+        System.out.println("Current Setting:" + integratedAngleEncoder.getPosition());
        }
        else{
         angleMotor.set(0);
         angleMotor2.set(0);
        }
+          //if(b){offset-=.01;}
+          
     }
     public void setNAngle(boolean b) {
 //        angleController.setReference(integratedAngleEncoder.getPosition()-.05, ControlType.kPosition);
@@ -110,11 +115,16 @@ public class ElevatorSubsytem extends SubsystemBase {
    if (b){
         angleMotor.set(-.1);
         angleMotor2.set(-.1);
+        System.out.println("Current Setting:" + integratedAngleEncoder.getPosition());
        }
        else{
         angleMotor.set(0);
         angleMotor2.set(0);
        }
+      //if(b){offset+=.01;}
+      //if (offset>0){
+       // offset = 0;
+     // }
     }
 
  
