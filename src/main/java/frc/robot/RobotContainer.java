@@ -145,23 +145,10 @@ public class RobotContainer {
     private void configureButtonBindings() {
        
                 new JoystickButton(DRIVER, 3)
-        .onTrue(new RunCommand(() -> Ramp.extend(),Ramp));
+        .onTrue(new RunCommand(() -> Swerve.zeroGyro(),Swerve));
 
     
-        new JoystickButton(DRIVER, 4)
-        .whileTrue(new RunCommand(() -> Ramp.retract(),Ramp));
-   
-      //  new JoystickButton(DRIVER, 6)
-      //  .whileTrue(new RunCommand(() -> Ramp.setPosiReceive(true),Ramp));
- 
-        
-        new JoystickButton(DRIVER, 11)
-        .whileTrue(new RunCommand(() -> Arm.ShootArm(true),Arm));
-    
-        new JoystickButton(DRIVER, 2)
-        .whileTrue(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
- 
-        new JoystickButton(OPERATOR, 7)
+               new JoystickButton(OPERATOR, 7)
         .whileTrue(new RunCommand(() -> Elevator.setAngle(true),Elevator));
         
         new JoystickButton(OPERATOR, 8)

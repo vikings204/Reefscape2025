@@ -176,11 +176,18 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void printDetails(){
+        double xband = .25;
+        double xtarget = 1;
+        double yband = .25;
+        double ytarget = 1;
         doubleArraytx = observertx.getDoubleArray(new double[0]);
         doubleArrayty = observerty.getDoubleArray(new double[0]);
-        
-
+        for (int i = 0; i < doubleArraytx.length; i++) {
+            if (Math.abs(doubleArraytx[i]-xtarget) < xband && Math.abs(doubleArrayty[i]-ytarget) < yband) {
+                System.out.println("SHOOOOOOOOT THE THING");
+            }
         }
+    }
     public void setPattern(BlinkinPattern pat) {
         if (currentPattern != pat) {
             currentPattern = pat;
