@@ -4,12 +4,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.commands.PathfindingCommand;
-
-import java.util.Set;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -17,32 +12,27 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.Controller;
-import frc.robot.Constants.Elevator;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Robot.ControlMode;
 import frc.robot.commands.TeleopSwerveCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gamepad;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
 
 import java.util.Map;
 
-import static frc.robot.Constants.Elevator.LEVEL_TWO;
 import static frc.robot.Robot.AutoModeChooser;
 import static frc.robot.Robot.ControlModeChooser;
 
 public class RobotContainer {
     public final SwerveSubsystem Swerve = new SwerveSubsystem();
     public final LEDSubsystem LED = new LEDSubsystem();
-    public final ElevatorSubsytem Elevator =new ElevatorSubsytem();
-    public final ArmSubsytem Arm= new ArmSubsytem();
-    public final RampSubSystem Ramp = new RampSubSystem();
+    public final ElevatorSubsystem Elevator =new ElevatorSubsystem();
+    public final ClimberSubsystem Climber = new ClimberSubsystem();
+    public final TongueSubsystem Tongue = new TongueSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
@@ -101,9 +91,9 @@ public class RobotContainer {
   
 
 
-        NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELFOUR, Ramp), Elevator));
-        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELONE, Ramp), Elevator));
-        NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.INTAKE, Ramp), Elevator));
+        NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELFOUR, Tongue), Elevator));
+        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELONE, Tongue), Elevator));
+        NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.INTAKE, Tongue), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
        // NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> Shooter.receive(false), Shooter));
        // NamedCommands.registerCommand("shooterStart", new InstantCommand(() -> Shooter.flywheelSpeaker(true), Shooter));
@@ -153,17 +143,17 @@ public class RobotContainer {
         .whileTrue(new RunCommand(() -> Elevator.setNAngle(true),Elevator));
       
         new JoystickButton(OPERATOR, 3)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE, Tongue),Elevator));
         new JoystickButton(OPERATOR, 4)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO, Tongue),Elevator));
         new JoystickButton(OPERATOR, 6)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE, Tongue),Elevator));
         new JoystickButton(OPERATOR, 5)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR,Ramp),Elevator));
+        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR, Tongue),Elevator));
         new JoystickButton(OPERATOR, 1)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.INTAKE,Ramp),Elevator));
+        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.INTAKE, Tongue),Elevator));
         new JoystickButton(OPERATOR, 2)
-        .whileTrue(new RunCommand(() -> Ramp.setPosScore(true),Ramp));
+        .whileTrue(new RunCommand(() -> Tongue.setPosScore(true), Tongue));
 
         new JoystickButton(DRIVER, 1).
         whileTrue(Swerve.driveToPose());
@@ -175,26 +165,26 @@ public class RobotContainer {
     }
     public void checkAnalogs(){
         if (OPERATOR.getRightTriggerAxis()>.5){
-                        CommandScheduler.getInstance().schedule(new RunCommand(() -> Ramp.setPosReceive(true),Ramp));
+                        CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosReceive(true), Tongue));
                         CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
 
         }
         if (OPERATOR.getLeftTriggerAxis()>.5){
-                CommandScheduler.getInstance().schedule(new RunCommand(() -> Ramp.setPosCarrying(true),Ramp));
+                CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosCarrying(true), Tongue));
                 CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
 
 }
         if (OPERATOR.getRightY()>.5){
-                CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.ShootArm(true),Arm));
+                CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(true), Climber));
 
         }
         else{
-                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.ShootArm(false),Arm));           
+                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(false), Climber));
         }
         if (OPERATOR.getRightY()<-.5){
-                CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
+                CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
         }
         
 

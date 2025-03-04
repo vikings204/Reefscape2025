@@ -4,8 +4,6 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.Elevator.*;
 
 
-
-import java.util.Map;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -17,21 +15,15 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.util.ReduceCANUsage;
-import frc.robot.util.ReduceCANUsage.CANCoderUtil;
-import frc.robot.util.ReduceCANUsage.CANCoderUtil.CCUsage;
 import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 
 
 
-public class ElevatorSubsytem extends SubsystemBase {
+public class ElevatorSubsystem extends SubsystemBase {
     public int moduleNumber;
     private final SparkMax angleMotor;
     private final SparkMaxConfig angleConfig;
@@ -49,7 +41,7 @@ public class ElevatorSubsytem extends SubsystemBase {
    
 
 
-    public ElevatorSubsytem() {
+    public ElevatorSubsystem() {
         offset = 0;
 
         angleMotor = new SparkMax(ANGLE_MOTOR_ID_ONE, MotorType.kBrushless);
@@ -70,7 +62,7 @@ public class ElevatorSubsytem extends SubsystemBase {
 
    
    
-    public void setAngle(Positions targetposition ,RampSubSystem tongue) {
+    public void setAngle(Positions targetposition , TongueSubsystem tongue) {
         // Prevent rotating module if speed is less then 1%. Prevents jittering.
        angleController.setReference(targetposition.position+offset, ControlType.kPosition);
 

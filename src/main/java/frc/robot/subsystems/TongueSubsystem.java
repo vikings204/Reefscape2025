@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
 import com.revrobotics.servohub.config.ServoChannelConfig;
@@ -9,13 +8,13 @@ import com.revrobotics.servohub.ServoHub;
 import com.revrobotics.servohub.ServoChannel.ChannelId;
 import com.revrobotics.servohub.ServoChannel;
 
-public class RampSubSystem extends SubsystemBase{
+public class TongueSubsystem extends SubsystemBase{
     ServoHubConfig config = new ServoHubConfig(); 
     ServoHub hub = new ServoHub(3);
     ServoChannel m_channel0;
     ServoChannel m_channel1;
 
-    public RampSubSystem(){
+    public TongueSubsystem(){
     config.channel0
         .pulseRange(500,1500,2500)
         //.pulseRange(1000,1500,2000)
