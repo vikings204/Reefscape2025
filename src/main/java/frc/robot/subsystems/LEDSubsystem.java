@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.DoubleArrayTopic;
+import edu.wpi.first.networktables.NetworkTableEntry;
+
 
 import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,15 +26,20 @@ public class LEDSubsystem extends SubsystemBase {
     public static NetworkTableInstance inst = NetworkTableInstance.getDefault();
     public static NetworkTable table;
 
-    public static DoubleArraySubscriber observer; 
-    public static double[] receivedArray;
+    public static NetworkTableEntry observertx; 
+    public static NetworkTableEntry observerty; 
+    public static double[] doubleArraytx;
+    public static double[] doubleArrayty;
 
     public LEDSubsystem() {
         blinkin = new Spark(0);
         pd = new PowerDistribution(1, ModuleType.kRev);
-        table =  inst.getTable("/northstar/output");
-        observer = table.getDoubleArrayTopic("observations").subscribe(new double[]{});
-        receivedArray = observer.get();
+        table =  inst.getTable("datatable");
+        observertx = table.getEntry("txs"); // Replace with your topic
+        observerty = table.getEntry("tys"); // Replace with your topic
+        double[] doubleArraytx = observertx.getDoubleArray(new double[0]);
+        double[] doubleArrayty = observerty.getDoubleArray(new double[0]);
+
 
         Presets = new presetSettings();
         Presets.Default();
@@ -169,12 +176,11 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void printDetails(){
-        receivedArray = observer.get();
-        for (var x:receivedArray){
-            System.out.println(x);
-        }
+        doubleArraytx = observertx.getDoubleArray(new double[0]);
+        doubleArrayty = observerty.getDoubleArray(new double[0]);
+        
 
-    }
+        }
     public void setPattern(BlinkinPattern pat) {
         if (currentPattern != pat) {
             currentPattern = pat;

@@ -91,16 +91,32 @@ public class ElevatorSubsytem extends SubsystemBase {
     }
         
     public void setAngle(boolean b) {
-        angleController.setReference(integratedAngleEncoder.getPosition()+.05, ControlType.kPosition);
+        //angleController.setReference(integratedAngleEncoder.getPosition()+.05, ControlType.kPosition);
 
-       angleController2.setReference(integratedAngleEncoder2.getPosition()+.05, ControlType.kPosition);
-     
+       //angleController2.setReference(integratedAngleEncoder2.getPosition()+.05, ControlType.kPosition);
+       if (b){
+        angleMotor.set(.1);
+        angleMotor2.set(.1);
+       }
+       else{
+        angleMotor.set(0);
+        angleMotor2.set(0);
+       }
     }
     public void setNAngle(boolean b) {
-        angleController.setReference(integratedAngleEncoder.getPosition()-.05, ControlType.kPosition);
+//        angleController.setReference(integratedAngleEncoder.getPosition()-.05, ControlType.kPosition);
 
-       angleController2.setReference(integratedAngleEncoder2.getPosition()-.05, ControlType.kPosition);
-   }
+ //      angleController2.setReference(integratedAngleEncoder2.getPosition()-.05, ControlType.kPosition);
+   if (b){
+        angleMotor.set(-.1);
+        angleMotor2.set(-.1);
+       }
+       else{
+        angleMotor.set(0);
+        angleMotor2.set(0);
+       }
+    }
+
  
 public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());

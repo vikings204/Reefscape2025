@@ -131,10 +131,10 @@ public class RobotContainer {
                         () -> false,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
                
-       //  Elevator.setDefaultCommand(
-       //         new RunCommand(
-       //                 () -> Elevator.setAngle(false),
-       //                 Elevator));    
+         Elevator.setDefaultCommand(
+                new RunCommand(
+                        () -> Elevator.setAngle(false),
+                        Elevator));    
         LED.setDefaultCommand(
                 new RunCommand(
                         () -> LED.printDetails(),
@@ -161,10 +161,10 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 2)
         .whileTrue(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
  
-        new JoystickButton(OPERATOR, 20)
+        new JoystickButton(OPERATOR, 7)
         .whileTrue(new RunCommand(() -> Elevator.setAngle(true),Elevator));
         
-        new JoystickButton(OPERATOR, 21)
+        new JoystickButton(OPERATOR, 8)
         .whileTrue(new RunCommand(() -> Elevator.setNAngle(true),Elevator));
       
         new JoystickButton(OPERATOR, 3)
@@ -201,13 +201,17 @@ public class RobotContainer {
 
 
 }
-        if (OPERATOR.getLeftY()>.5){
+        if (OPERATOR.getRightY()>.5){
                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.ShootArm(true),Arm));
 
         }
-        if (OPERATOR.getLeftY()<-.5){
+        else{
+                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.ShootArm(false),Arm));           
+        }
+        if (OPERATOR.getRightY()<-.5){
                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Arm.NegativeShootArm(true),Arm));
         }
+        
 
 
     }
