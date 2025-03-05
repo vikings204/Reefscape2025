@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controller;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Robot.ControlMode;
+import frc.robot.commands.AlignCommand;
 import frc.robot.commands.TeleopSwerveCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gamepad;
@@ -115,11 +116,6 @@ public class RobotContainer {
                 new RunCommand(
                         () -> Elevator.jogPositive(false),
                         Elevator));
-        LED.setDefaultCommand(
-                new RunCommand(
-                        LED::printDetails,
-                        LED));
-
     }
 
     private void configureButtonBindings() {
@@ -153,6 +149,7 @@ public class RobotContainer {
 
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
+        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve, PoseEstimation));
 
     }
 
