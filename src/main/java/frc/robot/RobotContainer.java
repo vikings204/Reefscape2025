@@ -122,7 +122,8 @@ public class RobotContainer {
 
         new JoystickButton(DRIVER, 3)
                 .onTrue(new RunCommand(Swerve::zeroGyro, Swerve));
-
+        new JoystickButton(DRIVER, 7)
+                .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
 
         new JoystickButton(OPERATOR, 7)
                 .whileTrue(new RunCommand(() -> Elevator.jogPositive(true), Elevator));
@@ -143,8 +144,8 @@ public class RobotContainer {
         new JoystickButton(OPERATOR, 2)
                 .whileTrue(new RunCommand(Tongue::setPosScore, Tongue));
 
-        new JoystickButton(DRIVER, 1).
-                whileTrue(Swerve.driveToPose());
+      //  new JoystickButton(DRIVER, 1).
+       //         whileTrue(Swerve.driveToPose());
 
     }
 

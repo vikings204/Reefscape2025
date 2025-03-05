@@ -49,7 +49,9 @@ public class TongueSubsystem extends SubsystemBase {
     public void setPosReceive() {
         pegServo.setPulseWidth(1000);
     }
-
+public void setPosL4() {
+        pegServo.setPulseWidth(1300);
+    }
     public void extend() {
         extenderServo.setPulseWidth(950);
     }
