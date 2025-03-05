@@ -30,9 +30,9 @@ import static frc.robot.Robot.ControlModeChooser;
 public class RobotContainer {
     public final SwerveSubsystem Swerve = new SwerveSubsystem();
     public final LEDSubsystem LED = new LEDSubsystem();
-    public final ElevatorSubsystem Elevator =new ElevatorSubsystem();
-    public final ClimberSubsystem Climber = new ClimberSubsystem();
     public final TongueSubsystem Tongue = new TongueSubsystem();
+    public final ElevatorSubsystem Elevator = new ElevatorSubsystem(Tongue);
+    public final ClimberSubsystem Climber = new ClimberSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
@@ -57,7 +57,7 @@ public class RobotContainer {
         });
 
         Shuffleboard.getTab("main").add("swerve", Swerve);
-       // Shuffleboard.getTab("main").add("shooter", Shooter);
+        // Shuffleboard.getTab("main").add("shooter", Shooter);
 /* 
         AutoBuilder.configureHolonomic(
                 PoseEstimation::getCurrentPose,
@@ -74,30 +74,29 @@ public class RobotContainer {
                 PoseEstimation::setCurrentPose,
                 Swerve::getSpeeds,
                 Swerve::driveRobotRelative,// Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-           Constants.Auto.PATH_FOLLOWER_CONFIG, // The path follower configuration
-            Constants.Auto.config, // The robot configuration
-            () ->  { 
-            // () -> return Robot.alliance == DriverStation.Alliance.Red
-            
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return false;
-            },
-            Swerve // Reference to this subsystem to set requirements
-    );
+                Constants.Auto.PATH_FOLLOWER_CONFIG, // The path follower configuration
+                Constants.Auto.config, // The robot configuration
+                () -> {
+                    // () -> return Robot.alliance == DriverStation.Alliance.Red
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                Swerve // Reference to this subsystem to set requirements
+        );
         PathfindingCommand.warmupCommand().schedule();
-  
 
 
-        NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELFOUR, Tongue), Elevator));
-        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.LEVELONE, Tongue), Elevator));
-        NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setAngle(Positions.INTAKE, Tongue), Elevator));
+        NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.LEVELFOUR), Elevator));
+        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.LEVELONE), Elevator));
+        NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
-       // NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> Shooter.receive(false), Shooter));
-       // NamedCommands.registerCommand("shooterStart", new InstantCommand(() -> Shooter.flywheelSpeaker(true), Shooter));
-       // NamedCommands.registerCommand("shooterStop", new InstantCommand(() -> Shooter.flywheelSpeaker(false), Shooter));
+        // NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> Shooter.receive(false), Shooter));
+        // NamedCommands.registerCommand("shooterStart", new InstantCommand(() -> Shooter.flywheelSpeaker(true), Shooter));
+        // NamedCommands.registerCommand("shooterStop", new InstantCommand(() -> Shooter.flywheelSpeaker(false), Shooter));
         //NamedCommands.registerCommand("bumpStart", new InstantCommand(() -> Shooter.intake(true, false), Shooter));
         //NamedCommands.registerCommand("bumpStop", new InstantCommand(() -> Shooter.intake(false, false), Shooter));
         //NamedCommands.registerCommand("lowerIntake", new InstantCommand(() -> LinearActuator.shift(false, true), LinearActuator));
@@ -118,75 +117,74 @@ public class RobotContainer {
                         () -> false,// DRIVER.getLeftStickButton(), // slow mode
                         () -> false,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
-               
-         Elevator.setDefaultCommand(
+
+        Elevator.setDefaultCommand(
                 new RunCommand(
-                        () -> Elevator.setAngle(false),
-                        Elevator));    
+                        () -> Elevator.jogPositive(false),
+                        Elevator));
         LED.setDefaultCommand(
                 new RunCommand(
-                        () -> LED.printDetails(),
-                        LED));    
-       
-   }
+                        LED::printDetails,
+                        LED));
+
+    }
 
     private void configureButtonBindings() {
-       
-                new JoystickButton(DRIVER, 3)
-        .onTrue(new RunCommand(() -> Swerve.zeroGyro(),Swerve));
 
-    
-               new JoystickButton(OPERATOR, 7)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(true),Elevator));
-        
+        new JoystickButton(DRIVER, 3)
+                .onTrue(new RunCommand(Swerve::zeroGyro, Swerve));
+
+
+        new JoystickButton(OPERATOR, 7)
+                .whileTrue(new RunCommand(() -> Elevator.jogPositive(true), Elevator));
+
         new JoystickButton(OPERATOR, 8)
-        .whileTrue(new RunCommand(() -> Elevator.setNAngle(true),Elevator));
-      
+                .whileTrue(new RunCommand(() -> Elevator.jogNegative(true), Elevator));
+
         new JoystickButton(OPERATOR, 3)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELONE, Tongue),Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELONE), Elevator));
         new JoystickButton(OPERATOR, 4)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTWO, Tongue),Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELTWO), Elevator));
         new JoystickButton(OPERATOR, 6)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELTHREE, Tongue),Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELTHREE), Elevator));
         new JoystickButton(OPERATOR, 5)
-        .onTrue(new RunCommand(() -> Elevator.setAngle(Positions.LEVELFOUR, Tongue),Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELFOUR), Elevator));
         new JoystickButton(OPERATOR, 1)
-        .whileTrue(new RunCommand(() -> Elevator.setAngle(Positions.INTAKE, Tongue),Elevator));
+                .whileTrue(new RunCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         new JoystickButton(OPERATOR, 2)
-        .whileTrue(new RunCommand(() -> Tongue.setPosScore(true), Tongue));
+                .whileTrue(new RunCommand(() -> Tongue.setPosScore(true), Tongue));
 
         new JoystickButton(DRIVER, 1).
-        whileTrue(Swerve.driveToPose());
-     
-       }
+                whileTrue(Swerve.driveToPose());
+
+    }
 
     public Command getAutonomousCommand() {
         return new PathPlannerAuto(AutoModeChooser.getSelected().pathplannerName);
     }
-    public void checkAnalogs(){
-        if (OPERATOR.getRightTriggerAxis()>.5){
-                        CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosReceive(true), Tongue));
-                        CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+
+    public void checkAnalogs() {
+        if (OPERATOR.getRightTriggerAxis() > .5) {
+            CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosReceive(true), Tongue));
+            CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
 
         }
-        if (OPERATOR.getLeftTriggerAxis()>.5){
-                CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosCarrying(true), Tongue));
-                CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+        if (OPERATOR.getLeftTriggerAxis() > .5) {
+            CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosCarrying(true), Tongue));
+            CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
 
-}
-        if (OPERATOR.getRightY()>.5){
-                CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(true), Climber));
+        }
+        if (OPERATOR.getRightY() > .5) {
+            CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(true), Climber));
 
+        } else {
+            CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(false), Climber));
         }
-        else{
-                 CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(false), Climber));
+        if (OPERATOR.getRightY() < -.5) {
+            CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
         }
-        if (OPERATOR.getRightY()<-.5){
-                CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
-        }
-        
 
 
     }

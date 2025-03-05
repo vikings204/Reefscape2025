@@ -4,13 +4,9 @@ package frc.robot;
 //import com.pathplanner.lib.util.PIDConstants;
 //import com.pathplanner.lib.util.ReplanningConfig;
 //import com.revrobotics.CANSparkBase.IdleMode;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.geometry.*;
@@ -258,8 +254,8 @@ public final class Constants {
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         
-            public static final int ANGLE_MOTOR_ID_ONE = 7;
-            public static final int ANGLE_MOTOR_ID_TWO = 8;
+            public static final int LEFT_MOTOR_ID = 7;
+            public static final int RIGHT_MOTOR_ID = 8;
 
             //public static final int CAN_CODER_ID = 31;
             //public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);

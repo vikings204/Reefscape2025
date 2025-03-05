@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.Elevator.*;
 
 
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -14,7 +13,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Constants;
@@ -22,180 +20,121 @@ import frc.robot.util.ReduceCANUsage;
 import frc.robot.util.ReduceCANUsage.Spark_Max.Usage;
 
 
-
 public class ElevatorSubsystem extends SubsystemBase {
-    public int moduleNumber;
-    private final SparkMax angleMotor;
-    private final SparkMaxConfig angleConfig;
-    private final RelativeEncoder integratedAngleEncoder;
-    private CANcoder angleEncoder;
-    private final SparkClosedLoopController angleController;
+    private final SparkMax leftMotor;
+    private final SparkMaxConfig leftMotorConfig;
+    private final RelativeEncoder leftEncoder;
+    private final SparkClosedLoopController leftController;
 
-    public int moduleNumber2;
-    private final SparkMax angleMotor2;
-    private final SparkMaxConfig angleConfig2;
-    private final RelativeEncoder integratedAngleEncoder2;
-    private CANcoder angleEncoder2;
-    private final SparkClosedLoopController angleController2;
-    private double offset;
-   
+    private final SparkMax rightMotor;
+    private final SparkMaxConfig rightMotorConfig;
+    private final RelativeEncoder rightEncoder;
+    private final SparkClosedLoopController rightController;
+    private final TongueSubsystem Tongue;
 
+    public ElevatorSubsystem(TongueSubsystem tongue) {
+        leftMotor = new SparkMax(LEFT_MOTOR_ID, MotorType.kBrushless);
+        leftMotorConfig = new SparkMaxConfig();
+        leftEncoder = leftMotor.getEncoder();
+        leftController = leftMotor.getClosedLoopController();
+        configLeftMotor();
 
-    public ElevatorSubsystem() {
-        offset = 0;
+        rightMotor = new SparkMax(RIGHT_MOTOR_ID, MotorType.kBrushless);
+        rightMotorConfig = new SparkMaxConfig();
+        rightEncoder = rightMotor.getEncoder();
+        rightController = rightMotor.getClosedLoopController();
+        configRightMotor();
 
-        angleMotor = new SparkMax(ANGLE_MOTOR_ID_ONE, MotorType.kBrushless);
-        angleConfig = new SparkMaxConfig();
-        integratedAngleEncoder = angleMotor.getEncoder();
-        angleController = angleMotor.getClosedLoopController();
-        configAngleMotor();
-        
-
-       
-        angleMotor2 = new SparkMax(ANGLE_MOTOR_ID_TWO, MotorType.kBrushless);
-        angleConfig2 = new SparkMaxConfig();
-        integratedAngleEncoder2 = angleMotor2.getEncoder();
-        angleController2 = angleMotor2.getClosedLoopController();
-        configAngleMotor2();
-       
+        this.Tongue = tongue;
     }
 
-   
-   
-    public void setAngle(Positions targetposition , TongueSubsystem tongue) {
-        // Prevent rotating module if speed is less then 1%. Prevents jittering.
-       angleController.setReference(targetposition.position+offset, ControlType.kPosition);
+    public void setPosition(Positions targetposition) {
+        leftController.setReference(targetposition.position, ControlType.kPosition);
+        rightController.setReference(targetposition.position, ControlType.kPosition);
 
-       angleController2.setReference(targetposition.position+offset, ControlType.kPosition);
-        if(targetposition == Positions.LEVELTWO || targetposition == Positions.LEVELTHREE){
-            tongue.retract();
+        if (targetposition == Positions.LEVELTWO || targetposition == Positions.LEVELTHREE) {
+            Tongue.retract();
+        } else if (targetposition == Positions.LEVELONE || targetposition == Positions.LEVELFOUR) {
+            Tongue.extend();
+        } else {
+            Tongue.retract();
         }
-        else if (targetposition == Positions.LEVELONE || targetposition == Positions.LEVELFOUR){
-            tongue.extend();
+    }
+
+    public void jogPositive(boolean b) {
+        if (b) {
+            leftMotor.set(.1);
+            rightMotor.set(.1);
+            System.out.println("Current Setting:" + leftEncoder.getPosition());
+        } else {
+            leftMotor.set(0);
+            rightMotor.set(0);
         }
-        else{
-            tongue.retract();
+    }
+
+    public void jogNegative(boolean b) {
+        if (b) {
+            leftMotor.set(-.1);
+            rightMotor.set(-.1);
+            System.out.println("Current Setting:" + leftEncoder.getPosition());
+        } else {
+            leftMotor.set(0);
+            rightMotor.set(0);
         }
-//       switch (targetposition){
-//        case Positions.LEVEL_ONE:
-
-
-
-//       }
-    }
-        
-    public void setAngle(boolean b) {
-        //angleController.setReference(integratedAngleEncoder.getPosition()+.05, ControlType.kPosition);
-
-       //angleController2.setReference(integratedAngleEncoder2.getPosition()+.05, ControlType.kPosition);
-       if (b){
-        angleMotor.set(.1);
-        angleMotor2.set(.1);
-        System.out.println("Current Setting:" + integratedAngleEncoder.getPosition());
-       }
-       else{
-        angleMotor.set(0);
-        angleMotor2.set(0);
-       }
-          //if(b){offset-=.01;}
-          
-    }
-    public void setNAngle(boolean b) {
-//        angleController.setReference(integratedAngleEncoder.getPosition()-.05, ControlType.kPosition);
-
- //      angleController2.setReference(integratedAngleEncoder2.getPosition()-.05, ControlType.kPosition);
-   if (b){
-        angleMotor.set(-.1);
-        angleMotor2.set(-.1);
-        System.out.println("Current Setting:" + integratedAngleEncoder.getPosition());
-       }
-       else{
-        angleMotor.set(0);
-        angleMotor2.set(0);
-       }
-      //if(b){offset+=.01;}
-      //if (offset>0){
-       // offset = 0;
-     // }
     }
 
- 
-public Rotation2d getAngle() {
-        return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
-    } 
-public Rotation2d getAngle2(){
-    return Rotation2d.fromDegrees(integratedAngleEncoder2.getPosition());
-}    
- 
- //implement later
-private void configAngleMotor() {
-       
-        
-       ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(angleMotor, Usage.kPositionOnly,angleConfig);
-       angleConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT) ;
-       angleConfig.inverted(ANGLE_INVERT); 
-       angleConfig.idleMode(ANGLE_IDLE_MODE); 
+    private void configLeftMotor() {
+        ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(leftMotor, Usage.kPositionOnly, leftMotorConfig);
+        leftMotorConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT);
+        leftMotorConfig.inverted(ANGLE_INVERT);
+        leftMotorConfig.idleMode(ANGLE_IDLE_MODE);
         //angleConfig.encoder.positionConversionFactor(1/ANGLE_POSITION_CONVERSION_FACTOR);
-        angleConfig.encoder.positionConversionFactor(1.0/Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
-        angleConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(Constants.Elevator.P,0,0)
-            .outputRange(-1,1)
-            .positionWrappingEnabled(false)
-            .positionWrappingInputRange(0, 1)
-            .minOutput(-1)
-            .maxOutput(1);
-            angleConfig.closedLoop.apply(angleConfig.closedLoop);
-            angleConfig.apply(angleConfig);
-        angleConfig.voltageCompensation(VOLTAGE_COMPENSATION);
-        angleMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
- 
-        //Timer.delay(2);
-        integratedAngleEncoder.setPosition(0);
+        leftMotorConfig.encoder.positionConversionFactor(1.0 / Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
+        leftMotorConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .pid(Constants.Elevator.P, 0, 0)
+                .outputRange(-1, 1)
+                .positionWrappingEnabled(false)
+                .positionWrappingInputRange(0, 1)
+                .minOutput(-1)
+                .maxOutput(1);
+        leftMotorConfig.closedLoop.apply(leftMotorConfig.closedLoop);
+        leftMotorConfig.apply(leftMotorConfig);
+        leftMotorConfig.voltageCompensation(VOLTAGE_COMPENSATION);
+        leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        leftEncoder.setPosition(0);
     }
-    private void configAngleMotor2() {
-       
-        ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(angleMotor2, Usage.kPositionOnly,angleConfig2);
-        angleConfig2.smartCurrentLimit(ANGLE_CURRENT_LIMIT) ;
-   
-        angleConfig2.inverted(ANGLE_INVERT_2); 
-     
-        angleConfig2.idleMode(ANGLE_IDLE_MODE); 
-     
+
+    private void configRightMotor() {
+        ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(rightMotor, Usage.kPositionOnly, rightMotorConfig);
+        rightMotorConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT);
+
+        rightMotorConfig.inverted(ANGLE_INVERT_2);
+
+        rightMotorConfig.idleMode(ANGLE_IDLE_MODE);
+
         // angleConfig2.encoder.positionConversionFactor(1/ANGLE_POSITION_CONVERSION_FACTOR);
-         angleConfig2.encoder.positionConversionFactor(1.0/ANGLE_POSITION_CONVERSION_FACTOR);
-    
-         angleConfig2.closedLoop
-             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-             .pid(Constants.Elevator.P,0,0)
-             .outputRange(-1, 1)
-             .positionWrappingEnabled(false)
-             .positionWrappingInputRange(0, 1)
-             .minOutput(-1)
-             .maxOutput(1);
-     angleConfig2.closedLoop.apply(angleConfig2.closedLoop);
-     angleConfig2.apply(angleConfig2);
-         angleConfig2.voltageCompensation(VOLTAGE_COMPENSATION);
-       
-        angleMotor2.configure(angleConfig2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  
+        rightMotorConfig.encoder.positionConversionFactor(1.0 / ANGLE_POSITION_CONVERSION_FACTOR);
 
-        //   Timer.delay(2);
+        rightMotorConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .pid(Constants.Elevator.P, 0, 0)
+                .outputRange(-1, 1)
+                .positionWrappingEnabled(false)
+                .positionWrappingInputRange(0, 1)
+                .minOutput(-1)
+                .maxOutput(1);
+        rightMotorConfig.closedLoop.apply(rightMotorConfig.closedLoop);
+        rightMotorConfig.apply(rightMotorConfig);
+        rightMotorConfig.voltageCompensation(VOLTAGE_COMPENSATION);
 
-         integratedAngleEncoder2.setPosition(0);
-         
-     }
+        rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-     //implement later
-     /*public void CurrentLimit(){
-        while(int i<hugenumber){
-            if (angleMotor.getOutputCurrent())
-        }
-    
-     }
-        */
-    
+        rightEncoder.setPosition(0);
+
     }
+}
 
 
 
