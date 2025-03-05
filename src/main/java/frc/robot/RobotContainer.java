@@ -33,6 +33,7 @@ public class RobotContainer {
     public final ElevatorSubsystem Elevator = new ElevatorSubsystem(Tongue);
     public final ClimberSubsystem Climber = new ClimberSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
+    public boolean slowMode = false;
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
 
@@ -103,8 +104,8 @@ public class RobotContainer {
                         () -> -1 * DRIVER.getLeftY(),
                         () -> -1 * DRIVER.getRightX(),
                         () -> false,
-                        () -> false,// DRIVER.getLeftStickButton(), // slow mode
-                        () -> false,//DRIVER.getRightStickButton())); // fast mode
+                        () -> slowMode,// DRIVER.getLeftStickButton(), // slow mode
+                        () -> !slowMode,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
 
         Elevator.setDefaultCommand(
@@ -172,6 +173,9 @@ public class RobotContainer {
 
         if (OPERATOR.getRightY() < -.5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
+        }
+        if(DRIVER.getBButton()==true){
+            slowMode=   !slowMode;
         }
     }
 }
