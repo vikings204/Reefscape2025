@@ -152,7 +152,7 @@ public class RobotContainer {
         new JoystickButton(OPERATOR, 1)
                 .whileTrue(new RunCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         new JoystickButton(OPERATOR, 2)
-                .whileTrue(new RunCommand(() -> Tongue.setPosScore(true), Tongue));
+                .whileTrue(new RunCommand(Tongue::setPosScore, Tongue));
 
         new JoystickButton(DRIVER, 1).
                 whileTrue(Swerve.driveToPose());
@@ -165,13 +165,13 @@ public class RobotContainer {
 
     public void checkAnalogs() {
         if (OPERATOR.getRightTriggerAxis() > .5) {
-            CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosReceive(true), Tongue));
+            CommandScheduler.getInstance().schedule(new RunCommand(Tongue::setPosReceive, Tongue));
             CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
 
         }
         if (OPERATOR.getLeftTriggerAxis() > .5) {
-            CommandScheduler.getInstance().schedule(new RunCommand(() -> Tongue.setPosCarrying(true), Tongue));
+            CommandScheduler.getInstance().schedule(new RunCommand(Tongue::setPosCarrying, Tongue));
             CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
 
 
