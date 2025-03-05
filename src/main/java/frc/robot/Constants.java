@@ -1,14 +1,9 @@
 package frc.robot;
 
-//import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-//import com.pathplanner.lib.util.PIDConstants;
-//import com.pathplanner.lib.util.ReplanningConfig;
-//import com.revrobotics.CANSparkBase.IdleMode;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.Robot.ControlMode;
@@ -25,25 +20,6 @@ public final class Constants {
         public static final ControlMode DEFAULT_CONTROL_MODE = ControlMode.SINGLE;
 
         // will eventually have keybinds and stuff
-    }
-
-    public static final class Shooter {
-        public static final IdleMode IDLE_MODE = IdleMode.kBrake;
-        public static final boolean SHOOTER_INVERT = true;
-        public static final boolean BUMP_INVERT = false;
-
-        public static final int SHOOTER_MOTOR1_ID = 41;
-        public static final int SHOOTER_MOTOR_2_ID = 42;
-        public static final int INTAKE_MOTOR_ID = 43;
-
-        public static final int CURRENT_LIMIT = 40;
-        public static final double VOLTAGE_COMP = 16.0;
-
-        public static final double SPEAKER_SPEED = 1.0;
-        public static final double AMP_SPEED = .080;
-        public static final double INTAKE_SPEED = 1.0;
-
-        public static final int INTAKE_SENSOR_THRESHOLD = 200;
     }
 
     public static final class Swerve {
@@ -162,31 +138,6 @@ public final class Constants {
         );
     }
 
-    public static final class LinearActuator {
-        public static final int MOTOR_CAN_ID = 31;
-        public static final int CURRENT_LIMIT = 10;
-
-        public static final double PID_P = 1.0;
-        public static final double PID_I = 0.0;
-        public static final double PID_D = 0.0;
-        public static final double PID_FF = 0.0;
-
-        // minimum/maximum of the linear actuator, not the whole mechanism
-        public static final double ABSOLUTE_LOWEST = -100000.0;
-        public static final double ABSOLUTE_HIGHEST = 10000.0;
-
-        // positions are of the entire mechanism
-        public enum Position {
-            EXAMPLE(0.0),
-            ANOTHER_EXAMPLE(0.0);
-
-            public final double position;
-            Position(double p) {
-                this.position = p;
-            }
-        }
-    }
-
     public static final class Vision {
         public static final boolean VISION_ENABLED = false;
         public static final String CAMERA_NAME = "webcam";
@@ -206,127 +157,42 @@ public final class Constants {
         //public static final Translation2d SPEAKER_BLUE = new Translation2d(TARGET_OFFSET, inchesToMeters(218.42));
         public static final Translation2d SPEAKER_BLUE = new Translation2d(2, 4.6);
     }
-    public static final class Flap{
-        public static final int FLAP_PWM_CHANNEL =1;
-        public static final double AMP_POSITION = 0.5;
-        public static final double SOURCE_POSITION = .5;
-         public static final double CLOSED_POSITION = 0.02;
-    }
-    public static final class Elevator{
 
-        public static final double P = .25;
-        public static final double ZERO = -.25;
-        public static final double INTAKE= -.946;
-        public static final double LEVEL_ONE=-.1;
-        public static final double LEVEL_TWO=-1.017;
-        public static final double LEVEL_THREE=-3.0;
-        public static final double LEVEL_FOUR=-3.88;
-
-        //mostly ripped from Swerve constants class
-        public static final double FAST_SPEED_MULTIPLIER = 1;
-        public static final double NORMAL_SPEED_MULTIPLIER = 1;//.8;
-        public static final double SLOW_SPEED_MULTIPLIER = .6;
-
-        public static final double ANGLE_PID_FF = 0.0;
-        public static final double ANGLE_PID_P = 0.01;
-        public static final double ANGLE_PID_I = 0.0;
-        public static final double ANGLE_PID_D = 0.0;
-
+    public static final class Elevator {
+        public static final double PID_P = .25;
+        public static final int LEFT_MOTOR_ID = 7;
+        public static final int RIGHT_MOTOR_ID = 8;
         public static final double VOLTAGE_COMPENSATION = 12.0;
-
-        /* Swerve Current Limiting */
-        public static final int ANGLE_CURRENT_LIMIT = 40;//5;
-
-        /* Swerve Profiling Values */
-        public static final double MAX_SPEED = 4.5; // meters per second
-        public static final double MAX_ANGULAR_VELOCITY = 8; // radians per second
-
-        /* Neutral Modes */
-        public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
-
-        /* Motor Inverts */
-        public static final boolean ANGLE_INVERT = false;
-        public static final boolean ANGLE_INVERT_2= !ANGLE_INVERT;
-        public static final boolean canCoderInvert = false;
-
-        public static final double ANGLE_POSITION_CONVERSION_FACTOR = 12;
-
-        /* Module Specific Constants */
-        /* Front Left Module - Module 0 */
+        public static final int CURRENT_LIMIT = 40;
+        public static final IdleMode IDLE_MODE = IdleMode.kBrake;
+        public static final boolean LEFT_INVERT = false;
+        public static final boolean RIGHT_INVERT = !LEFT_INVERT;
+        public static final double POSITION_CONVERSION_FACTOR = 12;
         
-            public static final int LEFT_MOTOR_ID = 7;
-            public static final int RIGHT_MOTOR_ID = 8;
-
-            //public static final int CAN_CODER_ID = 31;
-            //public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
-        
-        public enum Positions{
-        LEVELFOUR(Elevator.LEVEL_FOUR),
-        LEVELTHREE(Elevator.LEVEL_THREE),
-        LEVELTWO(Elevator.LEVEL_TWO),
-        LEVELONE(Elevator.LEVEL_ONE),
-        INTAKE(Elevator.INTAKE),
-        ZERO(Elevator.ZERO);
-
-        public final double position;
-        Positions(double p) {
-            this.position = p;
-        }
-
-    }
-
-    }
-
-    public static final class Arm {
-        //all ripped from Elevator class
-
-        public static final double MOTOR_OUT = 0.0;
-
-        //mostly ripped from Swerve constants class
-        public static final double FAST_SPEED_MULTIPLIER = 1;
-        public static final double NORMAL_SPEED_MULTIPLIER = 1;//.8;
-        public static final double SLOW_SPEED_MULTIPLIER = .6;
-
-        public static final double ANGLE_PID_FF = 0.0;
-        public static final double ANGLE_PID_P = 0.01;
-        public static final double ANGLE_PID_I = 0.0;
-        public static final double ANGLE_PID_D = 0.0;
-
-        public static final double VOLTAGE_COMPENSATION = 12.0;
-
-        /* Swerve Current Limiting */
-        public static final int ANGLE_CURRENT_LIMIT = 40;//5;
-
-        /* Swerve Profiling Values */
-        public static final double MAX_SPEED = 4.5; // meters per second
-        public static final double MAX_ANGULAR_VELOCITY = 8; // radians per second
-
-        /* Neutral Modes */
-        public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
-
-        /* Motor Inverts */
-        public static final boolean ANGLE_INVERT = true;
-        public static final boolean canCoderInvert = false;
-
-        public static final double ANGLE_POSITION_CONVERSION_FACTOR = 4;
-
-        /* Module Specific Constants */
-        /* Front Left Module - Module 0 */
-
-        public static final int ANGLE_MOTOR_ID_ONE = 20;
-        //public static final int CAN_CODER_ID = 31;
-        //public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0);
-
         public enum Positions {
-            MOTOROUT(Arm.MOTOR_OUT);
+            L4(-3.88),
+            L3(-3.0),
+            L2(-1.017),
+            L1(-0.1),
+            INTAKE(-0.946),
+            ZERO(-0.25);
 
             public final double position;
-
             Positions(double p) {
                 this.position = p;
             }
-
         }
+    }
+
+    public static final class Climber {
+        public static final double VOLTAGE_COMPENSATION = 12.0;
+        public static final int CURRENT_LIMIT = 40;
+        public static final boolean INVERT = false;
+        public static final double PID_P = 10.0;
+        public static final int MOTOR_ID = 43;
+
+        /* Neutral Modes */
+        public static final IdleMode IDLE_MODE = IdleMode.kBrake;
     }
     
 }

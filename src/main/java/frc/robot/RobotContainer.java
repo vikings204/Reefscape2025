@@ -5,7 +5,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
-
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -58,16 +57,6 @@ public class RobotContainer {
 
         Shuffleboard.getTab("main").add("swerve", Swerve);
         // Shuffleboard.getTab("main").add("shooter", Shooter);
-/* 
-        AutoBuilder.configureHolonomic(
-                PoseEstimation::getCurrentPose,
-                PoseEstimation::setCurrentPose,
-                Swerve::getSpeeds,
-                Swerve::driveRobotRelative,
-                Constants.Auto.PATH_FOLLOWER_CONFIG,
-                () -> Robot.alliance == DriverStation.Alliance.Red,
-                Swerve
-        );*/
 
         AutoBuilder.configure(
                 PoseEstimation::getCurrentPose, // Robot pose supplier
@@ -76,9 +65,8 @@ public class RobotContainer {
                 Swerve::driveRobotRelative,// Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
                 Constants.Auto.PATH_FOLLOWER_CONFIG, // The path follower configuration
                 Constants.Auto.config, // The robot configuration
+                //() -> Robot.alliance == DriverStation.Alliance.Red,
                 () -> {
-                    // () -> return Robot.alliance == DriverStation.Alliance.Red
-
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
                         return alliance.get() == DriverStation.Alliance.Red;
@@ -90,8 +78,8 @@ public class RobotContainer {
         PathfindingCommand.warmupCommand().schedule();
 
 
-        NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.LEVELFOUR), Elevator));
-        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.LEVELONE), Elevator));
+        NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L4), Elevator));
+        NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L1), Elevator));
         NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
         // NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> Shooter.receive(false), Shooter));
@@ -142,13 +130,13 @@ public class RobotContainer {
                 .whileTrue(new RunCommand(() -> Elevator.jogNegative(true), Elevator));
 
         new JoystickButton(OPERATOR, 3)
-                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELONE), Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.L1), Elevator));
         new JoystickButton(OPERATOR, 4)
-                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELTWO), Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.L2), Elevator));
         new JoystickButton(OPERATOR, 6)
-                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELTHREE), Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.L3), Elevator));
         new JoystickButton(OPERATOR, 5)
-                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.LEVELFOUR), Elevator));
+                .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.L4), Elevator));
         new JoystickButton(OPERATOR, 1)
                 .whileTrue(new RunCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         new JoystickButton(OPERATOR, 2)
@@ -167,25 +155,21 @@ public class RobotContainer {
         if (OPERATOR.getRightTriggerAxis() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(Tongue::setPosReceive, Tongue));
             CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
-
-
         }
+
         if (OPERATOR.getLeftTriggerAxis() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(Tongue::setPosCarrying, Tongue));
             CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
-
-
         }
+
         if (OPERATOR.getRightY() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(true), Climber));
-
         } else {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(false), Climber));
         }
+
         if (OPERATOR.getRightY() < -.5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
         }
-
-
     }
 }

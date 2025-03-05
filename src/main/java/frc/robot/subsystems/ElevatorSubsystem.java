@@ -52,9 +52,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftController.setReference(targetposition.position, ControlType.kPosition);
         rightController.setReference(targetposition.position, ControlType.kPosition);
 
-        if (targetposition == Positions.LEVELTWO || targetposition == Positions.LEVELTHREE) {
+        if (targetposition == Positions.L2 || targetposition == Positions.L3) {
             Tongue.retract();
-        } else if (targetposition == Positions.LEVELONE || targetposition == Positions.LEVELFOUR) {
+        } else if (targetposition == Positions.L1 || targetposition == Positions.L4) {
             Tongue.extend();
         } else {
             Tongue.retract();
@@ -85,14 +85,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void configLeftMotor() {
         ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(leftMotor, Usage.kPositionOnly, leftMotorConfig);
-        leftMotorConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT);
-        leftMotorConfig.inverted(ANGLE_INVERT);
-        leftMotorConfig.idleMode(ANGLE_IDLE_MODE);
+        leftMotorConfig.smartCurrentLimit(CURRENT_LIMIT);
+        leftMotorConfig.inverted(LEFT_INVERT);
+        leftMotorConfig.idleMode(IDLE_MODE);
         //angleConfig.encoder.positionConversionFactor(1/ANGLE_POSITION_CONVERSION_FACTOR);
-        leftMotorConfig.encoder.positionConversionFactor(1.0 / Constants.Elevator.ANGLE_POSITION_CONVERSION_FACTOR);
+        leftMotorConfig.encoder.positionConversionFactor(1.0 / Constants.Elevator.POSITION_CONVERSION_FACTOR);
         leftMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(Constants.Elevator.P, 0, 0)
+                .pid(Constants.Elevator.PID_P, 0, 0)
                 .outputRange(-1, 1)
                 .positionWrappingEnabled(false)
                 .positionWrappingInputRange(0, 1)
@@ -108,18 +108,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void configRightMotor() {
         ReduceCANUsage.Spark_Max.setCANSparkMaxBusUsage(rightMotor, Usage.kPositionOnly, rightMotorConfig);
-        rightMotorConfig.smartCurrentLimit(ANGLE_CURRENT_LIMIT);
+        rightMotorConfig.smartCurrentLimit(CURRENT_LIMIT);
 
-        rightMotorConfig.inverted(ANGLE_INVERT_2);
+        rightMotorConfig.inverted(RIGHT_INVERT);
 
-        rightMotorConfig.idleMode(ANGLE_IDLE_MODE);
+        rightMotorConfig.idleMode(IDLE_MODE);
 
         // angleConfig2.encoder.positionConversionFactor(1/ANGLE_POSITION_CONVERSION_FACTOR);
-        rightMotorConfig.encoder.positionConversionFactor(1.0 / ANGLE_POSITION_CONVERSION_FACTOR);
+        rightMotorConfig.encoder.positionConversionFactor(1.0 / POSITION_CONVERSION_FACTOR);
 
         rightMotorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(Constants.Elevator.P, 0, 0)
+                .pid(Constants.Elevator.PID_P, 0, 0)
                 .outputRange(-1, 1)
                 .positionWrappingEnabled(false)
                 .positionWrappingInputRange(0, 1)

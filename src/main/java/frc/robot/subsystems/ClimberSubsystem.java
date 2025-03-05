@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.Arm.*;
+import static frc.robot.Constants.Climber.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -14,7 +14,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class ClimberSubsystem extends SubsystemBase {
     private final SparkMax motor;
     private final SparkMaxConfig motorConfig;
@@ -22,7 +21,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private final SparkClosedLoopController controller;
 
     public ClimberSubsystem() {
-        motor = new SparkMax(43, MotorType.kBrushless);
+        motor = new SparkMax(MOTOR_ID, MotorType.kBrushless);
         motorConfig = new SparkMaxConfig();
         encoder = motor.getEncoder();
         configMotor();
@@ -47,19 +46,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
     private void configMotor() {
         motorConfig
-                .idleMode(ANGLE_IDLE_MODE)
-                .smartCurrentLimit(40)
-                .inverted(false);
-        //.setInverted(true);
+                .idleMode(IDLE_MODE)
+                .smartCurrentLimit(CURRENT_LIMIT)
+                .inverted(INVERT);
         motorConfig.encoder
-                // Invert the turning encoder, since the output shaft rotates in the opposite
-                // direction of the steering moton the MAXSwerve Module.
-                //.inverted(true)
                 .positionConversionFactor(1.0 / 100.0) // radians
                 .velocityConversionFactor(1); // radians per second
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(10, 0, 0)
+                .pid(PID_P, 0, 0)
                 .outputRange(-1, 1)
                 .positionWrappingEnabled(false)
                 .positionWrappingInputRange(0, 1)
@@ -76,6 +71,5 @@ public class ClimberSubsystem extends SubsystemBase {
         //angleMotor.burnFlash();
         Timer.delay(2);
         encoder.setPosition(0);
-
     }
 }
