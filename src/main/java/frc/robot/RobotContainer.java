@@ -107,8 +107,8 @@ public class RobotContainer {
                         () -> -1 * DRIVER.getLeftY(),
                         () -> -1 * DRIVER.getRightX(),
                         () -> false,
-                        () -> slowMode,// DRIVER.getLeftStickButton(), // slow mode
-                        () -> !slowMode,//DRIVER.getRightStickButton())); // fast mode
+                        () -> false,//slowMode,// DRIVER.getLeftStickButton(), // slow mode
+                        () -> false,//!slowMode,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
 
         Elevator.setDefaultCommand(
@@ -126,8 +126,11 @@ public class RobotContainer {
 
         new JoystickButton(DRIVER, 3)
                 .onTrue(new RunCommand(Swerve::zeroGyro, Swerve));
-        new JoystickButton(DRIVER, 7)
+        new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
+        new JoystickButton(DRIVER, 5)
+                .onTrue(new RunCommand( ()->slowMode = !slowMode));
+
 
         new JoystickButton(OPERATOR, 7)
                 .whileTrue(new RunCommand(() -> Elevator.jogPositive(true), Elevator));
@@ -176,9 +179,6 @@ public class RobotContainer {
 
         if (OPERATOR.getRightY() < -.5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
-        }
-        if(DRIVER.getBButton()==true){
-            slowMode=   !slowMode;
         }
     }
 }

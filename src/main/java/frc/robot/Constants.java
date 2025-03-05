@@ -25,7 +25,7 @@ public final class Constants {
     public static final class Swerve {
         public static final double FAST_SPEED_MULTIPLIER = 1;
         public static final double NORMAL_SPEED_MULTIPLIER = 1;//.8;
-        public static final double SLOW_SPEED_MULTIPLIER = .6;
+        public static final double SLOW_SPEED_MULTIPLIER = .4;
 
         public static final double ANGLE_PID_FF = 0.0;
         public static final double DRIVE_PID_P = 1.0;
@@ -172,7 +172,7 @@ public final class Constants {
         
         public enum Positions {
             L4(-3.88),
-            L3(-3.0),
+            L3(-2.60),
             L2(-1.017),
             L1(-0.1),
             INTAKE(-0.946),
