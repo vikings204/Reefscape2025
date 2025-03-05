@@ -20,20 +20,15 @@
         "y": 5.399684244791667
       },
       "prevControl": {
-        "x": 3.690909288194443,
-        "y": 5.183177893845557
+        "x": 3.315909288194444,
+        "y": 5.399684244791667
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 119.99999999999999
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 119.99999999999999
+    "rotation": 29.999999999999996
   },
   "reversed": false,
   "folder": "Reefscape",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -55.0
+    "rotation": -138.636
   },
   "useDefaultConstraints": false
 }

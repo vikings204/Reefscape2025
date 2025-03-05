@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "L4_Elevator"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Start to reef"
@@ -19,7 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "L1_Elevator"
+            "name": "L2_Elevator"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Tongue_Score"
           }
         },
         {
@@ -36,6 +36,12 @@
                 "type": "named",
                 "data": {
                   "name": "Intake_Elevator"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Tongue_Receive"
                 }
               }
             ]
@@ -60,7 +66,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L4_Elevator"
+                  "name": "L2_Elevator"
                 }
               }
             ]
@@ -69,7 +75,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L1_Elevator"
+            "name": "Tongue_Score"
           }
         }
       ]
