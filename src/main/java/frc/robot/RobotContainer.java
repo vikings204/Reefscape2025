@@ -57,6 +57,7 @@ public class RobotContainer {
 
         Shuffleboard.getTab("main").add("swerve", Swerve);
         // Shuffleboard.getTab("main").add("shooter", Shooter);
+        Shuffleboard.getTab("main").add("zero elevator encoders", new RunCommand(Elevator::zeroEncoders, Elevator)).withWidget(BuiltInWidgets.kCommand);
 
         AutoBuilder.configure(
                 PoseEstimation::getCurrentPose, // Robot pose supplier

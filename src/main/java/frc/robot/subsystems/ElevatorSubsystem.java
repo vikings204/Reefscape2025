@@ -45,7 +45,21 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightController = rightMotor.getClosedLoopController();
         configRightMotor();
 
+        zeroEncoders();
         this.Tongue = tongue;
+    }
+
+    @Override
+    public void periodic() {
+        if (rightMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT || leftMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT) {
+            rightMotor.stopMotor();
+            leftMotor.stopMotor();
+        }
+    }
+
+    public void zeroEncoders() {
+        leftEncoder.setPosition(0);
+        rightEncoder.setPosition(0);
     }
 
     public void setPosition(Positions targetposition) {
@@ -102,8 +116,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftMotorConfig.apply(leftMotorConfig);
         leftMotorConfig.voltageCompensation(VOLTAGE_COMPENSATION);
         leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        leftEncoder.setPosition(0);
     }
 
     private void configRightMotor() {
@@ -130,9 +142,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightMotorConfig.voltageCompensation(VOLTAGE_COMPENSATION);
 
         rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        rightEncoder.setPosition(0);
-
     }
 }
 
