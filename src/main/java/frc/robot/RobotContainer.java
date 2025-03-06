@@ -89,12 +89,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L1), Elevator));
         NamedCommands.registerCommand("L2_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L2), Elevator));
         NamedCommands.registerCommand("L3_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L3), Elevator));
-        NamedCommands.registerCommand("Tongue_Extend", new InstantCommand(() -> Tongue.extend(), Tongue));
-        NamedCommands.registerCommand("Tongue_Score", new InstantCommand(() -> Tongue.setPosScore(), Tongue));
-        NamedCommands.registerCommand("Tongue_Carry", new InstantCommand(() -> Tongue.setPosCarrying(), Tongue));
-         NamedCommands.registerCommand("Tongue_Receive", new InstantCommand(() -> Tongue.setPosReceive(), Tongue));       
+        NamedCommands.registerCommand("Tongue_Extend", new InstantCommand(Tongue::extend, Tongue));
+        NamedCommands.registerCommand("Tongue_Score", new InstantCommand(Tongue::setPosScore, Tongue));
+        NamedCommands.registerCommand("Tongue_Carry", new InstantCommand(Tongue::setPosCarrying, Tongue));
+        NamedCommands.registerCommand("Tongue_Receive", new InstantCommand(Tongue::setPosReceive, Tongue));
         NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
+
         configureDefaultCommands();
         configureButtonBindings();
     }
@@ -107,8 +108,8 @@ public class RobotContainer {
                         () -> 1 * DRIVER.getLeftY(),
                         () -> -1 * DRIVER.getRightX(),
                         () -> false,
-                        () -> slowSpeed.getAsBoolean(),//slowMode,// DRIVER.getLeftStickButton(), // slow mode
-                        () -> highSpeed.getAsBoolean(),//!slowMode,//DRIVER.getRightStickButton())); // fast mode
+                        slowSpeed,//slowMode,// DRIVER.getLeftStickButton(), // slow mode
+                        highSpeed,//!slowMode,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
 
         Elevator.setDefaultCommand(
@@ -117,7 +118,7 @@ public class RobotContainer {
                         Elevator));
         LED.setDefaultCommand(
                 new RunCommand(
-                        () -> LED.printDetails(),
+                        LED::printDetails,
                         LED));
 
     }
