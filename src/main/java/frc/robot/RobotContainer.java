@@ -43,6 +43,9 @@ public class RobotContainer {
 
     Gamepad DRIVER = new Gamepad(Controller.DRIVER_PORT);
     Gamepad OPERATOR = new Gamepad(Controller.OPERATOR_PORT);
+    private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 2);
+    private final JoystickButton highSpeed = new JoystickButton(DRIVER,1);
+  
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -85,18 +88,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("L4_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L4), Elevator));
         NamedCommands.registerCommand("L1_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L1), Elevator));
         NamedCommands.registerCommand("L2_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L2), Elevator));
+        NamedCommands.registerCommand("L3_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.L3), Elevator));
+        NamedCommands.registerCommand("Tongue_Extend", new InstantCommand(() -> Tongue.extend(), Tongue));
         NamedCommands.registerCommand("Tongue_Score", new InstantCommand(() -> Tongue.setPosScore(), Tongue));
+        NamedCommands.registerCommand("Tongue_Carry", new InstantCommand(() -> Tongue.setPosCarrying(), Tongue));
          NamedCommands.registerCommand("Tongue_Receive", new InstantCommand(() -> Tongue.setPosReceive(), Tongue));       
         NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
-        // NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> Shooter.receive(false), Shooter));
-        // NamedCommands.registerCommand("shooterStart", new InstantCommand(() -> Shooter.flywheelSpeaker(true), Shooter));
-        // NamedCommands.registerCommand("shooterStop", new InstantCommand(() -> Shooter.flywheelSpeaker(false), Shooter));
-        //NamedCommands.registerCommand("bumpStart", new InstantCommand(() -> Shooter.intake(true, false), Shooter));
-        //NamedCommands.registerCommand("bumpStop", new InstantCommand(() -> Shooter.intake(false, false), Shooter));
-        //NamedCommands.registerCommand("lowerIntake", new InstantCommand(() -> LinearActuator.shift(false, true), LinearActuator));
-        //NamedCommands.registerCommand("lowerIntakeStop", new InstantCommand(() -> LinearActuator.shift(false, false), LinearActuator));
-
         configureDefaultCommands();
         configureButtonBindings();
     }
@@ -105,12 +103,12 @@ public class RobotContainer {
         Swerve.setDefaultCommand(
                 new TeleopSwerveCommand(
                         Swerve,
-                        () -> 1 * DRIVER.getLeftX(),
-                        () -> -1 * DRIVER.getLeftY(),
+                        () -> -1 * DRIVER.getLeftX(),
+                        () -> 1 * DRIVER.getLeftY(),
                         () -> -1 * DRIVER.getRightX(),
                         () -> false,
-                        () -> false,//slowMode,// DRIVER.getLeftStickButton(), // slow mode
-                        () -> false,//!slowMode,//DRIVER.getRightStickButton())); // fast mode
+                        () -> slowSpeed.getAsBoolean(),//slowMode,// DRIVER.getLeftStickButton(), // slow mode
+                        () -> highSpeed.getAsBoolean(),//!slowMode,//DRIVER.getRightStickButton())); // fast mode
                         () -> finalSpeedModifierEntry.getDouble(1.0)));
 
         Elevator.setDefaultCommand(
@@ -122,7 +120,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         new JoystickButton(DRIVER, 3)
-                .onTrue(new RunCommand(Swerve::zeroGyro, Swerve));
+                .onTrue(new RunCommand(Swerve::zeroGyro));
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
         new JoystickButton(DRIVER, 5)

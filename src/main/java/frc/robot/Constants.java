@@ -174,7 +174,7 @@ public final class Constants {
             L4(-3.88),
             L3(-2.60),
             L2(-1.017),
-            L1(-0.1),
+            L1(-1.017),
             INTAKE(-0.946),
             ZERO(-0.25);
 

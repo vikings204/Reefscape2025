@@ -32,17 +32,18 @@ public class LEDSubsystem extends SubsystemBase {
 
     public static NetworkTableEntry observertx; 
     public static NetworkTableEntry observerty; 
-    public static double doubleArraytx;
-    public static double doubleArrayty;
+    public static NetworkTableEntry observertyaw; 
+    public static double doubletx;
+    public static double doublety;
+    public static double doubletyaw;
 
     public LEDSubsystem() {
         blinkin = new Spark(0);
         pd = new PowerDistribution(1, ModuleType.kRev);
         table =  inst.getTable("datatable");
-        observertx = table.getEntry("txs"); // Replace with your topic
-        observerty = table.getEntry("tys"); // Replace with your topic
-        double[] doubleArraytx = observertx.getDoubleArray(new double[0]);
-        double[] doubleArrayty = observerty.getDoubleArray(new double[0]);
+        observertx = table.getEntry("tx"); // Replace with your topic
+        observerty = table.getEntry("ty"); // Replace with your topic
+        observertyaw = table.getEntry("yaw"); // Replace with your topic
 
 
         Presets = new presetSettings();
@@ -184,11 +185,12 @@ public class LEDSubsystem extends SubsystemBase {
         double xtarget = 1;
         double yband = .25;
         double ytarget = 1;
-        doubleArraytx = observertx.getDouble(0.0);
-        doubleArrayty = observerty.getDouble(0.0);
-        //System.out.println("tx: " + doubleArraytx + " ty: " + doubleArrayty);
+        doubletx = observertx.getDouble(0.0);
+        doubletyaw = observertyaw.getDouble(0.0);
+        doublety = observerty.getDouble(0.0);
+        System.out.println("tx: " + doubletx + " ty: " + doublety);
         //System.out.println("i am here");
-            if (Math.abs(doubleArraytx-xtarget) < xband && Math.abs(doubleArrayty-ytarget) < yband) {
+            if (Math.abs(doubletx-xtarget) < xband && Math.abs(doublety-ytarget) < yband) {
                 System.out.println("SHOOOOOOOOT THE THING");
             }
     }
