@@ -43,8 +43,8 @@ public class RobotContainer {
 
     Gamepad DRIVER = new Gamepad(Controller.DRIVER_PORT);
     Gamepad OPERATOR = new Gamepad(Controller.OPERATOR_PORT);
-    private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 2);
-    private final JoystickButton highSpeed = new JoystickButton(DRIVER,1);
+    private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 4);
+    private final JoystickButton highSpeed = new JoystickButton(DRIVER,3);
   
 
     /**
@@ -115,12 +115,18 @@ public class RobotContainer {
                 new RunCommand(
                         () -> Elevator.jogPositive(false),
                         Elevator));
+        LED.setDefaultCommand(
+                new RunCommand(
+                        () -> LED.printDetails(),
+                        LED));
+
     }
+
 
     private void configureButtonBindings() {
 
-        new JoystickButton(DRIVER, 3)
-                .onTrue(new RunCommand(Swerve::zeroGyro));
+       // new JoystickButton(DRIVER, 3)
+        //        .onTrue(new RunCommand(Swerve::zeroGyro));
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
         new JoystickButton(DRIVER, 5)

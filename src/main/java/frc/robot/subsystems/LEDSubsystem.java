@@ -42,7 +42,7 @@ public class LEDSubsystem extends SubsystemBase {
         pd = new PowerDistribution(1, ModuleType.kRev);
         table =  inst.getTable("datatable");
         observertx = table.getEntry("tx"); // Replace with your topic
-        observerty = table.getEntry("ty"); // Replace with your topic
+        observerty = table.getEntry("tz"); // Replace with your topic
         observertyaw = table.getEntry("yaw"); // Replace with your topic
 
 
@@ -188,7 +188,7 @@ public class LEDSubsystem extends SubsystemBase {
         doubletx = observertx.getDouble(0.0);
         doubletyaw = observertyaw.getDouble(0.0);
         doublety = observerty.getDouble(0.0);
-        System.out.println("tx: " + doubletx + " ty: " + doublety);
+       // System.out.println("tx: " + doubletx + " ty: " + doublety);
         //System.out.println("i am here");
             if (Math.abs(doubletx-xtarget) < xband && Math.abs(doublety-ytarget) < yband) {
                 System.out.println("SHOOOOOOOOT THE THING");

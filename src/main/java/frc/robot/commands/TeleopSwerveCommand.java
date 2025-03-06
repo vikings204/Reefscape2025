@@ -67,7 +67,7 @@ public class TeleopSwerveCommand extends Command {
         double rotationVal = rotationLimiter.calculate(speedMultiplier
                                 * MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Controller.DEADBAND)
         );
-        System.out.println(speedMultiplier);
+       // System.out.println(speedMultiplier);
         /* Drive
          * Constructs a new Translation2d vector object to tell the robot where to go to next in an x,y plane and a rotation double to
          * tell it how much to rotate

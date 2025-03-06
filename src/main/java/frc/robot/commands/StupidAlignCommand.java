@@ -70,18 +70,27 @@ public class StupidAlignCommand extends Command {
             return;
         }
 
-        System.out.println("id: " + id);
-        double diffX = txSub.get() - xGoal.getDouble(0);
-        double diffY = tySub.get() - yGoal.getDouble(0);
+        //System.out.println("id: " + id);
+        double diffX = txSub.get() - .17;//xGoal.getDouble(0.17);
+        double diffY = tzSub.get() - .7;//yGoal.getDouble(0.7);
+       // System.out.println("tz: "+ tzSub.get() + "ygoal: "+yGoal.getDouble(.7));
         double diffTheta = yawSub.get() - thetaGoal.getDouble(0);
         System.out.println("diffX=" + diffX + " diffY=" + diffY + " diffTheta=" + diffTheta);
 
-        double speed = speedEntry.getDouble(0);
-        double goX = diffX > 0 ? -speed : speed;
-        double goY = diffY > 0 ? -speed : speed;
+        double speed = .3;//speedEntry.getDouble(0);
+        double goX = diffX > 0 ? speed : -speed;
+        double goY = diffY > 0 ? speed : -speed;
         double goTheta = diffTheta > 0 ? -speed : speed;
+        goTheta = 0;
 
-        if (/*getFPGATimestamp() > initialTimestamp+secondsToShootEntry.getDouble(2) && */diffX < 0.1 && diffY < 0.1 && diffTheta < 5) { // need to also check if close enough
+        if (Math.abs(diffX) < 0.05) {
+            goX = 0;
+        }
+        if (Math.abs(diffY) < 0.05) {
+            goY = 0;   
+        }
+
+        if (goX == 0 && goY == 0) { // need to also check if close enough
             // shoot?
             System.out.println("close enough");
         } else {
