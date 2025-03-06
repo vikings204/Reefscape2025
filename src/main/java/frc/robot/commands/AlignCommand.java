@@ -49,8 +49,7 @@ public class AlignCommand extends Command {
 
     public AlignCommand(
             boolean isLeft,
-            SwerveSubsystem Swerve,
-            PoseEstimationSubsystem PoseEst
+            SwerveSubsystem Swerve
     ) {
         this.Swerve = Swerve;
 
@@ -81,10 +80,11 @@ public class AlignCommand extends Command {
         double diffX = txSub.get() - xGoal.getDouble(0);
         double diffY = tySub.get() - yGoal.getDouble(0);
         double diffTheta = yawSub.get() - thetaGoal.getDouble(0);
+        System.out.println("diffX=" + diffX + " diffY=" + diffY + " diffTheta=" + diffTheta);
 
         if (/*getFPGATimestamp() > initialTimestamp+secondsToShootEntry.getDouble(2) && */diffX < 0.1 && diffY < 0.1 && diffTheta < 5) { // need to also check if close enough
             // shoot?
-            System.out.println("SHOOT LMFAO");
+            System.out.println("close enough OR no data");
         } else {
             Swerve.drive(new Translation2d(xPID.calculate(txSub.get()), yPID.calculate(tySub.get())), thetaPID.calculate(yawSub.get()), false, true); // isOpenLoop differs from teleop
         }
