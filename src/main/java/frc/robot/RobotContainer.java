@@ -117,11 +117,6 @@ public class RobotContainer {
                 new RunCommand(
                         () -> Elevator.jogPositive(false),
                         Elevator));
-        LED.setDefaultCommand(
-                new RunCommand(
-                        LED::printDetails,
-                        LED));
-
     }
 
 

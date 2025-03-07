@@ -1,23 +1,11 @@
 package frc.robot.subsystems;
 
-//import org.joml.Quaternionf;
-//import org.joml.Matrix3f;
-//import org.joml.Vector3f;
-
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.DoubleArrayTopic;
-import edu.wpi.first.networktables.NetworkTableEntry;
-
-
-import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
@@ -27,24 +15,9 @@ public class LEDSubsystem extends SubsystemBase {
     private final SendableChooser<Boolean> ledChooser = new SendableChooser<>();
     private final PowerDistribution pd;
 
-    public static NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    public static NetworkTable table;
-
-    public static NetworkTableEntry observertx; 
-    public static NetworkTableEntry observerty; 
-    public static NetworkTableEntry observertyaw; 
-    public static double doubletx;
-    public static double doublety;
-    public static double doubletyaw;
-
     public LEDSubsystem() {
         blinkin = new Spark(0);
         pd = new PowerDistribution(1, ModuleType.kRev);
-        table =  inst.getTable("datatable");
-        observertx = table.getEntry("tx"); // Replace with your topic
-        observerty = table.getEntry("tz"); // Replace with your topic
-        observertyaw = table.getEntry("yaw"); // Replace with your topic
-
 
         Presets = new presetSettings();
         Presets.Default();
@@ -180,20 +153,6 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    public void printDetails(){
-        double xband = .25;
-        double xtarget = 1;
-        double yband = .25;
-        double ytarget = 1;
-        doubletx = observertx.getDouble(0.0);
-        doubletyaw = observertyaw.getDouble(0.0);
-        doublety = observerty.getDouble(0.0);
-       // System.out.println("tx: " + doubletx + " ty: " + doublety);
-        //System.out.println("i am here");
-            if (Math.abs(doubletx-xtarget) < xband && Math.abs(doublety-ytarget) < yband) {
-                System.out.println("SHOOOOOOOOT THE THING");
-            }
-    }
     public void setPattern(BlinkinPattern pat) {
         if (currentPattern != pat) {
             currentPattern = pat;
