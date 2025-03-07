@@ -65,6 +65,10 @@ public class StupidAlignCommand extends Command {
 
     @Override
     public void execute() {
+        if (isAligned) {
+            return;
+        }
+
         long id = idSub.get();
 
         //System.out.println("id: " + id);
@@ -80,7 +84,8 @@ public class StupidAlignCommand extends Command {
 //        double goTheta = diffTheta > 0 ? -speed : speed;
         if (id == 0) {
             System.out.println("no data");
-            goX = -goX; // go back in opposite x direction?
+            //goX = -goX; // go back in opposite x direction?
+            isAligned = true;
         }
 
         if (Math.abs(diffX) < 0.05) {
