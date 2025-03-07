@@ -92,7 +92,7 @@ public class StupidAlignCommand extends Command {
 
         if (goX == 0 && goY == 0) {
             System.out.println("close enough");
-            isAligned = true;
+            isAligned = true;   
         } else {
             Swerve.drive(new Translation2d(goX, goY), /*goTheta*/0, false, true);
             isAligned = false;
