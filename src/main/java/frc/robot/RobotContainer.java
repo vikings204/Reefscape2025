@@ -61,9 +61,10 @@ public class RobotContainer {
             configureButtonBindings();
         });
 
-        Shuffleboard.getTab("main").add("swerve", Swerve);
+        Shuffleboard.getTab("debug").add("swerve", Swerve);
         // Shuffleboard.getTab("main").add("shooter", Shooter);
-        Shuffleboard.getTab("main").add("zero elevator encoders", new RunCommand(Elevator::zeroEncoders, Elevator)).withWidget(BuiltInWidgets.kCommand);
+        Shuffleboard.getTab("main").add("zero swerve", new RunCommand(Swerve::zeroGyro)).withWidget(BuiltInWidgets.kCommand);
+        Shuffleboard.getTab("main").add("zero elevator", new RunCommand(Elevator::zeroEncoders, Elevator)).withWidget(BuiltInWidgets.kCommand);
 
         AutoBuilder.configure(
                 PoseEstimation::getCurrentPose, // Robot pose supplier
@@ -156,7 +157,8 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-        new JoystickButton(DRIVER, 1).whileTrue(new StupidAlignCommand(false, Swerve));
+        new JoystickButton(DRIVER, 1).whileTrue(new StupidAlignCommand(true, Swerve)); // A is left
+        new JoystickButton(DRIVER, 2).whileTrue(new StupidAlignCommand(false, Swerve)); // B is right
 
     }
 
