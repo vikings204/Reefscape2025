@@ -38,6 +38,7 @@ public class RobotContainer {
     public boolean slowMode = false;
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
+    private final StupidAlignCommand StupidAlign = new StupidAlignCommand(false, Swerve);
 
     private final GenericEntry finalSpeedModifierEntry = Shuffleboard.getTab("config").add("final speed modifier", 1.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
@@ -152,8 +153,8 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-        new JoystickButton(DRIVER, 1).whileTrue(new StupidAlignCommand(true, Swerve)); // A is left
-        new JoystickButton(DRIVER, 2).whileTrue(new StupidAlignCommand(false, Swerve)); // B is right
+        // new JoystickButton(DRIVER, 1).whileTrue(new StupidAlignCommand(true, Swerve)); // A is left
+        new JoystickButton(DRIVER, 2).whileTrue(StupidAlign); // B is right
 
     }
 
