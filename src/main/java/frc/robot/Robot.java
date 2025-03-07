@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
         SINGLE, COMPETITION
     }
     public enum AutoMode {
-        MidToTop("middle to top"),
+        /*MidToTop("middle to top"),
         MidToBot("middle to bottom"),
         TopToTop("top to top"),
         BotToBot("bottom to bottom"),
@@ -44,8 +44,9 @@ public class Robot extends TimedRobot {
         TopToEsc_Red("R top to escape"),
         BotToEsc_Red("R bottom to escape"),
         TopTwoNote_Red("R top two note"),
-        MidToMid("middle to middle"),
-        TestAuto("Test_Auto"),
+        MidToMid("middle to middle"),*/
+        TopAuto("Top_Auto"),
+        BotAuto("Bot_Auto"),
         NewAuto("New Auto");
 
         public final String pathplannerName;

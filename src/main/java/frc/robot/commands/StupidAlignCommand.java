@@ -60,7 +60,7 @@ public class StupidAlignCommand extends Command {
 //        pitchSub = ntTable.getDoubleTopic("pitch").subscribe(0);
 //        rollSub = ntTable.getDoubleTopic("roll").subscribe(0);
 
-        Shuffleboard.getTab("debug").addBoolean("ALIGNED?", () -> isAligned).withWidget(BuiltInWidgets.kBooleanBox);
+       // Shuffleboard.getTab("debug").addBoolean("ALIGNED?", () -> isAligned).withWidget(BuiltInWidgets.kBooleanBox);
     }
 
     @Override

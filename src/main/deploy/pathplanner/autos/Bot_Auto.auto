@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start to reef"
+            "pathName": "Bottom Start to Reef"
           }
         },
         {
@@ -41,13 +41,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Tongue_Carry"
+                  "name": "Tongue_Receive"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Reef to Intake Correct"
+                  "pathName": "Bottom Reef to Intake"
                 }
               },
               {
@@ -78,19 +78,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "intake to reef"
+                  "pathName": "Bottom Intake to Reef"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "L3_Elevator"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Tongue_Carry"
                 }
               }
             ]
