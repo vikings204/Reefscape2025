@@ -19,12 +19,12 @@ public class StupidAlignCommand extends Command {
     private final boolean isLeft;
 //    private double initialTimestamp;
 
-    private final GenericEntry secondsToShootEntry = Shuffleboard.getTab("config").add("stupid seconds to shoot", 2.0).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+    // private final GenericEntry secondsToShootEntry = Shuffleboard.getTab("config").add("stupid seconds to shoot", 2.0).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
 
-    private final GenericEntry xGoal = Shuffleboard.getTab("config").add("stupid x goal", (double) 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
-    private final GenericEntry yGoal = Shuffleboard.getTab("config").add("stupid y goal", (double) 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
-    private final GenericEntry thetaGoal = Shuffleboard.getTab("config").add("stupid theta goal", (double) 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    // private final GenericEntry xGoal = Shuffleboard.getTab("config").add("stupid x goal", (double) 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    // private final GenericEntry yGoal = Shuffleboard.getTab("config").add("stupid y goal", (double) 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    // private final GenericEntry thetaGoal = Shuffleboard.getTab("config").add("stupid theta goal", (double) 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     private boolean isAligned = false;
 
     private IntegerSubscriber idSub;
@@ -72,8 +72,8 @@ public class StupidAlignCommand extends Command {
         long id = idSub.get();
 
         //System.out.println("id: " + id);
-        double diffX = txSub.get() - (isLeft ? 1 : -1) * 0.17;//xGoal.getDouble(0.17);
-        double diffY = tzSub.get() - .7;//yGoal.getDouble(0.7);
+        double diffX = txSub.get() - (isLeft ? 1 : -1) * 0.186;//xGoal.getDouble(0.17);
+        double diffY = tzSub.get() - .674;//yGoal.getDouble(0.7);
        // System.out.println("tz: "+ tzSub.get() + "ygoal: "+yGoal.getDouble(.7));
 //        double diffTheta = yawSub.get() - thetaGoal.getDouble(0);
 //        System.out.println("diffX=" + diffX + " diffY=" + diffY + " diffTheta=" + diffTheta);
@@ -86,6 +86,7 @@ public class StupidAlignCommand extends Command {
             System.out.println("no data");
             //goX = -goX; // go back in opposite x direction?
             isAligned = true;
+            return;
         }
 
         if (Math.abs(diffX) < 0.05) {
@@ -106,7 +107,11 @@ public class StupidAlignCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return isAligned;
+        if (isAligned) {
+            isAligned = false;
+            return true;
+        }
+        return false;
     }
 
     @Override

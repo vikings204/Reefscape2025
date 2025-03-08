@@ -38,7 +38,6 @@ public class RobotContainer {
     public boolean slowMode = false;
 
     //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
-    private final StupidAlignCommand StupidAlign = new StupidAlignCommand(false, Swerve);
 
     private final GenericEntry finalSpeedModifierEntry = Shuffleboard.getTab("config").add("final speed modifier", 1.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
@@ -46,6 +45,9 @@ public class RobotContainer {
     Gamepad OPERATOR = new Gamepad(Controller.OPERATOR_PORT);
     private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 4);
     private final JoystickButton highSpeed = new JoystickButton(DRIVER,3);
+
+    private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, Swerve);
+    private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, Swerve);
   
 
     /**
@@ -153,8 +155,8 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-        // new JoystickButton(DRIVER, 1).whileTrue(new StupidAlignCommand(true, Swerve)); // A is left
-        new JoystickButton(DRIVER, 2).whileTrue(StupidAlign); // B is right
+        new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
+        new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
 
     }
 
@@ -165,12 +167,12 @@ public class RobotContainer {
     public void checkAnalogs() {
         if (OPERATOR.getRightTriggerAxis() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(Tongue::setPosReceive, Tongue));
-            CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+           // CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
         }
 
         if (OPERATOR.getLeftTriggerAxis() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(Tongue::setPosCarrying, Tongue));
-            CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
+          //  CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
         }
 
         if (OPERATOR.getRightY() > .5) {
