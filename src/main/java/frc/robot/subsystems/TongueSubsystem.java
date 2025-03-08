@@ -35,7 +35,7 @@ public class TongueSubsystem extends SubsystemBase {
 
     public void setPosScore() {
         int pw = 1350;
-        while (pw > 700) {
+        while (pw > 675) {
             pegServo.setPulseWidth(pw);
             pw -= .025;
             Timer.delay(.0015);
