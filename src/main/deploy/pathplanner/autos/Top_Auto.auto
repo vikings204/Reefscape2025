@@ -72,6 +72,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "intake to reef first half"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -85,6 +91,12 @@
                 "type": "named",
                 "data": {
                   "name": "L3_Elevator"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Tongue_Carry"
                 }
               }
             ]

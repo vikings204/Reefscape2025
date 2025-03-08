@@ -19,13 +19,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Tongue_Score"
+            "name": "Tongue_Extend"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Tongue_Extend"
+            "name": "Tongue_Score"
           }
         },
         {
@@ -66,6 +66,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom intake to Reef first half"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -82,6 +88,24 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3_Elevator"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Tongue_Extend"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Tongue_Score"
           }
         }
       ]
