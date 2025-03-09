@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.419,
-        "y": 5.36
+        "x": 4.759,
+        "y": 5.605
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.569945794182854,
-        "y": 6.227493038692989
+        "x": 5.365926110946914,
+        "y": 6.656226860600239
       },
       "isLocked": false,
       "linkedName": null
@@ -48,7 +48,7 @@
   "folder": "Reefscape",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 150.0
+    "rotation": 145.0
   },
   "useDefaultConstraints": false
 }

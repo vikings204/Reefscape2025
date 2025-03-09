@@ -72,8 +72,8 @@ public class StupidAlignCommand extends Command {
         long id = idSub.get();
 
         //System.out.println("id: " + id);
-        double diffX = txSub.get() - (isLeft ? 1 : -1) * 0.186;//xGoal.getDouble(0.17);
-        double diffY = tzSub.get() - .674;//yGoal.getDouble(0.7);
+        double diffX = txSub.get() - (isLeft ? 1 : -1) * 0.172;//xGoal.getDouble(0.17);
+        double diffY = tzSub.get() - .65;//yGoal.getDouble(0.7);
        // System.out.println("tz: "+ tzSub.get() + "ygoal: "+yGoal.getDouble(.7));
 //        double diffTheta = yawSub.get() - thetaGoal.getDouble(0);
 //        System.out.println("diffX=" + diffX + " diffY=" + diffY + " diffTheta=" + diffTheta);
@@ -89,10 +89,10 @@ public class StupidAlignCommand extends Command {
             return;
         }
 
-        if (Math.abs(diffX) < 0.05) {
+        if (Math.abs(diffX) < 0.01) {
             goX = 0;
         }
-        if (Math.abs(diffY) < 0.05) {
+        if (Math.abs(diffY) < 0.01) {
             goY = 0;   
         }
 

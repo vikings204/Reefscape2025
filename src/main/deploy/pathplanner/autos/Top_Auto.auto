@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Tongue_Carry"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Start to reef"
@@ -13,7 +19,13 @@
         {
           "type": "named",
           "data": {
-            "name": "L3_Elevator"
+            "name": "L4_Elevator"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
