@@ -11,21 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "L4_Elevator"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Mid to reef"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "L3_Elevator"
-          }
-        },
-        {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 3.0
           }
         },
         {

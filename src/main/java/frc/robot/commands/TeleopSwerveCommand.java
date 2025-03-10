@@ -73,7 +73,7 @@ public class TeleopSwerveCommand extends Command {
          * tell it how much to rotate
          */
         s_Swerve.drive(
-                new Translation2d(translationVal, strafeVal).times(Constants.Swerve.MAX_SPEED * .85/*finalSpeedModifierSup.getAsDouble()*/),
+                new Translation2d(translationVal, strafeVal).times(Constants.Swerve.MAX_SPEED * 1/*finalSpeedModifierSup.getAsDouble()*/),
                 rotationVal * Constants.Swerve.MAX_ANGULAR_VELOCITY * finalSpeedModifierSup.getAsDouble(),
                 !robotCentricSup.getAsBoolean(),
                 true);

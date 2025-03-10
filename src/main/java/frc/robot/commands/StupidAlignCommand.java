@@ -17,6 +17,7 @@ import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 public class StupidAlignCommand extends Command {
     private final SwerveSubsystem Swerve;
     private final boolean isLeft;
+    private final boolean onlyX;
 //    private double initialTimestamp;
 
     // private final GenericEntry secondsToShootEntry = Shuffleboard.getTab("config").add("stupid seconds to shoot", 2.0).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
@@ -38,9 +39,11 @@ public class StupidAlignCommand extends Command {
 
     public StupidAlignCommand(
             boolean isLeft,
+            boolean onlyX,
             SwerveSubsystem Swerve
     ) {
         this.isLeft = isLeft;
+        this.onlyX = onlyX;
         this.Swerve = Swerve;
 
         addRequirements(Swerve);
@@ -94,6 +97,10 @@ public class StupidAlignCommand extends Command {
         }
         if (Math.abs(diffY) < 0.01) {
             goY = 0;   
+        }
+
+        if (onlyX) {
+            goY = 0;
         }
 
         if (goX == 0 && goY == 0) {

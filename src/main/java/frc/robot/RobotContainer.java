@@ -46,8 +46,10 @@ public class RobotContainer {
     private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 4);
     private final JoystickButton highSpeed = new JoystickButton(DRIVER,3);
 
-    private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, Swerve);
-    private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, Swerve);
+    // private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, false, Swerve);
+    // private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, false, Swerve);
+    // private final StupidAlignCommand StupidAlignRightX = new StupidAlignCommand(false, true, Swerve);
+    // private final StupidAlignCommand StupidAlignLeftX = new StupidAlignCommand(true, true, Swerve);
   
 
     /**
@@ -155,9 +157,11 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-        new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
-        new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
+        // new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
+        // new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
 
+        // new JoystickButton(DRIVER, 3).whileTrue(StupidAlignLeftX); // A is left
+        // new JoystickButton(DRIVER, 4).whileTrue(StupidAlignRightX); // B is right
     }
 
     public Command getAutonomousCommand() {
