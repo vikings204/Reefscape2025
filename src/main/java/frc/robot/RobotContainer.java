@@ -25,6 +25,7 @@ import frc.robot.util.Gamepad;
 
 import java.util.Map;
 
+import static frc.robot.Constants.Swerve.SPEED_MULTIPLIER;
 import static frc.robot.Robot.AutoModeChooser;
 import static frc.robot.Robot.ControlModeChooser;
 
@@ -116,7 +117,7 @@ public class RobotContainer {
                         () -> false,
                         slowSpeed,//slowMode,// DRIVER.getLeftStickButton(), // slow mode
                         highSpeed,//!slowMode,//DRIVER.getRightStickButton())); // fast mode
-                        () -> finalSpeedModifierEntry.getDouble(1.0)));
+                        () ->Constants.Swerve.SPEED_MULTIPLIER));//finalSpeedModifierEntry.getDouble(1.0)));
 
         Elevator.setDefaultCommand(
                 new RunCommand(
@@ -132,7 +133,7 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
         new JoystickButton(DRIVER, 5)
-                .onTrue(new RunCommand( ()->slowMode = !slowMode));
+                .onTrue(new RunCommand( ()->Swerve.setSpeed(),Swerve));
 
 
         new JoystickButton(OPERATOR, 7)

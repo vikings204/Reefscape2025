@@ -49,30 +49,7 @@ public class SwerveSubsystem extends SubsystemBase {
                         new SwerveModule(3, Mod3.DRIVE_MOTOR_ID, Mod3.ANGLE_MOTOR_ID, Mod3.ANGLE_OFFSET, Mod3.CAN_CODER_ID)
                 };
 
-        //Odomentry with our kinematics object from constants, gyro position and x/y position of each module
-        //swerveOdometry = new SwerveDriveOdometry(SWERVE_KINEMATICS, getYaw(), getPositions());
-
-//        AutoBuilder.configureHolonomic(
-//                poseEstimator::getCurrentPose,//this::getPose,
-//                this::resetOdometry,
-//                this::getSpeeds,
-//                this::driveRobotRelative,
-//                Constants.Auto.PATH_FOLLOWER_CONFIG,
-//                () -> {
-//                    // Boolean supplier that controls when the path will be mirrored for the red alliance
-//                    // This will flip the path being followed to the red side of the field.
-//                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-//
-//                    var alliance = DriverStation.getAlliance();
-//                    //noinspection OptionalIsPresent
-//                    if (alliance.isPresent()) {
-//                        return alliance.get() == DriverStation.Alliance.Red;
-//                    }
-//                    return false;
-//                },
-//                this
-//        );
-        
+       
         for (SwerveModule mod : modules) {
             Shuffleboard.getTab("swerve").addNumber("position: module " + mod.moduleNumber, () -> mod.getPosition().distanceMeters);
             Shuffleboard.getTab("swerve").addNumber("angle: module " + mod.moduleNumber, mod.getPosition().angle::getDegrees).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", -180, "max", 180));
@@ -85,6 +62,14 @@ public class SwerveSubsystem extends SubsystemBase {
         });
     }
 
+    public void setSpeed(){
+        if (SPEED_MULTIPLIER <.5){
+            SPEED_MULTIPLIER = 1;
+        }
+        else{
+            SPEED_MULTIPLIER = .4;
+        }
+    }
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates =
                 SWERVE_KINEMATICS.toSwerveModuleStates(fieldRelative ?
