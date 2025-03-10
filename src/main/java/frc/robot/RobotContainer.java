@@ -102,6 +102,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Tongue_Receive", new InstantCommand(Tongue::setPosReceive, Tongue));
         NamedCommands.registerCommand("Intake_Elevator", new InstantCommand(() -> Elevator.setPosition(Positions.INTAKE), Elevator));
         NamedCommands.registerCommand("zeroGyro", new InstantCommand(Swerve::zeroGyro, Swerve));
+        NamedCommands.registerCommand("Tongue_Auto", new InstantCommand(Tongue::setPosAuto, Tongue));
 
         configureDefaultCommands();
         configureButtonBindings();
@@ -133,7 +134,7 @@ public class RobotContainer {
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
         new JoystickButton(DRIVER, 5)
-                .onTrue(new RunCommand( ()->Swerve.setSpeed(),Swerve));
+                .onTrue(new RunCommand( ()->Swerve.setSpeed()));
 
 
         new JoystickButton(OPERATOR, 7)

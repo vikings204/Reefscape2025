@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
         Top_Auto("Top_Auto"),
         Botttom_Auto("Bottom_Auto"),
         Mid_Auto("Mid_Auto"),
-        NewAuto("New Auto");
+        Mid_Ram("Mid_Ram");
 
         public final String pathplannerName;
         AutoMode(String str) {

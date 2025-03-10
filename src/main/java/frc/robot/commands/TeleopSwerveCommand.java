@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
 
+import static frc.robot.Constants.Swerve.CONTROLLER_RAMP_DEGREE;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -58,15 +60,10 @@ public class TeleopSwerveCommand extends Command {
          * no input will be "Seen" by the robot unless the stick is passed the deadband.
          * Helps with not driving/turning by accident
          */
-        double translationVal = translationLimiter.calculate(speedMultiplier
-                                * MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Controller.DEADBAND)
-        );
-        double strafeVal = strafeLimiter.calculate(speedMultiplier
-                                * MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Controller.DEADBAND)
-        );
-        double rotationVal = rotationLimiter.calculate(speedMultiplier
-                                * MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Controller.DEADBAND)
-        );
+        double translationVal = translationLimiter.calculate(speedMultiplier * Math.pow(MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Controller.DEADBAND), CONTROLLER_RAMP_DEGREE));
+        double strafeVal = strafeLimiter.calculate(speedMultiplier * Math.pow(MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Controller.DEADBAND), CONTROLLER_RAMP_DEGREE));
+        double rotationVal = rotationLimiter.calculate(speedMultiplier * Math.pow(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Controller.DEADBAND), CONTROLLER_RAMP_DEGREE));
+
        // System.out.println(speedMultiplier);
         /* Drive
          * Constructs a new Translation2d vector object to tell the robot where to go to next in an x,y plane and a rotation double to
