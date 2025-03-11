@@ -51,6 +51,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        System.out.println("left: " + leftMotor.getOutputCurrent() + " right: " + rightMotor.getOutputCurrent());
+
         if (rightMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT || leftMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT) {
             rightMotor.stopMotor();
             leftMotor.stopMotor();

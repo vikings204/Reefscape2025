@@ -170,7 +170,7 @@ public final class Constants {
         public static final boolean LEFT_INVERT = false;
         public static final boolean RIGHT_INVERT = !LEFT_INVERT;
         public static final double POSITION_CONVERSION_FACTOR = 12;
-        public static final int AUTOMATIC_ZERO_CURRENT = 40;
+        public static final int AUTOMATIC_ZERO_CURRENT = 15;
         
         public enum Positions {
             L4(-3.88),

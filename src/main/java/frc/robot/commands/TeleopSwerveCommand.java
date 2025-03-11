@@ -53,7 +53,6 @@ public class TeleopSwerveCommand extends Command {
     @Override
     public void execute() {
         double speedMultiplier = Constants.Swerve.SPEED_MULTIPLIER;//Constants.Swerve.NORMAL_SPEED_MULTIPLIER;
-        System.out.println("Speed Multiplier: "+speedMultiplier);
         if (highSpeedSup.getAsBoolean()) speedMultiplier = Constants.Swerve.FAST_SPEED_MULTIPLIER;
         if (slowSpeedSup.getAsBoolean()) speedMultiplier = Constants.Swerve.SLOW_SPEED_MULTIPLIER;
 
