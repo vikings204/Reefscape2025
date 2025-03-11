@@ -11,6 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -63,11 +65,11 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(){
-        if (SPEED_MULTIPLIER <.5){
-            SPEED_MULTIPLIER = 1;
+        if (Constants.Swerve.SPEED_MULTIPLIER <.5){
+            Constants.Swerve.SPEED_MULTIPLIER = 1;
         }
         else{
-            SPEED_MULTIPLIER = .4;
+            Constants.Swerve.SPEED_MULTIPLIER = .125;
         }
     }
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {

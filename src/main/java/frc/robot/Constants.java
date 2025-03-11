@@ -27,7 +27,7 @@ public final class Constants {
         public static final double NORMAL_SPEED_MULTIPLIER = 1;//.8;
         public static final double SLOW_SPEED_MULTIPLIER = .4;
         public static double SPEED_MULTIPLIER = NORMAL_SPEED_MULTIPLIER;
-        public static final double CONTROLLER_RAMP_DEGREE = 3;
+        public static final double CONTROLLER_RAMP_DEGREE = 1;
 
         public static final double ANGLE_PID_FF = 0.0;
         public static final double DRIVE_PID_P = 1.0;

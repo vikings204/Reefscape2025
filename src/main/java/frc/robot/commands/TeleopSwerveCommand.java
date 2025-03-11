@@ -52,7 +52,8 @@ public class TeleopSwerveCommand extends Command {
 
     @Override
     public void execute() {
-        double speedMultiplier = Constants.Swerve.NORMAL_SPEED_MULTIPLIER;
+        double speedMultiplier = Constants.Swerve.SPEED_MULTIPLIER;//Constants.Swerve.NORMAL_SPEED_MULTIPLIER;
+        System.out.println("Speed Multiplier: "+speedMultiplier);
         if (highSpeedSup.getAsBoolean()) speedMultiplier = Constants.Swerve.FAST_SPEED_MULTIPLIER;
         if (slowSpeedSup.getAsBoolean()) speedMultiplier = Constants.Swerve.SLOW_SPEED_MULTIPLIER;
 
@@ -60,10 +61,21 @@ public class TeleopSwerveCommand extends Command {
          * no input will be "Seen" by the robot unless the stick is passed the deadband.
          * Helps with not driving/turning by accident
          */
-        double translationVal = translationLimiter.calculate(speedMultiplier * Math.pow(MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Controller.DEADBAND), CONTROLLER_RAMP_DEGREE));
-        double strafeVal = strafeLimiter.calculate(speedMultiplier * Math.pow(MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Controller.DEADBAND), CONTROLLER_RAMP_DEGREE));
-        double rotationVal = rotationLimiter.calculate(speedMultiplier * Math.pow(MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Controller.DEADBAND), CONTROLLER_RAMP_DEGREE));
 
+
+       // double translationVal = translationLimiter.calculate(speedMultiplier * MathUtil.applyDeadband(translationSup.getAsDouble(), CONTROLLER_RAMP_DEGREE));
+        //double strafeVal = strafeLimiter.calculate(speedMultiplier * MathUtil.applyDeadband(strafeSup.getAsDouble(),  CONTROLLER_RAMP_DEGREE));
+        //double rotationVal = rotationLimiter.calculate(speedMultiplier * MathUtil.applyDeadband(rotationSup.getAsDouble(), CONTROLLER_RAMP_DEGREE));
+
+        double translationVal = translationLimiter.calculate(speedMultiplier
+        * MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Controller.DEADBAND)
+);
+double strafeVal = strafeLimiter.calculate(speedMultiplier
+        * MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Controller.DEADBAND)
+);
+double rotationVal = rotationLimiter.calculate(speedMultiplier
+        * MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Controller.DEADBAND)
+);
        // System.out.println(speedMultiplier);
         /* Drive
          * Constructs a new Translation2d vector object to tell the robot where to go to next in an x,y plane and a rotation double to

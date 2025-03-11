@@ -5,6 +5,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.events.OneShotTriggerEvent;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -118,7 +120,7 @@ public class RobotContainer {
                         () -> false,
                         slowSpeed,//slowMode,// DRIVER.getLeftStickButton(), // slow mode
                         highSpeed,//!slowMode,//DRIVER.getRightStickButton())); // fast mode
-                        () ->Constants.Swerve.SPEED_MULTIPLIER));//finalSpeedModifierEntry.getDouble(1.0)));
+                        () ->finalSpeedModifierEntry.getDouble(1.0)));
 
         Elevator.setDefaultCommand(
                 new RunCommand(
@@ -133,8 +135,7 @@ public class RobotContainer {
         //        .onTrue(new RunCommand(Swerve::zeroGyro));
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
-        new JoystickButton(DRIVER, 5)
-                .onTrue(new RunCommand( ()->Swerve.setSpeed()));
+        new JoystickButton(DRIVER, 5).onTrue(new InstantCommand(()->Swerve.setSpeed()));
 
 
         new JoystickButton(OPERATOR, 7)
