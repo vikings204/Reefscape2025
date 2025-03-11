@@ -122,10 +122,10 @@ public class RobotContainer {
                         highSpeed,//!slowMode,//DRIVER.getRightStickButton())); // fast mode
                         () ->finalSpeedModifierEntry.getDouble(1.0)));
 
-        Elevator.setDefaultCommand(
-                new RunCommand(
-                        () -> Elevator.jogPositive(false),
-                        Elevator));
+        //Elevator.setDefaultCommand(
+        //        new RunCommand(
+        //                () -> Elevator.jogPositive(false),
+        //                Elevator));
     }
 
 
@@ -139,10 +139,19 @@ public class RobotContainer {
 
 
         new JoystickButton(OPERATOR, 7)
+                .whileTrue(new InstantCommand(() -> Elevator.jogPositive(true), Elevator))
+                .onFalse(new InstantCommand(() -> Elevator.jogPositive(false), Elevator));
+
+        new JoystickButton(OPERATOR, 8)
+                .whileTrue(new InstantCommand(() -> Elevator.jogNegative(true), Elevator))
+                .onFalse(new InstantCommand(() -> Elevator.jogNegative(false), Elevator));
+
+
+   /*      new JoystickButton(OPERATOR, 7)
                 .whileTrue(new RunCommand(() -> Elevator.jogPositive(true), Elevator));
 
         new JoystickButton(OPERATOR, 8)
-                .whileTrue(new RunCommand(() -> Elevator.jogNegative(true), Elevator));
+                .whileTrue(new RunCommand(() -> Elevator.jogNegative(true), Elevator));*/
 
         new JoystickButton(OPERATOR, 3)
                 .onTrue(new RunCommand(() -> Elevator.setPosition(Positions.L1), Elevator));
