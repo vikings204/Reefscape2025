@@ -138,7 +138,7 @@ public class RobotContainer {
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
-        new JoystickButton(DRIVER, 7).onTrue(new InstantCommand(()->Swerve.setSpeed()));
+        new JoystickButton(DRIVER, 8).onTrue(new InstantCommand(()->Swerve.setSpeed()));
 
 
         new JoystickButton(OPERATOR, 7)
@@ -194,13 +194,13 @@ public class RobotContainer {
           //  CommandScheduler.getInstance().schedule(new InstantCommand(() -> System.out.println("Command scheduled!")));
         }
 
-        if (OPERATOR.getRightY() > -.5) {
+        if (OPERATOR.getRightY() < -.5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(true), Climber));
         } else {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.ShootArm(false), Climber));
         }
 
-        if (OPERATOR.getRightY() < .5) {
+        if (OPERATOR.getRightY() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
         }
     }
