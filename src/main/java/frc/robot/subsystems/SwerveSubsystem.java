@@ -35,7 +35,6 @@ import static frc.robot.Constants.Swerve.*;
 
 public class SwerveSubsystem extends SubsystemBase {
     public Pigeon2 gyro = new Pigeon2(PIGEON2_ID, "rio");
-    //private final SwerveDriveOdometry swerveOdometry; // Odometry class helps track where the robot is relative to where it started
     public final SwerveModule[] modules; // Array of the 4 swerve modules
 
     public SwerveSubsystem() {
@@ -43,7 +42,6 @@ public class SwerveSubsystem extends SubsystemBase {
         gyro.getConfigurator().apply(toApply);
 
         zeroGyro();
-        //m_gyro.calibrate();
         modules = new SwerveModule[]{
                         new SwerveModule(0, Mod0.DRIVE_MOTOR_ID, Mod0.ANGLE_MOTOR_ID, Mod0.ANGLE_OFFSET, Mod0.CAN_CODER_ID), //Each Constant set is specific to a motor pair
                         new SwerveModule(1, Mod1.DRIVE_MOTOR_ID, Mod1.ANGLE_MOTOR_ID, Mod1.ANGLE_OFFSET, Mod1.CAN_CODER_ID),
@@ -66,7 +64,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void setSpeed(){
         if (Constants.Swerve.SPEED_MULTIPLIER <.5){
-            Constants.Swerve.SPEED_MULTIPLIER = 1;
+            Constants.Swerve.SPEED_MULTIPLIER = .85;
         }
         else{
             Constants.Swerve.SPEED_MULTIPLIER = .125;
@@ -95,37 +93,9 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-//    public Pose2d getPose() {
-//        SmartDashboard.putNumber("pose X", swerveOdometry.getPoseMeters().getX());
-//        SmartDashboard.putNumber("pose Y", swerveOdometry.getPoseMeters().getY());
-//
-//        SmartDashboard.putNumber("gyro angle", gyro.getAngle());
-//
-//        // SmartDashboard.putNumber("gyro filtered X", gyro.getXFilteredAccelAngle()); // loops between
-//        // about 14...0...360...346
-//        // SmartDashboard.putNumber("gyro filtered Y", gyro.getYFilteredAccelAngle()); // forward and
-//        // back leveling
-//        // 0-14, drive forward, 346-360 drive backward
-//
-//        // SmartDashboard.putNumber("gyro pitch", gyro.getPitch());
-//        //SmartDashboard.putNumber("gyro roll", gyro.getRoll());
-//        //SmartDashboard.putNumber("pitch rate", getPitchRate());
-//
-       // return swerveOdometry.getPoseMeters();
-   // }
-
-//    public void resetOdometry(Pose2d pose) {
-//        swerveOdometry.resetPosition(getYaw(), getPositions(), pose);
-//    }
-
     public ChassisSpeeds getSpeeds() {
         return SWERVE_KINEMATICS.toChassisSpeeds(getStates());
     }
-
-//    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-//        //driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
-//        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, poseEstimator.getCurrentPose().getRotation()));
-//    }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
@@ -156,7 +126,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void setX(){
         for (SwerveModule mod : modules) {
             mod.resetToAbsolute();
-           // System.out.println("Current Mod: "+mod.moduleNumber);
         }
     }
 
@@ -170,64 +139,15 @@ public class SwerveSubsystem extends SubsystemBase {
                 : Rotation2d.fromDegrees(gyro.getAngle());
     }
 
-//    public double getYawRate() {
-//        //return gyro.getRawGyroZ();
-//        //return m_gyro.getRate();
-//        return gyro.getRate();
-//    }
-
-    // public double getXFilteredAccelAngle() {
-    //   return gyro.getXFilteredAccelAngle();
-    // }
-
-    // public double getYFilteredAccelAngle() {
-    //   return gyro.getYFilteredAccelAngle();
-    // }
-
-//    public double getPitch() {
-//        return 0.0;//gyro.getPitch();
-//    }
-
-//    public double getPitchRate() {
-//        return 0.0;//gyro.getRawGyroY();
-//    }
-
-//    public double getRoll() {
-//        return 0.0;//gyro.getRoll();
-//    }
 public void resetEncoders(){
     for (int i = 0; i<4; i++){
         modules[i].resetToAbsolute();
       }
 }
 
-//    public void resetEverything() {
-////        modules[0].setAngleForX(0);
-////        modules[1].setAngleForX(0);
-////        modules[2].setAngleForX(0);
-////        modules[3].setAngleForX(0);
-//
-//        modules[0].resetEncoder();
-//        modules[1].resetEncoder();
-//        modules[2].resetEncoder();
-//        modules[3].resetEncoder();
-//
-//        resetOdometry(new Pose2d());
-//        gyro.reset();
-//    }
-
     @Override
     public void periodic() {
-        //swerveOdometry.update(getYaw(), getPositions());
-        //field.setRobotPose(getPose());
-
-        // for (SwerveModule mod : modules) {
-        //     //  SmartDashboard.putNumber(
-        //     //    "Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-        //     Shuffleboard.getTab("swerve").addNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle::getDegrees).withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", -180, "max", 180)); // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-        //     Shuffleboard.getTab("swerve").addNumber("Mod " + mod.moduleNumber + " Velocity", () -> mod.getState().speedMetersPerSecond); //SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
-        // }
-    }
+   }
     public Command driveToPose(){//Pose2d pose) {
     Translation2d t = new Translation2d(1.0,0.0);
     Pose2d test = new Pose2d(t, new Rotation2d(0.0));
