@@ -38,9 +38,6 @@ public class RobotContainer {
     public final ElevatorSubsystem Elevator = new ElevatorSubsystem(Tongue);
     public final ClimberSubsystem Climber = new ClimberSubsystem();
     public final PoseEstimationSubsystem PoseEstimation = new PoseEstimationSubsystem(Swerve::getYaw, Swerve::getPositions);
-    public boolean slowMode = false;
-
-    //private final TimedSpeakerShotCommand TimedSpeakerShot = new TimedSpeakerShotCommand(Shooter);
 
     private final GenericEntry finalSpeedModifierEntry = Shuffleboard.getTab("config").add("final speed modifier", 1.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
@@ -49,10 +46,8 @@ public class RobotContainer {
     private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 4);
     private final JoystickButton highSpeed = new JoystickButton(DRIVER,3);
 
-    // private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, false, Swerve);
-    // private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, false, Swerve);
-    // private final StupidAlignCommand StupidAlignRightX = new StupidAlignCommand(false, true, Swerve);
-    // private final StupidAlignCommand StupidAlignLeftX = new StupidAlignCommand(true, true, Swerve);
+     private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, Swerve, LED);
+     private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, Swerve, LED);
   
 
     /**
@@ -172,11 +167,8 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-        // new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
-        // new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
-
-        // new JoystickButton(DRIVER, 3).whileTrue(StupidAlignLeftX); // A is left
-        // new JoystickButton(DRIVER, 4).whileTrue(StupidAlignRightX); // B is right
+         new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
+         new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
     }
 
     public Command getAutonomousCommand() {

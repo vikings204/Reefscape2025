@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
         ctreConfigs = new CTREConfigs();
 
         robotContainer = new RobotContainer();
-        CameraServer.startAutomaticCapture(); // use for USB camera
+        //CameraServer.startAutomaticCapture(); // use for USB camera
         //PortForwarder.add(8888, "10.2.4.69", 80);
 
         if (Constants.Controller.DEFAULT_CONTROL_MODE == ControlMode.SINGLE) {
