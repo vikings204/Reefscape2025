@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Constants;
@@ -53,7 +54,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
 //        System.out.println("left: " + leftMotor.getOutputCurrent() + " right: " + rightMotor.getOutputCurrent());
 
-        if (rightMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT || leftMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT) {
+        if (DriverStation.isTeleopEnabled() && (rightMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT || leftMotor.getOutputCurrent() > AUTOMATIC_ZERO_CURRENT)) {
             rightMotor.stopMotor();
             leftMotor.stopMotor();
         }
