@@ -71,7 +71,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         if (targetposition == Positions.L2 || targetposition == Positions.L3) {
             Tongue.retract();
-        } else if (targetposition == Positions.L1 || targetposition == Positions.L4) {
+        } else if (targetposition == Positions.L1 || targetposition == Positions.L4 || targetposition==Positions.Auto) {
             Tongue.extend();
         } else {
             Tongue.retract();

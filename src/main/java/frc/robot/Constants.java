@@ -178,6 +178,7 @@ public final class Constants {
             L2(-1.017),
             L1(-1.017),
             INTAKE(-0.946),
+            Auto(-3.5),
             ZERO(-0.25);
 
             public final double position;

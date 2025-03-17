@@ -11,15 +11,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Bottom Start to Reef"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "L4_Elevator"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Start to Reef"
           }
         },
         {

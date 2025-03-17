@@ -94,7 +94,7 @@ public class StupidAlignCommand extends Command {
 //        for (int i = 0; i < positions.length; i++) {
 //            positions[i].distanceMeters *= -1;
 //        }
-        poser.update(Swerve.getYaw(), positions);
+        //poser.update(Swerve.getYaw(), positions);
 
         System.out.println(poser.getEstimatedPosition().toString());
 
