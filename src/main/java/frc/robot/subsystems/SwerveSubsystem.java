@@ -139,11 +139,17 @@ public class SwerveSubsystem extends SubsystemBase {
                 : Rotation2d.fromDegrees(gyro.getAngle());
     }
 
-public void resetEncoders(){
-    for (int i = 0; i<4; i++){
-        modules[i].resetToAbsolute();
-      }
-}
+    public void resetEncoders(){
+        for (int i = 0; i<4; i++){
+            modules[i].resetToAbsolute();
+          }
+    }
+
+    public void zeroDriveEncoders() {
+        for (SwerveModule mod : modules) {
+            mod.zeroDriveEncoder();
+        }
+    }
 
     @Override
     public void periodic() {

@@ -134,7 +134,7 @@ public class RobotContainer {
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
         new JoystickButton(DRIVER, 6)
                 .onTrue(new RunCommand(Tongue::setPosL4, Tongue));
-        new JoystickButton(DRIVER, 8).onTrue(new InstantCommand(()->Swerve.setSpeed()));
+        new JoystickButton(DRIVER, 8).onTrue(new InstantCommand(Swerve::setSpeed));
 
 
         new JoystickButton(OPERATOR, 7)

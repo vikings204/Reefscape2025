@@ -39,10 +39,6 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d lastAngle;
     private Rotation2d angleOffset;
-    private int flipper=1;
-    private double turningPDeg = 0;
-    private int turningPQuad = 0; // top left is 1 counterclockwise
-    private double turningTotalDeg = 0.0;
 
     private final SparkMax driveMotor;
     private final SparkMax angleMotor;
@@ -277,16 +273,6 @@ public class SwerveModule {
         lastAngle = angle;
     }
 
-    public void setAngleForX(double angle) {
-        driveMotor.set(0);
-        //angleMotor.set(TalonSRXControlMode.Position, (angle/360)*1023);
-        angleMotor.set(.5);
-        flipper= -1*flipper;
-        //angleController.setPosition
-        //angleController.setReference(angle, ControlType.kPosition);
-       // angleController.
-    }
-
     public Rotation2d getAngle() {
         //SmartDashboard.putNumber("getAngleCall position Mod" + moduleNumber, (angleMotor.getSelectedSensorPosition()/1023)*360-angleOffset.getDegrees());
         //System.out.println("Encoder Position Mod "+moduleNumber+": "+(angleMotor.getSelectedSensorPosition()/1023)*360);
@@ -332,8 +318,7 @@ public class SwerveModule {
 
     }
 
-    //public Rotation2d getAbsoluteAnglePosition() {
-      //  return new Rotation2d(angleMotor.getAnalog(SparkAnalogSensor.Mode.kAbsolute).getVoltage());
-
-    //}
+    public void zeroDriveEncoder() {
+        driveEncoder.setPosition(0.0);
+    }
 }

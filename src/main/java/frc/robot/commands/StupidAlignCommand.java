@@ -42,8 +42,8 @@ public class StupidAlignCommand extends Command {
                     new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()
             },
             new Pose2d(),
-            VecBuilder.fill(1.5, 1.5, 1.5),//VecBuilder.fill(0.1, 0.1, 0.1),
-            VecBuilder.fill(1.5, 1.5, 1.5)
+            VecBuilder.fill(1.0, 1.0, 1.0),//VecBuilder.fill(0.1, 0.1, 0.1),
+            VecBuilder.fill(1.0, 1.0, 1.0)//VecBuilder.fill(1.5, 1.5, 1.5)
     );
 
 
@@ -88,13 +88,11 @@ public class StupidAlignCommand extends Command {
         if (id != 0) {
             // tag spotted
             poser.resetPose(new Pose2d(txSub.get(), tzSub.get(), new Rotation2d()));
-        }
+            Swerve.zeroDriveEncoders();
+        } else {
             // use wheel odom instead
-        var positions = Swerve.getPositions();
-//        for (int i = 0; i < positions.length; i++) {
-//            positions[i].distanceMeters *= -1;
-//        }
-        //poser.update(Swerve.getYaw(), positions);
+            poser.update(Swerve.getYaw(), Swerve.getPositions());
+        }
 
         System.out.println(poser.getEstimatedPosition().toString());
 
