@@ -80,8 +80,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void jogPositive(boolean b) {
         if (b) {
-            leftMotor.set(.1);
-            rightMotor.set(.1);
+            leftMotor.set(.2);
+            rightMotor.set(.2);
             System.out.println("Current Setting:" + leftEncoder.getPosition());
         } else {
             leftMotor.set(0);
@@ -91,8 +91,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void jogNegative(boolean b) {
         if (b) {
-            leftMotor.set(-.1);
-            rightMotor.set(-.1);
+            leftMotor.set(-.2);
+            rightMotor.set(-.2);
             System.out.println("Current Setting:" + leftEncoder.getPosition());
         } else {
             leftMotor.set(0);
