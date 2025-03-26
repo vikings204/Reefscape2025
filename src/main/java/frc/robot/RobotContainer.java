@@ -118,6 +118,7 @@ public class RobotContainer {
         //        new RunCommand(
         //                () -> Elevator.jogPositive(false),
         //                Elevator));
+        Tongue.setDefaultCommand(new RunCommand(()->Tongue.readSensor()));
     }
 
 
