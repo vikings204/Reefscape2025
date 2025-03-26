@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -36,6 +37,14 @@ import static frc.robot.Constants.Swerve.*;
 public class SwerveSubsystem extends SubsystemBase {
     public Pigeon2 gyro = new Pigeon2(PIGEON2_ID, "rio");
     public final SwerveModule[] modules; // Array of the 4 swerve modules
+//    private final SwerveDrivePoseEstimator TESTPOSER = new SwerveDrivePoseEstimator(
+//            Constants.Swerve.SWERVE_KINEMATICS,
+//            new Rotation2d(),
+//            new SwerveModulePosition[]{
+//                    new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()
+//            },
+//            new Pose2d()
+//    );
 
     public SwerveSubsystem() {
         var toApply = new Pigeon2Configuration();
@@ -153,7 +162,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-   }
+        //TESTPOSER.update(new Rotation2d(), getPositions());
+        //System.out.println("x=" + TESTPOSER.getEstimatedPosition().getX()*(4/2.8) + "  y=" + TESTPOSER.getEstimatedPosition().getY()*(4/2.8));
+    }
     public Command driveToPose(){//Pose2d pose) {
     Translation2d t = new Translation2d(1.0,0.0);
     Pose2d test = new Pose2d(t, new Rotation2d(0.0));

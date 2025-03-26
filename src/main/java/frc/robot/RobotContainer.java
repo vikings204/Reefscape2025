@@ -46,13 +46,9 @@ public class RobotContainer {
     private final JoystickButton slowSpeed = new JoystickButton(DRIVER, 4);
     private final JoystickButton highSpeed = new JoystickButton(DRIVER,3);
 
-     private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, Swerve, LED);
-     private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, Swerve, LED);
-  
+    private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, Swerve, LED);
+    private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, Swerve, LED);
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
     public RobotContainer() {
         ControlModeChooser.onChange((ControlMode mode) -> {
             if (mode == ControlMode.SINGLE) {

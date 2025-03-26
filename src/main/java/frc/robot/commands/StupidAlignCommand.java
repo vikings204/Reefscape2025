@@ -41,9 +41,9 @@ public class StupidAlignCommand extends Command {
             new SwerveModulePosition[]{
                     new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()
             },
-            new Pose2d(),
-            VecBuilder.fill(1.0, 1.0, 1.0),//VecBuilder.fill(0.1, 0.1, 0.1),
-            VecBuilder.fill(1.0, 1.0, 1.0)//VecBuilder.fill(1.5, 1.5, 1.5)
+            new Pose2d()/*,
+            VecBuilder.fill(0.1, 0.1, 0.1),
+            VecBuilder.fill(1.5, 1.5, 1.5)*/
     );
 
 
@@ -78,6 +78,7 @@ public class StupidAlignCommand extends Command {
         } else {
             System.out.println("align: found tag, aligning");
             LED.setPattern(LEDSubsystem.BlinkinPattern.SHOT_BLUE);
+            Swerve.zeroDriveEncoders();
         }
     }
 
@@ -88,17 +89,23 @@ public class StupidAlignCommand extends Command {
         if (id != 0) {
             // tag spotted
             poser.resetPose(new Pose2d(txSub.get(), tzSub.get(), new Rotation2d()));
-            Swerve.zeroDriveEncoders();
         } else {
-            // use wheel odom instead
-            poser.update(Swerve.getYaw(), Swerve.getPositions());
+            // update with wheel odom
+            poser.update(new Rotation2d(), Swerve.getPositions());
         }
 
-        System.out.println(poser.getEstimatedPosition().toString());
+        double estimatedX = txSub.get();
+        double estimatedY = tzSub.get();
+        if (id == 0) {
+            estimatedX += poser.getEstimatedPosition().getX()*(4/Constants.Swerve.WHEEL_DIAMETER);
+            estimatedY += poser.getEstimatedPosition().getY()*(4/Constants.Swerve.WHEEL_DIAMETER);
+        }
+
+        System.out.println("x=" + estimatedX + " y=" + estimatedY);
 
         //System.out.println("id: " + id);
-        double diffX = poser.getEstimatedPosition().getX() - (isLeft ? 1 : -1) * 0.172;//xGoal.getDouble(0.17);
-        double diffY = poser.getEstimatedPosition().getY() - .65;//yGoal.getDouble(0.7);
+        double diffX = estimatedX - (isLeft ? 1 : -1) * 0.172;//xGoal.getDouble(0.17);
+        double diffY = estimatedY - .65;//yGoal.getDouble(0.7);
        // System.out.println("tz: "+ tzSub.get() + "ygoal: "+yGoal.getDouble(.7));
 //        double diffTheta = yawSub.get() - thetaGoal.getDouble(0);
 //        System.out.println("diffX=" + diffX + " diffY=" + diffY + " diffTheta=" + diffTheta);
