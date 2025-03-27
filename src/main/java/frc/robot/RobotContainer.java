@@ -118,7 +118,7 @@ public class RobotContainer {
         //        new RunCommand(
         //                () -> Elevator.jogPositive(false),
         //                Elevator));
-        Tongue.setDefaultCommand(new RunCommand(()->Tongue.readSensor()));
+        //Tongue.setDefaultCommand(new RunCommand(()->Tongue.readSensor()),Tongue);
     }
 
 
@@ -193,5 +193,6 @@ public class RobotContainer {
         if (OPERATOR.getRightY() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
         }
+        Tongue.readSensor();
     }
 }
