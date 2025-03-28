@@ -31,9 +31,10 @@ public class StupidAlignCommand extends Command {
     private DoubleSubscriber txSub;
 //    private DoubleSubscriber tySub;
     private DoubleSubscriber tzSub;
-    private DoubleSubscriber yawSub;
-    private DoubleSubscriber pitchSub;
-    private DoubleSubscriber rollSub;
+//    private DoubleSubscriber yawSub;
+//    private DoubleSubscriber pitchSub;
+//    private DoubleSubscriber rollSub;
+    private boolean zeroedWheels = false;
 
     private final SwerveDrivePoseEstimator poser = new SwerveDrivePoseEstimator(
             Constants.Swerve.SWERVE_KINEMATICS,
@@ -62,9 +63,9 @@ public class StupidAlignCommand extends Command {
         txSub = ntTable.getDoubleTopic("tx").subscribe(0);
 //        tySub = ntTable.getDoubleTopic("ty").subscribe(0);
         tzSub = ntTable.getDoubleTopic("tz").subscribe(0);
-        yawSub = ntTable.getDoubleTopic("yaw").subscribe(0);
-        pitchSub = ntTable.getDoubleTopic("pitch").subscribe(0);
-        rollSub = ntTable.getDoubleTopic("roll").subscribe(0);
+//        yawSub = ntTable.getDoubleTopic("yaw").subscribe(0);
+//        pitchSub = ntTable.getDoubleTopic("pitch").subscribe(0);
+//        rollSub = ntTable.getDoubleTopic("roll").subscribe(0);
 
         addRequirements(Swerve);
     }
@@ -78,7 +79,8 @@ public class StupidAlignCommand extends Command {
         } else {
             System.out.println("align: found tag, aligning");
             LED.setPattern(LEDSubsystem.BlinkinPattern.SHOT_BLUE);
-            Swerve.zeroDriveEncoders();
+            zeroedWheels = false;
+            poser.resetPosition(new Rotation2d(), new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()}, new Pose2d());
         }
     }
 
@@ -86,34 +88,28 @@ public class StupidAlignCommand extends Command {
     public void execute() {
         long id = idSub.get();
 
-        if (id != 0) {
-            // tag spotted
-            poser.resetPose(new Pose2d(txSub.get(), tzSub.get(), new Rotation2d()));
-        } else {
-            // update with wheel odom
-            poser.update(new Rotation2d(), Swerve.getPositions());
-        }
-
         double estimatedX = txSub.get();
         double estimatedY = tzSub.get();
         if (id == 0) {
-            estimatedX += poser.getEstimatedPosition().getX()*(4/Constants.Swerve.WHEEL_DIAMETER);
-            estimatedY += poser.getEstimatedPosition().getY()*(4/Constants.Swerve.WHEEL_DIAMETER);
+            if (!zeroedWheels) {
+                Swerve.zeroDriveEncoders();
+            }
+
+            // update with wheel odom
+            poser.update(new Rotation2d(), Swerve.getPositions());
+
+            estimatedX += poser.getEstimatedPosition().getX()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER);
+            estimatedY += poser.getEstimatedPosition().getY()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER);
         }
 
         System.out.println("x=" + estimatedX + " y=" + estimatedY);
 
-        //System.out.println("id: " + id);
-        double diffX = estimatedX - (isLeft ? 1 : -1) * 0.172;//xGoal.getDouble(0.17);
-        double diffY = estimatedY - .65;//yGoal.getDouble(0.7);
-       // System.out.println("tz: "+ tzSub.get() + "ygoal: "+yGoal.getDouble(.7));
-//        double diffTheta = yawSub.get() - thetaGoal.getDouble(0);
-//        System.out.println("diffX=" + diffX + " diffY=" + diffY + " diffTheta=" + diffTheta);
+        double diffX = estimatedX - (isLeft ? 1 : -1) * 0.172;
+        double diffY = estimatedY - .65;
 
-        double speed = .3;//speedEntry.getDouble(0);
+        double speed = .3;
         double goX = diffX > 0 ? speed : -speed;
         double goY = diffY > 0 ? speed : -speed;
-//        double goTheta = diffTheta > 0 ? -speed : speed;
 
         if (Math.abs(diffX) < 0.01) {
             goX = 0;
@@ -127,7 +123,7 @@ public class StupidAlignCommand extends Command {
             LED.setPattern(LEDSubsystem.BlinkinPattern.LIME);
             this.cancel();
         } else {
-            Swerve.drive(new Translation2d(goX, goY), /*goTheta*/0, false, true);
+            Swerve.drive(new Translation2d(goX, goY), 0, false, true);
         }
     }
 

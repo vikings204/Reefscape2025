@@ -44,6 +44,7 @@ public final class Constants {
         /* Drivetrain Constants */
         public static final double TRACK_WIDTH = inchesToMeters(23); // same as wheelbase because it is a square
         public static final double WHEEL_BASE = inchesToMeters(23);
+        public static final double WHEEL_DIAMETER_REAL = inchesToMeters(4);
         public static final double WHEEL_DIAMETER = inchesToMeters(2.8);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
