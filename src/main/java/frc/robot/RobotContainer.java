@@ -20,11 +20,13 @@ import frc.robot.Constants.Controller;
 import frc.robot.Constants.Elevator.Positions;
 import frc.robot.Robot.ControlMode;
 import frc.robot.commands.AlignCommand;
+import frc.robot.commands.ColorAlignCommand;
 import frc.robot.commands.StupidAlignCommand;
 import frc.robot.commands.TeleopSwerveCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gamepad;
 
+import java.awt.*;
 import java.util.Map;
 
 import static frc.robot.Constants.Swerve.SPEED_MULTIPLIER;
@@ -48,6 +50,8 @@ public class RobotContainer {
 
     private final StupidAlignCommand StupidAlignRight = new StupidAlignCommand(false, Swerve, LED);
     private final StupidAlignCommand StupidAlignLeft = new StupidAlignCommand(true, Swerve, LED);
+    private final ColorAlignCommand ColorAlignRight = new ColorAlignCommand(false, Swerve, Tongue, LED);
+    private final ColorAlignCommand ColorAlignLeft = new ColorAlignCommand(true, Swerve, Tongue, LED);
 
     public RobotContainer() {
         ControlModeChooser.onChange((ControlMode mode) -> {
@@ -165,8 +169,10 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-         new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
-         new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
+//        new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
+//        new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
+        new JoystickButton(DRIVER, 1).whileTrue(ColorAlignLeft);
+        new JoystickButton(DRIVER, 2).whileTrue(ColorAlignRight);
     }
 
     public Command getAutonomousCommand() {
@@ -193,6 +199,5 @@ public class RobotContainer {
         if (OPERATOR.getRightY() > .5) {
             CommandScheduler.getInstance().schedule(new RunCommand(() -> Climber.NegativeShootArm(true), Climber));
         }
-        Tongue.readSensor();
     }
 }
