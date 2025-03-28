@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
@@ -19,6 +20,7 @@ public class TongueSubsystem extends SubsystemBase {
     ServoChannel pegServo;
     ServoChannel extenderServo;
     private final ColorSensorV3 sensor1;
+    private boolean goodToShoot;
 
 
     public TongueSubsystem() {
@@ -40,11 +42,13 @@ public class TongueSubsystem extends SubsystemBase {
         extenderServo.setEnabled(true); // moved from extend(), should work
         sensor1 = new ColorSensorV3(I2C.Port.kOnboard);
         //sensor1.configureProximitySensor(ColorSensorV3.ProximitySensorResolution.kProxRes11bit, ColorSensorV3.ProximitySensorMeasurementRate.kProxRate6ms);
+       Shuffleboard.getTab("main").addBoolean("SHOOOOOOOT", ()->readSensor() ) ;
 
     }
 
-    public void readSensor(){
+    public boolean readSensor(){
   Color detectedColor = sensor1.getColor();
+  var rawColor = sensor1.getRawColor();
 
     /**
      * The sensor returns a raw IR value of the infrared light detected.
@@ -58,7 +62,11 @@ public class TongueSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Green", detectedColor.green);
     SmartDashboard.putNumber("Blue", detectedColor.blue);
-    SmartDashboard.putNumber("IR", IR);
+    SmartDashboard.putNumber("Red Raw", rawColor.red);
+    SmartDashboard.putNumber("Green Raw", rawColor.green);
+    SmartDashboard.putNumber("Blue Raw", rawColor.blue);
+
+
 
     /**
      * In addition to RGB IR values, the color sensor can also return an 
@@ -74,6 +82,7 @@ public class TongueSubsystem extends SubsystemBase {
     int proximity = sensor1.getProximity();
 
     SmartDashboard.putNumber("Proximity", proximity);
+    return proximity>100 && rawColor.red>100;
 
     }
     public void setPosScore() {
