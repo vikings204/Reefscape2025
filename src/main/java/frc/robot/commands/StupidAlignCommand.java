@@ -107,7 +107,7 @@ public class StupidAlignCommand extends Command {
         double diffX = estimatedX - (isLeft ? 1 : -1) * 0.172;
         double diffY = estimatedY - .65;
 
-        double speed = .3;
+        double speed = 0.3;
         double goX = diffX > 0 ? speed : -speed;
         double goY = diffY > 0 ? speed : -speed;
 

@@ -34,8 +34,9 @@ public class ColorAlignCommand extends Command {
 
     @Override
     public void execute() {
-        double speed = .3;
-        Swerve.drive(new Translation2d(isLeft ? -speed : speed, 0), 0, false, true);
+        double speed = 0.3;
+        double forwardSpeed = 0.15;
+        Swerve.drive(new Translation2d(isLeft ? -speed : speed, forwardSpeed), 0, false, true);
     }
 
     @Override

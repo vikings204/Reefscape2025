@@ -169,10 +169,10 @@ public class RobotContainer {
       //  new JoystickButton(DRIVER, 1).
        //         whileTrue(Swerve.driveToPose());
 //        new JoystickButton(DRIVER, 1).whileTrue(new AlignCommand(false, Swerve));
-//        new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
-//        new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
-        new JoystickButton(DRIVER, 1).whileTrue(ColorAlignLeft);
-        new JoystickButton(DRIVER, 2).whileTrue(ColorAlignRight);
+        new JoystickButton(DRIVER, 1).whileTrue(StupidAlignLeft); // A is left
+        new JoystickButton(DRIVER, 2).whileTrue(StupidAlignRight); // B is right
+        new JoystickButton(DRIVER, 3).whileTrue(ColorAlignLeft);
+        new JoystickButton(DRIVER, 4).whileTrue(ColorAlignRight);
     }
 
     public Command getAutonomousCommand() {
