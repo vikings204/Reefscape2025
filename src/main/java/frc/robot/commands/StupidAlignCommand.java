@@ -35,6 +35,7 @@ public class StupidAlignCommand extends Command {
 //    private DoubleSubscriber pitchSub;
 //    private DoubleSubscriber rollSub;
     private boolean zeroedWheels = false;
+    private boolean doneWithTag = false;
 
     private final SwerveDrivePoseEstimator poser = new SwerveDrivePoseEstimator(
             Constants.Swerve.SWERVE_KINEMATICS,
@@ -80,6 +81,7 @@ public class StupidAlignCommand extends Command {
             System.out.println("align: found tag, aligning");
             LED.setPattern(LEDSubsystem.BlinkinPattern.SHOT_BLUE);
             zeroedWheels = false;
+            doneWithTag = false;
             poser.resetPosition(new Rotation2d(), new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition()}, new Pose2d());
         }
     }
@@ -88,21 +90,30 @@ public class StupidAlignCommand extends Command {
     public void execute() {
         long id = idSub.get();
 
+        if (id == 0) {
+            doneWithTag = true;
+        }
+
         double estimatedX = txSub.get();
         double estimatedY = tzSub.get();
-        if (id == 0) {
+        if (doneWithTag) {
             if (!zeroedWheels) {
                 Swerve.zeroDriveEncoders();
+                zeroedWheels = true;
             }
 
             // update with wheel odom
             poser.update(new Rotation2d(), Swerve.getPositions());
 
-            estimatedX += poser.getEstimatedPosition().getX()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER);
-            estimatedY += poser.getEstimatedPosition().getY()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER);
+            estimatedX -= poser.getEstimatedPosition().getX()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER);
+            estimatedY -= poser.getEstimatedPosition().getY()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER);
         }
 
-        System.out.println("x=" + estimatedX + " y=" + estimatedY);
+        if (id == 0) {
+            System.out.println("A x=" + poser.getEstimatedPosition().getX()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER) + " y=" + poser.getEstimatedPosition().getY()*(Constants.Swerve.WHEEL_DIAMETER_REAL/Constants.Swerve.WHEEL_DIAMETER));
+        } else {
+            System.out.println("B x=" + estimatedX + " y=" + estimatedY);
+        }
 
         double diffX = estimatedX - (isLeft ? 1 : -1) * 0.172;
         double diffY = estimatedY - .65;
